@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NPL Data Entry</title>
+    <link rel="stylesheet" href="https://ssl.gstatic.com/docs/script/css/add-ons1.css">
+    <?!= include('css')?>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+  </head>
+  <body onload="doOnload()" style="margin: 1em;">
+    <div class="header" style="display: block; padding: 1em; overflow: auto;">
+      <img src="https://drive.google.com/uc?id=1JLX7vfDnqgYd_OrgPNtvj1sqV8n4ANpd"/>
+      <h1>NPL Data Entry</h1>
+    </div>
+    <div id="loadingDatabase" style="margin-top: 1em; display: none;">Loading Database...</div>
+    <div id="sectionSelection" style="display: none;">
+      <button onclick="loadTungsten()">Tungsten</button>
+      <button onclick="loadEpoxy()">Epoxy</button>
+      <button onclick="loadDensity()">Density</button>
+    </div>
+    <section id="tungstenSection" class="dataEntrySection" style="display: none;">
+      <button onclick="sectionReturn()">Back</button>
+      <div class="grid" style="grid-template-columns: repeat(8, 1fr); margin-top: 1em;">
+        <div class="gridTableHeader">DBN</div>
+        <div class="gridTableHeader">Powder</div>
+        <div class="gridTableHeader">Bucket #</div>
+        <div class="gridTableHeader">Mold #</div>
+        <div class="gridTableHeader">Empty Mass (g)</div>
+        <div class="gridTableHeader">Filled Mass (g)</div>
+        <div class="gridTableHeader">Filling Date</div>
+        <div class="gridTableHeader">Filled By</div>
+      </div>
+    </section>
+    <section id="epoxySection" class="dataEntrySection" style="display: none;">
+      <button onclick="sectionReturn()">Back</button>
+      <div class="grid" style="grid-template-columns: repeat(8, 1fr); margin-top: 1em;">
+        <div class="gridTableHeader">DBN</div>
+        <div class="gridTableHeader">Batch</div>
+        <div class="gridTableHeader">Resin Mass (g)</div>
+        <div class="gridTableHeader">Hardener Mass (g)</div>
+        <div class="gridTableHeader">Potting Notes</div>
+        <div class="gridTableHeader">Filling Time</div>
+        <div class="gridTableHeader">Filling Date</div>
+        <div class="gridTableHeader">Preparer</div>
+      </div>
+    </section>
+    <section id="densitySection" class="dataEntrySection" style="display: none;">
+      <button onclick="sectionReturn()">Back</button>
+      <div class="grid" style="grid-template-columns: repeat(12, 1fr); margin-top: 1em;">
+        <div class="gridTableHeader">DBN</div>
+        <div class="gridTableHeader">L</div>
+        <div class="gridTableHeader">BT</div>
+        <div class="gridTableHeader">BB</div>
+        <div class="gridTableHeader">BH</div>
+        <div class="gridTableHeader">ST</div>
+        <div class="gridTableHeader">SB</div>
+        <div class="gridTableHeader">SH</div>
+        <div class="gridTableHeader">Measured By</div>
+        <div class="gridTableHeader">Mass</div>
+        <div class="gridTableHeader">Measured By</div>
+        <div class="gridTableHeader">Date</div>
+      </div>
+    </section>
+  </body>
+  <script>
+    var currentDate
+    var database
+    var blocksCollection
+    function doOnload() {
+      currentDate = new Date()
+      document.getElementById('loadingDatabase').style.display = 'block'
+        google.script.run.withSuccessHandler(onSuccess).getDatabase()
+        function onSuccess (gotDatabase) {
+          if (gotDatabase == null) {
+            alert('oops, fn gotDatabase returned null! unable to load database and testing folders from drive')
+            document.getElementById('loadingDatabase').style.display = 'none'
+            return
+          } else if (gotDatabase.err != null) {
+            // an error occured, so display an alert with the error message passed from script
+            alert('an error occured while loading the database and testing fodlers: ' + gotDatabase.err)
+            document.getElementById('loadingDatabase').style.display = 'none'
+          } else {
+            console.log('loaded database and testing folders without error')
+            database = [gotDatabase.sheet1, gotDatabase.sheet2]
+            let blocks = []
+            for (let index = 1; index < database[0].length; index++) {
+              if (database[0][blocksSheetMap.get('block')] !== '') {
+                blocks[index - 1] = new Block(database[0][index], 0, index - 1)
+              }
+            }
+            for (let index = 1; index < database[1].length; index++) {
+              if (database[1][blocksSheetMap.get('block')] !== '') {
+                blocks[index + 1999] = new Block(database[1][index], 1, index + 1999)
+              }
+            }
+            blocksCollection = new BlocksCollection(blocks)
+            document.getElementById('loadingDatabase').style.display = 'none'
+            document.getElementById('sectionSelection').style.display = 'block'
+          }
+        }
+    }
+    function loadTungsten () {
+      document.getElementById('sectionSelection').style.display = 'none'
+      document.getElementById('tungstenSection').style.display = 'block'
+    }
+    function loadEpoxy () {
+      document.getElementById('sectionSelection').style.display = 'none'
+      document.getElementById('epoxySection').style.display = 'block'
+    }
+    function loadDensity () {
+      document.getElementById('sectionSelection').style.display = 'none'
+      document.getElementById('densitySection').style.display = 'block'
+    }
+    function sectionReturn () {
+      $('.dataEntrySection').css('display', 'none')
+      document.getElementById('sectionSelection').style.display = 'block'
+    }
+
+  </script>
+  <script>
+    //helper functions
+    function dataPresent (data) {
+      return (data != null && data != '' && data != '#NUM!' && data != '#DIV/0!' && data != 'NaN')
+    }
+    function to2digits (string) {
+        if (string.length < 2) {
+          return '0' + string
+        } else {
+          return string
+        }
+      }
+    function usDateToYYYYMMDD (usDate) {
+      let splitDate = usDate.split('/')
+      if (splitDate.length === 3) {
+        let month = to2digits(splitDate[0])
+        let day = to2digits(splitDate[1])
+        let year = splitDate[2]
+        return parseInt(year + month + day)
+      } else {
+        console.log("helpful hint of the day: '" + usDate + "' is NOT a date.")
+        return null
+      }
+    }
+  </script>
+  <script>
+    //constants and class definitions
+    const blocksSheetMap = new Map([
+        ['dbn', 0],
+        ['block', 2],
+        ['status', 3],
+        ['shipment', 4],
+        ['comment', 6],
+        ['sector', 7],
+        ['powder', 14],
+        ['bucket', 15],
+        ['moldSeries', 16],
+        ['emptyMoldMass', 17],
+        ['filledMoldMass', 18],
+        ['tungstenMass', 19],
+        ['tungstenFillingDate', 21],
+        ['epoxyBatch', 23],
+        ['resinMass', 24],
+        ['hardenerMass', 25],
+        ['pottingNotes', 26],
+        ['epoxyFillingTime', 27],
+        ['epoxyFillingDate', 28],
+        ['machiningDate', 31],
+        ['L', 33],
+        ['SH', 39],
+        ['volume', 40],
+        ['dimensionTester', 41],
+        ['mass', 42],
+        ['massTester', 43],
+        ['density', 44],
+        ['densityDate', 45],
+        ['goodEnd', 47],
+        ['fiberPercentage', 49],
+        ['tower1', 55],
+        ['tower2', 56],
+        ['tower3', 57],
+        ['tower4', 58],
+        ['missingRow', 59],
+        ['thirteenHoles', 60],
+        ['lightTransTester', 63],
+        ['lightTransDate', 64],
+        ['scintillation', 65],
+        ['scintRatio', 67],
+        ['scintDate', 69],
+        ['natLightDate', 70],
+        ['natLightTester', 71],
+        ['densityChecked', 73],
+        ['lightTransChecked', 74],
+        ['natLightChecked', 75],
+        ['pregrade', 77]
+      ])
+    const dimensionsMap = new Map([
+      [123, [5.5000,	2.0850,	2.0850,	1.9890,	1.8150,	1.8150,	1.9890]],
+      [4, [5.4460,	2.0850,	2.0820,	2.2740,	1.8180,	1.8150,	1.9900]],
+      [5, [5.3500,	2.0850,	2.0760,	2.2630,	1.8230,	1.8150,	1.9900]],
+      [6, [5.2700,	2.0850,	2.0710,	2.2530,	1.8280,	1.8150,	1.9900]],
+      [7, [5.2050,	2.0850,	2.0650,	2.2430,	1.8320,	1.8150,	1.9900]],
+      [8, [5.1550,	2.0850,	2.0600,	2.2340,	1.8370,	1.8150,	1.9890]],
+      [9, [5.1180,	2.0850,	2.0560,	2.2250,	1.8410,	1.8150,	1.9890]],
+      [10, [5.0940,	2.0850,	2.0510,	2.2160,	1.8460,	1.8150,	1.9890]],
+      [11, [5.0820,	2.0850,	2.0470,	2.2080,	1.8500,	1.8150,	1.9890]],
+      [12, [5.0810,	2.0850,	2.0420,	2.2010,	1.8530,	1.8150,	1.9890]],
+      [13, [5.0900,	2.0850,	2.0390,	2.1930,	1.8570,	1.8150,	1.9890]],
+      [14, [5.1100,	2.0850,	2.0350,	2.1860,	1.8600,	1.8150,	1.9890]],
+      [15, [5.1390,	2.0850,	2.0320,	2.1800,	1.8640,	1.8150,	1.9890]],
+      [16, [5.1770,	2.0850,	2.0280,	2.1740,	1.8670,	1.8150,	1.9890]],
+      [17, [5.2240,	2.0850,	2.0250,	2.1680,	1.8700,	1.8150,	1.9890]],
+      [18, [5.2790,	2.0850,	2.0230,	2.1620,	1.8720,	1.8150,	1.9890]],
+      [19, [5.3420,	2.0850,	2.0200,	2.1570,	1.8750,	1.8150,	1.9890]],
+      [20, [5.4120,	2.0850,	2.0180,	2.1520,	1.8770,	1.8150,	1.9890]],
+      [21, [5.4890,	2.0850,	2.0150,	2.1470,	1.8790,	1.8150,	1.9890]],
+      [22, [5.5720,	2.0850,	2.0130,	2.1420,	1.8810,	1.8150,	1.9890]],
+      [23, [5.6620,	2.0850,	2.0120,	2.1380,	1.8830,	1.8150,	1.9890]],
+      [24, [5.7580,	2.0850,	2.0100,	2.1330,	1.8850,	1.8150,	1.9890]]
+      ])
+    class Block {
+      constructor(array, sheet, numericDBN) {
+        this.sheet = sheet
+        this.numericDBN = numericDBN
+        this.dbn = array[0]
+        this.block = parseInt(array[2])
+        this.status = array[3]
+        this.powder = (!dataPresent(array[14])) ? null : array[14]
+        this.bucket = (!dataPresent(array[15])) ? null : array[15]
+        this.moldSeries = (!dataPresent(array[16])) ? null : array[16]
+        this.emptyMoldMass = (!dataPresent(array[17])) ? null : parseInt(array[17])
+        this.filledMoldMass = (!dataPresent(array[18])) ? null : parseInt(array[18])
+        this.tungstenMass = (!dataPresent(array[19]) || parseInt(array[19]) === 0) ? null : parseInt(array[19])
+        this.tungstenFillingDate = (!dataPresent(array[21])) ? null : usDateToYYYYMMDD(array[21])
+        this.epoxyBatch = (!dataPresent(array[23])) ? null : parseInt(array[23])
+        this.resinMass = (!dataPresent(array[24])) ? null : parseInt(array[24])
+        this.hardenerMass = (!dataPresent(array[25])) ? null : parseInt(array[25])
+        this.pottingNotes = (!dataPresent(array[26])) ? null : array[26]
+        this.epoxyFillingTime = (!dataPresent(array[27])) ? null : parseFloat(array[27])
+        this.epoxyFillingDate = (!dataPresent(array[28])) ? null : usDateToYYYYMMDD(array[28])
+        this.l = (!dataPresent(array[33])) ? null : parseFloat(array[33])
+        this.bt = (!dataPresent(array[34])) ? null : parseFloat(array[34])
+        this.bb = (!dataPresent(array[35])) ? null : parseFloat(array[35])
+        this.bh = (!dataPresent(array[36])) ? null : parseFloat(array[36])
+        this.st = (!dataPresent(array[37])) ? null : parseFloat(array[37])
+        this.sb = (!dataPresent(array[38])) ? null : parseFloat(array[38])
+        this.sh = (!dataPresent(array[39])) ? null : parseFloat(array[39])
+        this.volume = (!dataPresent(array[40]) || parseInt(array[40]) === 0) ? null : parseFloat(array[40])
+        this.dimensionTester = (!dataPresent(array[41])) ? null : array[41]
+        this.mass = (!dataPresent(array[42])) ? null : parseInt(array[42])
+        this.massTester = (!dataPresent(array[43])) ? null : array[43]
+        this.density = (!dataPresent(array[44])) ? null : parseFloat(array[44])
+        this.densityDate = (!dataPresent(array[45])) ? null : parseInt(array[45])
+      }
+      deviations() {
+        let tols = [this.l, this.bt, this.bb, this.bh, this.st, this.sb, this.sh]
+        if (tols.every((value) => value != null)) {
+          let devs = []
+          tols.forEach((value, index) => devs[index] = value - dimensionsMap.get(this.block)[index])
+          return devs
+        } else {
+          return null
+        }
+      }
+      testGrades() {
+        if (this.sheet === 0) { 
+          let devs = this.deviations()
+          let devGrades = new Array(7)
+          if (devs == null) {
+            devGrades.fill(notStartedGrade)
+          } else {
+            for (let i = 0; i < devs.length; i++) {
+              if (i === 0) {
+                devGrades[0] = (devs[0] == null) ? notStartedGrade : grade_dL(devs[0])
+              } else {
+                devGrades[i] = (devs[i] == null) ? notStartedGrade : grade_otherDev(devs[i])
+              }
+            }
+          }
+          let densityValuesToGrade = [
+            ((this.density == null) ? notStartedGrade : grade_density(this.density)),
+            ...devGrades
+          ]
+          let densityGrade = Math.max(...densityValuesToGrade)
+          return {
+            density: densityGrade,
+            tolerances: devGrades,
+          }
+        } else {
+          return null
+        }
+      }
+    }
+    class BlocksCollection {
+      constructor(array) {
+        this.array = array
+      }
+      getBlockByNumericDBN (dbn) {
+        return this.array[dbn]
+      }
+      getBlockByStringDBN (stringDBN) {
+        let numDBN
+        this.array.forEach (function (block, index, array) {
+          if (stringDBN === block.dbn) {
+            numDBN = index
+          }
+        })
+        if (numDBN != null) {return this.array[numDBN]}
+      }
+      getBlocksNeedingRetouch (retouchStatus) {
+        let blocks = []
+        let devNames = ['L', 'BT', 'BB', 'BH', 'ST', 'SB', 'SH']
+        let allowedStatuses = ['5', '5a', '5b', '5c']
+        this.array.forEach(function (block) {
+          if (block.deviations() != null && block.retouch === retouchStatus && allowedStatuses.includes(block.status)) {
+            let retouchDevs = []
+            block.deviations().forEach(function(dev, index) {
+              if (index === 0) {
+                if (grade_dL(dev) === fGrade && dev > 0) {
+                  retouchDevs.push([devNames[index], dev])
+                }
+              } else if (grade_otherDev(dev) === fGrade && dev > 0) { 
+                retouchDevs.push([devNames[index], '+' + dev.toFixed(4)])
+              }
+            })
+            if (retouchDevs.length > 0) {
+              blocks.push([block, retouchDevs])
+            }
+          }
+        })
+        return blocks
+      }
+    }
+  </script>
+</html>
