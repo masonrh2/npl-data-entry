@@ -14,12 +14,13 @@
     display: grid;
     gap: 1em;
   }
-  .grid > div {
+  .grid > div.gridTableHeader {
+    padding: 0.5em;
+    font-weight: bold;
+    background-color: #ddd;
+  }
+  .grid > div.gridData {
     padding: 0.5em;
     background-color: #eee;
-  }
-  .grid > div.gridTableHeader {
-    font-weight: bold;
-    background-color: #ddd !important;
   }
 </style>

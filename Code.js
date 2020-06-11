@@ -1,6 +1,6 @@
 function doGet() {
   return HtmlService.createTemplateFromFile('index').evaluate()
-    .setTitle('NPL Block Information Station')
+    .setTitle('NPL Data Entry')
 }
 
 function include(filename) {
@@ -55,4 +55,19 @@ function getDatabase () {
       err: null
     }
   }
+}
+
+function putTungstenData () {
+
+  return {}
+}
+
+function putEpoxyData () {
+
+  return {}
+}
+
+function putDensityData () {
+
+  return {}
 }
