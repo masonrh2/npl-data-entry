@@ -20,24 +20,24 @@
       <button onclick="loadDensity()">Density</button>
     </div>
     <section id="tungstenSection" class="dataEntrySection" style="display: none;">
-      <button onclick="sectionReturn()">Back</button>
-      <form action="javascript:" onsubmit="batchInput(this, 'inputPowder')" style="display: inline;">
-        <label>Powder: </label><input type="text">
+      <button onclick="sectionReturn()">Back</button><br>
+      <form action="javascript:" onsubmit="batchInput(this, 'inputPowder')" style="margin-top: 1em; display: block;">
+        <label style="font-weight: bold; width: 120px; display: inline-block;">Powder: </label><input type="text" style="width: 80px;">
         <button>Submit</button>
       </form>
-      <form action="javascript:" onsubmit="batchInput(this, 'inputBucket')" style="display: inline;">
-        <label>Bucket #: </label><input type="text">
+      <form action="javascript:" onsubmit="batchInput(this, 'inputBucket')" style="margin-top: 1em; display: block;">
+        <label style="font-weight: bold; width: 120px; display: inline-block;">Bucket #: </label><input type="text" style="width: 80px;">
         <button>Submit</button>
       </form>
-      <form action="javascript:" onsubmit="batchInput(this, 'inputDate')" style="display: inline;">
-        <label>Date: </label><input type="text">
+      <form action="javascript:" onsubmit="batchInput(this, 'inputDate')" style="margin-top: 1em; display: block;">
+        <label style="font-weight: bold; width: 120px; display: inline-block;">Date: </label><input type="text" class="batchDateUS" style="width: 80px;">
         <button>Submit</button>
       </form>
-      <form action="javascript:" onsubmit="batchInput(this, 'inputFiller')" style="display: inline;">
-        <label>Filler Initials: </label><input type="text">
+      <form action="javascript:" onsubmit="batchInput(this, 'inputFiller')" style="margin-top: 1em; display: block;">
+        <label style="font-weight: bold; width: 120px; display: inline-block;">Filler Initials: </label><input type="text" style="width: 80px;">
         <button>Submit</button>
       </form>
-      <div class="grid" style="grid-template-columns: repeat(9, 1fr); margin-top: 1em;">
+      <div class="grid" style="grid-template-columns: 1fr 2fr 2fr 1fr 2fr 2fr 2fr 2fr 1fr; margin-top: 1em;">
         <div class="gridTableHeader">DBN</div>
         <div class="gridTableHeader">Powder</div>
         <div class="gridTableHeader">Bucket #</div>
@@ -48,32 +48,32 @@
         <div class="gridTableHeader">Filled By</div>
         <div class="gridTableHeader">Overwrite</div>
       </div>
-      <button onclick="addRow('tungstenSection', 1)">Add Row</button>
+      <button onclick="addRow('tungstenSection', 1)" style="margin-top: 1em;">Add Row</button>
     </section>
     <section id="epoxySection" class="dataEntrySection" style="display: none;">
-      <button onclick="sectionReturn()">Back</button>
-      <form action="javascript:" onsubmit="batchInput(this, 'inputBatch')" style="display: inline;">
-        <label>Epoxy Batch: </label><input type="text">
+      <button onclick="sectionReturn()">Back</button><br>
+      <form action="javascript:" onsubmit="batchInput(this, 'inputBatch')" style="margin-top: 1em; display: block;">
+        <label style="font-weight: bold; width: 120px; display: inline-block;">Epoxy Batch: </label><input type="text" style="width: 80px;">
         <button>Submit</button>
       </form>
-      <form action="javascript:" onsubmit="batchInput(this, 'inputResinMass')" style="display: inline;">
-        <label>Resin Mass: </label><input type="text">
+      <form action="javascript:" onsubmit="batchInput(this, 'inputResinMass')" style="margin-top: 1em; display: block;">
+        <label style="font-weight: bold; width: 120px; display: inline-block;">Resin Mass: </label><input type="text" style="width: 80px;">
         <button>Submit</button>
       </form>
-      <form action="javascript:" onsubmit="batchInput(this, 'inputHardenerMass')" style="display: inline;">
-        <label>Hardener Mass: </label><input type="text">
+      <form action="javascript:" onsubmit="batchInput(this, 'inputHardenerMass')" style="margin-top: 1em; display: block;">
+        <label style="font-weight: bold; width: 120px; display: inline-block;">Hardener Mass: </label><input type="text" style="width: 80px;">
         <button>Submit</button>
       </form>
-      <form action="javascript:" onsubmit="batchInput(this, 'inputPottingNotes')" style="display: inline;">
-        <label>Potting Notes: </label><input type="text">
+      <form action="javascript:" onsubmit="batchInput(this, 'inputPottingNotes')" style="margin-top: 1em; display: block;">
+        <label style="font-weight: bold; width: 120px; display: inline-block;">Potting Notes: </label><input type="text" style="width: 80px;">
         <button>Submit</button>
       </form>
-      <form action="javascript:" onsubmit="batchInput(this, 'inputDate')" style="display: inline;">
-        <label>Date: </label><input type="text">
+      <form action="javascript:" onsubmit="batchInput(this, 'inputDate')" style="margin-top: 1em; display: block;">
+        <label style="font-weight: bold; width: 120px; display: inline-block;">Date: </label><input type="text" class="batchDateUS" style="width: 80px;">
         <button>Submit</button>
       </form>
-      <form action="javascript:" onsubmit="batchInput(this, 'inputPreparer')" style="display: inline;">
-        <label>Preparer Initials: </label><input type="text">
+      <form action="javascript:" onsubmit="batchInput(this, 'inputPreparer')" style="margin-top: 1em; display: block;">
+        <label style="font-weight: bold; width: 120px; display: inline-block;">Preparer Initials: </label><input type="text" style="width: 80px;">
         <button>Submit</button>
       </form>
       <div class="grid" style="grid-template-columns: repeat(9, 1fr); margin-top: 1em;">
@@ -87,16 +87,16 @@
         <div class="gridTableHeader">Preparer</div>
         <div class="gridTableHeader">Overwrite</div>
       </div>
-      <button onclick="addRow('epoxySection', 1)">Add Row</button>
+      <button onclick="addRow('epoxySection', 1)" style="margin-top: 1em;">Add Row</button>
     </section>
     <section id="densitySection" class="dataEntrySection" style="display: none;">
-      <button onclick="sectionReturn()">Back</button>
-      <form action="javascript:" onsubmit="batchInput(this, 'inputDate')" style="display: inline;">
-        <label>Date: </label><input type="text">
+      <button onclick="sectionReturn()">Back</button><br>
+      <form action="javascript:" onsubmit="batchInput(this, 'inputDate')" style="margin-top: 1em; display: block;">
+        <label style="font-weight: bold; width: 120px; display: inline-block;">Date: </label><input type="text" class="batchDate" style="width: 80px;">
         <button>Submit</button>
       </form>
-      <form action="javascript:" onsubmit="batchInput(this, 'inputTester')" style="display: inline;">
-        <label>Tester Name: </label><input type="text">
+      <form action="javascript:" onsubmit="batchInput(this, 'inputTester')" style="margin-top: 1em; display: block;">
+        <label style="font-weight: bold; width: 120px; display: inline-block;">Tester Name: </label><input type="text" style="width: 80px;">
         <button>Submit</button>
       </form>
       <div class="grid" style="grid-template-columns: repeat(13, 1fr); margin-top: 1em;">
@@ -114,7 +114,7 @@
         <div class="gridTableHeader">Date</div>
         <div class="gridTableHeader">Overwrite</div>
       </div>
-      <button onclick="addRow('densitySection', 1)">Add Row</button>
+      <button onclick="addRow('densitySection', 1)" style="margin-top: 1em;">Add Row</button>
     </section>
   </body>
   <script>
@@ -127,15 +127,15 @@
       google.script.run.withSuccessHandler(onSuccess).getDatabase()
       function onSuccess (gotDatabase) {
         if (gotDatabase == null) {
-          alert('oops, fn gotDatabase returned null! unable to load database and testing folders from drive')
+          alert('oops, fn gotDatabase returned null! unable to load database from drive')
           document.getElementById('loadingDatabase').style.display = 'none'
           return
         } else if (gotDatabase.err != null) {
           // an error occured, so display an alert with the error message passed from script
-          alert('an error occured while loading the database and testing fodlers: ' + gotDatabase.err)
+          alert('an error occured while loading the database: ' + gotDatabase.err)
           document.getElementById('loadingDatabase').style.display = 'none'
         } else {
-          console.log('loaded database and testing folders without error')
+          console.log('loaded database without error')
           database = [gotDatabase.sheet1, gotDatabase.sheet2]
           let blocks = []
           for (let index = 1; index < database[0].length; index++) {
@@ -156,6 +156,8 @@
           addRow('densitySection', 8)
         }
       }
+      $('input.batchDateUS').val(dateToUS(currentDate))
+      $('input.batchDate').val(dateToYYYYMMDD(currentDate))
     }
     var tungstenRows = []
     var epoxyRows = []
@@ -165,15 +167,15 @@
         let currentRows = Math.floor($('#tungstenSection > div.grid > div.gridData').length / 9)
         for (let i = 0; i < number; i++) {
           let row = [
-            $('<div class="gridData"></div>').append($('<input type="text" data-row="' + (currentRows + i) + '"/>').addClass('inputDBN').prop('placeholder', '').keyup(function () {tungstenKeyup(currentRows + i)})),
-            $('<div class="gridData"></div>').append($('<input type="text" data-row="' + (currentRows + i) + '"/>').addClass('inputPowder').prop('placeholder', '').keyup(function () {tungstenKeyup(currentRows + i)})),
-            $('<div class="gridData"></div>').append($('<input type="text" data-row="' + (currentRows + i) + '"/>').addClass('inputBucket').prop('placeholder', '').keyup(function () {tungstenKeyup(currentRows + i)})),
-            $('<div class="gridData"></div>').append($('<input type="text" data-row="' + (currentRows + i) + '"/>').addClass('inputMold').prop('placeholder', '').keyup(function () {tungstenKeyup(currentRows + i)})),
-            $('<div class="gridData"></div>').append($('<input type="text" data-row="' + (currentRows + i) + '"/>').addClass('inputEmptyMass').prop('placeholder', '').keyup(function () {tungstenKeyup(currentRows + i)})),
-            $('<div class="gridData"></div>').append($('<input type="text" data-row="' + (currentRows + i) + '"/>').addClass('inputFilledMass').prop('placeholder', '').keyup(function () {tungstenKeyup(currentRows + i)})),
-            $('<div class="gridData"></div>').append($('<input type="text" data-row="' + (currentRows + i) + '"/>').addClass('inputDate').prop('placeholder', '').keyup(function () {tungstenKeyup(currentRows + i)})),
-            $('<div class="gridData"></div>').append($('<input type="text" data-row="' + (currentRows + i) + '"/>').addClass('inputFiller').prop('placeholder', '').keyup(function () {tungstenKeyup(currentRows + i)})),
-            $('<div class="gridData"></div>').append($('<input type="checkbox" data-row="' + (currentRows + i) + '"/>').addClass('inputOverwrite')).click(function () {tungstenKeyup(currentRows + i)}).css('visibility', 'hidden')
+            $('<div class="gridData"></div>').append($('<input type="text" style="width: 100%; border: 1px solid grey;" data-row="' + (currentRows + i) + '"/>').addClass('inputDBN').prop('placeholder', '').keyup(function () {tungstenKeyup(currentRows + i)})),
+            $('<div class="gridData"></div>').append($('<input type="text" style="width: 100%; border: 1px solid grey; background-color: #eee" data-row="' + (currentRows + i) + '" disabled/>').addClass('inputPowder').prop('placeholder', '').keyup(function () {tungstenKeyup(currentRows + i)})),
+            $('<div class="gridData"></div>').append($('<input type="text" style="width: 100%; border: 1px solid grey; background-color: #eee" data-row="' + (currentRows + i) + '" disabled/>').addClass('inputBucket').prop('placeholder', '').keyup(function () {tungstenKeyup(currentRows + i)})),
+            $('<div class="gridData"></div>').append($('<input type="text" style="width: 100%; border: 1px solid grey; background-color: #eee" data-row="' + (currentRows + i) + '" disabled/>').addClass('inputMold').prop('placeholder', '').keyup(function () {tungstenKeyup(currentRows + i)})),
+            $('<div class="gridData"></div>').append($('<input type="text" style="width: 100%; border: 1px solid grey; background-color: #eee" data-row="' + (currentRows + i) + '" disabled/>').addClass('inputEmptyMass').prop('placeholder', '').keyup(function () {tungstenKeyup(currentRows + i)})),
+            $('<div class="gridData"></div>').append($('<input type="text" style="width: 100%; border: 1px solid grey; background-color: #eee" data-row="' + (currentRows + i) + '" disabled/>').addClass('inputFilledMass').prop('placeholder', '').keyup(function () {tungstenKeyup(currentRows + i)})),
+            $('<div class="gridData"></div>').append($('<input type="text" style="width: 100%; border: 1px solid grey; background-color: #eee" data-row="' + (currentRows + i) + '" disabled/>').addClass('inputDate').prop('placeholder', '').keyup(function () {tungstenKeyup(currentRows + i)})),
+            $('<div class="gridData"></div>').append($('<input type="text" style="width: 100%; border: 1px solid grey; background-color: #eee" data-row="' + (currentRows + i) + '" disabled/>').addClass('inputFiller').prop('placeholder', '').keyup(function () {tungstenKeyup(currentRows + i)})),
+            $('<div class="gridData" style="text-align: center"></div>').append($('<input type="checkbox" data-row="' + (currentRows + i) + '"/>').addClass('inputOverwrite')).click(function () {tungstenKeyup(currentRows + i)}).css('visibility', 'hidden')
           ]
           $('#tungstenSection > div.grid').append(row)
           let rowData = $('#tungstenSection > div.grid').find('input[data-row="' + (currentRows + i) + '"]').toArray()
@@ -183,15 +185,15 @@
         let currentRows = Math.floor($('#epoxySection > div.grid > div.gridData').length / 9)
         for (let i = 0; i < number; i++) {
           let row = [
-            $('<div class="gridData"></div>').append($('<input type="text" data-row="' + (currentRows + i) + '"/>').addClass('inputDBN').prop('placeholder', '').keyup(function () {epoxyKeyup(currentRows + i)})),
-            $('<div class="gridData"></div>').append($('<input type="text" data-row="' + (currentRows + i) + '"/>').addClass('inputBatch').prop('placeholder', '').keyup(function () {epoxyKeyup(currentRows + i)})),
-            $('<div class="gridData"></div>').append($('<input type="text" data-row="' + (currentRows + i) + '"/>').addClass('inputResinMass').prop('placeholder', '').keyup(function () {epoxyKeyup(currentRows + i)})),
-            $('<div class="gridData"></div>').append($('<input type="text" data-row="' + (currentRows + i) + '"/>').addClass('inputHardenerMass').prop('placeholder', '').keyup(function () {epoxyKeyup(currentRows + i)})),
-            $('<div class="gridData"></div>').append($('<input type="text" data-row="' + (currentRows + i) + '"/>').addClass('inputPottingNotes').prop('placeholder', '').keyup(function () {epoxyKeyup(currentRows + i)})),
-            $('<div class="gridData"></div>').append($('<input type="text" data-row="' + (currentRows + i) + '"/>').addClass('inputFillingTime').prop('placeholder', '').keyup(function () {epoxyKeyup(currentRows + i)})),
-            $('<div class="gridData"></div>').append($('<input type="text" data-row="' + (currentRows + i) + '"/>').addClass('inputDate').prop('placeholder', '').keyup(function () {epoxyKeyup(currentRows + i)})),
-            $('<div class="gridData"></div>').append($('<input type="text" data-row="' + (currentRows + i) + '"/>').addClass('inputPreparer').prop('placeholder', '').keyup(function () {epoxyKeyup(currentRows + i)})),
-            $('<div class="gridData"></div>').append($('<input type="checkbox" data-row="' + (currentRows + i) + '"/>').addClass('inputOverwrite')).click(function () {epoxyKeyup(currentRows + i)}).css('visibility', 'hidden')
+            $('<div class="gridData"></div>').append($('<input type="text" style="width: 100%; border: 1px solid grey;" data-row="' + (currentRows + i) + '"/>').addClass('inputDBN').prop('placeholder', '').keyup(function () {epoxyKeyup(currentRows + i)})),
+            $('<div class="gridData"></div>').append($('<input type="text" style="width: 100%; border: 1px solid grey; background-color: #eee" data-row="' + (currentRows + i) + '" disabled/>').addClass('inputBatch').prop('placeholder', '').keyup(function () {epoxyKeyup(currentRows + i)})),
+            $('<div class="gridData"></div>').append($('<input type="text" style="width: 100%; border: 1px solid grey; background-color: #eee" data-row="' + (currentRows + i) + '" disabled/>').addClass('inputResinMass').prop('placeholder', '').keyup(function () {epoxyKeyup(currentRows + i)})),
+            $('<div class="gridData"></div>').append($('<input type="text" style="width: 100%; border: 1px solid grey; background-color: #eee" data-row="' + (currentRows + i) + '" disabled/>').addClass('inputHardenerMass').prop('placeholder', '').keyup(function () {epoxyKeyup(currentRows + i)})),
+            $('<div class="gridData"></div>').append($('<input type="text" style="width: 100%; border: 1px solid grey; background-color: #eee" data-row="' + (currentRows + i) + '" disabled/>').addClass('inputPottingNotes').prop('placeholder', '').keyup(function () {epoxyKeyup(currentRows + i)})),
+            $('<div class="gridData"></div>').append($('<input type="text" style="width: 100%; border: 1px solid grey; background-color: #eee" data-row="' + (currentRows + i) + '" disabled/>').addClass('inputFillingTime').prop('placeholder', '').keyup(function () {epoxyKeyup(currentRows + i)})),
+            $('<div class="gridData"></div>').append($('<input type="text" style="width: 100%; border: 1px solid grey; background-color: #eee" data-row="' + (currentRows + i) + '" disabled/>').addClass('inputDate').prop('placeholder', '').keyup(function () {epoxyKeyup(currentRows + i)})),
+            $('<div class="gridData"></div>').append($('<input type="text" style="width: 100%; border: 1px solid grey; background-color: #eee" data-row="' + (currentRows + i) + '" disabled/>').addClass('inputPreparer').prop('placeholder', '').keyup(function () {epoxyKeyup(currentRows + i)})),
+            $('<div class="gridData" style="text-align: center"></div>').append($('<input type="checkbox" data-row="' + (currentRows + i) + '"/>').addClass('inputOverwrite')).click(function () {epoxyKeyup(currentRows + i)}).css('visibility', 'hidden')
           ]
           $('#epoxySection > div.grid').append(row)
           let rowData = $('#epoxySection > div.grid').find('input[data-row="' + (currentRows + i) + '"]').toArray()
@@ -201,103 +203,146 @@
         let currentRows = Math.floor($('#densitySection > div.grid > div.gridData').length / 13)
         for (let i = 0; i < number; i++) {
           let row = [
-              $('<div class="gridData"></div>').append($('<input type="text" data-row="' + (currentRows + i) + '"/>').addClass('inputDBN').prop('placeholder', '').keyup(function () {densityKeyup(currentRows + i)})),
-              $('<div class="gridData"></div>').append($('<input type="text" data-row="' + (currentRows + i) + '"/>').addClass('inputL').prop('placeholder', '').keyup(function () {densityKeyup(currentRows + i)})),
-              $('<div class="gridData"></div>').append($('<input type="text" data-row="' + (currentRows + i) + '"/>').addClass('inputBT').prop('placeholder', '').keyup(function () {densityKeyup(currentRows + i)})),
-              $('<div class="gridData"></div>').append($('<input type="text" data-row="' + (currentRows + i) + '"/>').addClass('inputBB').prop('placeholder', '').keyup(function () {densityKeyup(currentRows + i)})),
-              $('<div class="gridData"></div>').append($('<input type="text" data-row="' + (currentRows + i) + '"/>').addClass('inputBH').prop('placeholder', '').keyup(function () {densityKeyup(currentRows + i)})),
-              $('<div class="gridData"></div>').append($('<input type="text" data-row="' + (currentRows + i) + '"/>').addClass('inputST').prop('placeholder', '').keyup(function () {densityKeyup(currentRows + i)})),
-              $('<div class="gridData"></div>').append($('<input type="text" data-row="' + (currentRows + i) + '"/>').addClass('inputSB').prop('placeholder', '').keyup(function () {densityKeyup(currentRows + i)})),
-              $('<div class="gridData"></div>').append($('<input type="text" data-row="' + (currentRows + i) + '"/>').addClass('inputSH').prop('placeholder', '').keyup(function () {densityKeyup(currentRows + i)})),
-              $('<div class="gridData"></div>').append($('<input type="text" data-row="' + (currentRows + i) + '"/>').addClass('inputDimensionTester inputTester').prop('placeholder', '').keyup(function () {densityKeyup(currentRows + i)})),
-              $('<div class="gridData"></div>').append($('<input type="text" data-row="' + (currentRows + i) + '"/>').addClass('inputMass').prop('placeholder', '').keyup(function () {densityKeyup(currentRows + i)})),
-              $('<div class="gridData"></div>').append($('<input type="text" data-row="' + (currentRows + i) + '"/>').addClass('inputMassTester inputTester').prop('placeholder', '').keyup(function () {densityKeyup(currentRows + i)})),
-              $('<div class="gridData"></div>').append($('<input type="text" data-row="' + (currentRows + i) + '"/>').addClass('inputDate').prop('placeholder', '').keyup(function () {densityKeyup(currentRows + i)})),
-              $('<div class="gridData"></div>').append($('<input type="checkbox" data-row="' + (currentRows + i) + '"/>').addClass('inputOverwrite')).click(function () {densityKeyup(currentRows + i)}).css('visibility', 'hidden')
+              $('<div class="gridData"></div>').append($('<input type="text" style="width: 100%; border: 1px solid grey;" data-row="' + (currentRows + i) + '"/>').addClass('inputDBN').prop('placeholder', '').keyup(function () {densityKeyup(currentRows + i)})),
+              $('<div class="gridData"></div>').append($('<input type="text" style="width: 100%; border: 1px solid grey; background-color: #eee" data-row="' + (currentRows + i) + '" disabled/>').addClass('inputL').prop('placeholder', '').keyup(function () {densityKeyup(currentRows + i)})),
+              $('<div class="gridData"></div>').append($('<input type="text" style="width: 100%; border: 1px solid grey; background-color: #eee" data-row="' + (currentRows + i) + '" disabled/>').addClass('inputBT').prop('placeholder', '').keyup(function () {densityKeyup(currentRows + i)})),
+              $('<div class="gridData"></div>').append($('<input type="text" style="width: 100%; border: 1px solid grey; background-color: #eee" data-row="' + (currentRows + i) + '" disabled/>').addClass('inputBB').prop('placeholder', '').keyup(function () {densityKeyup(currentRows + i)})),
+              $('<div class="gridData"></div>').append($('<input type="text" style="width: 100%; border: 1px solid grey; background-color: #eee" data-row="' + (currentRows + i) + '" disabled/>').addClass('inputBH').prop('placeholder', '').keyup(function () {densityKeyup(currentRows + i)})),
+              $('<div class="gridData"></div>').append($('<input type="text" style="width: 100%; border: 1px solid grey; background-color: #eee" data-row="' + (currentRows + i) + '" disabled/>').addClass('inputST').prop('placeholder', '').keyup(function () {densityKeyup(currentRows + i)})),
+              $('<div class="gridData"></div>').append($('<input type="text" style="width: 100%; border: 1px solid grey; background-color: #eee" data-row="' + (currentRows + i) + '" disabled/>').addClass('inputSB').prop('placeholder', '').keyup(function () {densityKeyup(currentRows + i)})),
+              $('<div class="gridData"></div>').append($('<input type="text" style="width: 100%; border: 1px solid grey; background-color: #eee" data-row="' + (currentRows + i) + '" disabled/>').addClass('inputSH').prop('placeholder', '').keyup(function () {densityKeyup(currentRows + i)})),
+              $('<div class="gridData"></div>').append($('<input type="text" style="width: 100%; border: 1px solid grey; background-color: #eee" data-row="' + (currentRows + i) + '" disabled/>').addClass('inputDimensionTester inputTester').prop('placeholder', '').keyup(function () {densityKeyup(currentRows + i)})),
+              $('<div class="gridData"></div>').append($('<input type="text" style="width: 100%; border: 1px solid grey; background-color: #eee" data-row="' + (currentRows + i) + '" disabled/>').addClass('inputMass').prop('placeholder', '').keyup(function () {densityKeyup(currentRows + i)})),
+              $('<div class="gridData"></div>').append($('<input type="text" style="width: 100%; border: 1px solid grey; background-color: #eee" data-row="' + (currentRows + i) + '" disabled/>').addClass('inputMassTester inputTester').prop('placeholder', '').keyup(function () {densityKeyup(currentRows + i)})),
+              $('<div class="gridData"></div>').append($('<input type="text" style="width: 100%; border: 1px solid grey; background-color: #eee" data-row="' + (currentRows + i) + '" disabled/>').addClass('inputDate').prop('placeholder', '').keyup(function () {densityKeyup(currentRows + i)})),
+              $('<div class="gridData" style="text-align: center"></div>').append($('<input type="checkbox" data-row="' + (currentRows + i) + '"/>').addClass('inputOverwrite')).click(function () {densityKeyup(currentRows + i)}).css('visibility', 'hidden')
           ]
           $('#densitySection > div.grid').append(row)
           let rowData = $('#densitySection > div.grid').find('input[data-row="' + (currentRows + i) + '"]').toArray()
           densityRows.push(rowData)
         }
       }
-      function updateTextInput (element, databaseValue, overwrite) {
-          let inputText = element.value
-          if (databaseValue != null) {
-            element.placeholder = databaseValue
-            if (element.value === '') {
-              element.style.border = '2px solid orange'
-            } else if (overwrite) {
-              element.style.border = '2px solid blue'
-            } else {
-              element.style.border = '2px solid red'
-            }
-          } else {
-            if (element.value === '') {
-              element.style.border = '2px solid grey'
-            } else {
-              element.style.border = '2px solid green'
-            }
-          }
-        }
       function tungstenKeyup(row) {
         let rowData = tungstenRows[parseInt(row)]
         let block = blocksCollection.getBlockByStringDBN(rowData[0].value)
-        if (rowData[8] != null) {
-          let overwrite = rowData[8].checked
-          if (block != null) {
-            updateTextInput(rowData[1], block.powder, overwrite)
-            updateTextInput(rowData[2], block.bucket, overwrite)
-            updateTextInput(rowData[3], block.moldSeries, overwrite)
-            updateTextInput(rowData[4], block.emptyMoldMass, overwrite)
-            updateTextInput(rowData[5], block.filledMoldMass, overwrite)
-            updateTextInput(rowData[6], block.tungstenFillingDate, overwrite)
-            updateTextInput(rowData[7], block.tungstenFiller, overwrite)
-            if ([block.powder, block.bucket, block.moldSeries, block.emptyMoldMass, block.filledMoldMass, block.tungstenFillingDate, block.tungstenFiller].some((value) => value != null)) {
-              rowData[8].style.visibility = 'visible'
-            }
+        let overwrite = rowData[8].checked
+        let toUpdate = rowData.slice(1, 8)
+        if (rowData[0].value !== '' && block != null) {
+          toUpdate.forEach(function (element) {
+            element.disabled = false
+            element.style.backgroundColor ='transparent'
+          })
+          updateTextInput(rowData[1], block.powder, overwrite)
+          updateTextInput(rowData[2], block.bucket, overwrite)
+          updateTextInput(rowData[3], block.moldSeries, overwrite)
+          updateTextInput(rowData[4], block.emptyMoldMass, overwrite)
+          updateTextInput(rowData[5], block.filledMoldMass, overwrite)
+          updateTextInput(rowData[6], block.tungstenFillingDate, overwrite)
+          updateTextInput(rowData[7], block.tungstenFiller, overwrite)
+          if ([block.powder, block.bucket, block.moldSeries, block.emptyMoldMass, block.filledMoldMass, block.tungstenFillingDate, block.tungstenFiller].some((value) => value != null)) {
+            rowData[8].style.visibility = 'visible'
+          } else {
+            rowData[8].style.visibility = 'hidden'
           }
+        } else {
+          toUpdate.forEach(function (element) {
+            element.value = ''
+            element.placeholder = ''
+            element.disabled = true
+            element.style.border = '1px solid grey'
+            element.style.backgroundColor ='#eee'
+          })
+          rowData[8].style.visibility = 'hidden'
         }
       }
       function epoxyKeyup(row) {
         let rowData = epoxyRows[parseInt(row)]
         let block = blocksCollection.getBlockByStringDBN(rowData[0].value)
-        if (rowData[8] != null) {
-          let overwrite = rowData[8].checked
-          if (block != null) {
-            updateTextInput(rowData[1], block.epoxyBatch, overwrite)
-            updateTextInput(rowData[2], block.resinMass, overwrite)
-            updateTextInput(rowData[3], block.hardenerMass, overwrite)
-            updateTextInput(rowData[4], block.pottingNotes, overwrite)
-            updateTextInput(rowData[5], block.epoxyFillingTime, overwrite)
-            updateTextInput(rowData[6], block.epoxyFillingDate, overwrite)
-            updateTextInput(rowData[7], block.epoxyPreparer, overwrite)
-            if ([block.epoxyBatch, block.resinMass, block.hardenerMass, block.pottingNotes, block.epoxyFillingTime, block.epoxyFillingDate, block.epoxyPreparer].some((value) => value != null)) {
-              rowData[8].style.visibility = 'visible'
-            }
+        let overwrite = rowData[8].checked
+        let toUpdate = rowData.slice(1, 8)
+        if (rowData[0].value !== '' && block != null) {
+          toUpdate.forEach(function (element) {
+            element.disabled = false
+            element.style.backgroundColor ='transparent'
+          })
+          updateTextInput(rowData[1], block.epoxyBatch, overwrite)
+          updateTextInput(rowData[2], block.resinMass, overwrite)
+          updateTextInput(rowData[3], block.hardenerMass, overwrite)
+          updateTextInput(rowData[4], block.pottingNotes, overwrite)
+          updateTextInput(rowData[5], block.epoxyFillingTime, overwrite)
+          updateTextInput(rowData[6], block.epoxyFillingDate, overwrite)
+          updateTextInput(rowData[7], block.epoxyPreparer, overwrite)
+          if ([block.epoxyBatch, block.resinMass, block.hardenerMass, block.pottingNotes, block.epoxyFillingTime, block.epoxyFillingDate, block.epoxyPreparer].some((value) => value != null)) {
+            rowData[8].style.visibility = 'visible'
+          } else {
+            rowData[8].style.visibility = 'hidden'
           }
+        } else {
+          toUpdate.forEach(function (element) {
+            element.value = ''
+            element.placeholder = ''
+            element.disabled = true
+            element.style.border = '1px solid grey'
+            element.style.backgroundColor ='#eee'
+          })
+          rowData[8].style.visibility = 'hidden'
         }
       }
       function densityKeyup(row) {
         let rowData = densityRows[parseInt(row)]
         let block = blocksCollection.getBlockByStringDBN(rowData[0].value)
-        if (rowData[12] != null) {
-          let overwrite = rowData[12].checked
-          if (block != null) {
-            updateTextInput(rowData[1], block.l, overwrite)
-            updateTextInput(rowData[2], block.bt, overwrite)
-            updateTextInput(rowData[3], block.bb, overwrite)
-            updateTextInput(rowData[4], block.bh, overwrite)
-            updateTextInput(rowData[5], block.st, overwrite)
-            updateTextInput(rowData[6], block.sb, overwrite)
-            updateTextInput(rowData[7], block.sh, overwrite)
-            updateTextInput(rowData[8], block.dimensionTester, overwrite)
-            updateTextInput(rowData[9], block.mass, overwrite)
-            updateTextInput(rowData[10], block.massTester, overwrite)
-            updateTextInput(rowData[11], block.densityDate, overwrite)
-            if ([block.l, block.bt, block.bb, block.bh, block.st, block.sb, block.sh, block.dimensionTester, block.mass, block.massTester, block.densityDate].some((value) => value != null)) {
-              rowData[12].style.visibility = 'visible'
-            }
+        let overwrite = rowData[12].checked
+        let toUpdate = rowData.slice(1, 12)
+        if (rowData[0].value !== '' && block != null) {
+          toUpdate.forEach(function (element) {
+            element.disabled = false
+            element.style.backgroundColor ='transparent'
+          })
+          updateTextInput(rowData[1], block.l.toFixed(4), overwrite)
+          updateTextInput(rowData[2], block.bt.toFixed(4), overwrite)
+          updateTextInput(rowData[3], block.bb.toFixed(4), overwrite)
+          updateTextInput(rowData[4], block.bh.toFixed(4), overwrite)
+          updateTextInput(rowData[5], block.st.toFixed(4), overwrite)
+          updateTextInput(rowData[6], block.sb.toFixed(4), overwrite)
+          updateTextInput(rowData[7], block.sh.toFixed(4), overwrite)
+          updateTextInput(rowData[8], block.dimensionTester, overwrite)
+          updateTextInput(rowData[9], block.mass, overwrite)
+          updateTextInput(rowData[10], block.massTester, overwrite)
+          updateTextInput(rowData[11], block.densityDate, overwrite)
+          if ([block.l, block.bt, block.bb, block.bh, block.st, block.sb, block.sh, block.dimensionTester, block.mass, block.massTester, block.densityDate].some((value) => value != null)) {
+            rowData[12].style.visibility = 'visible'
+          } else {
+            rowData[12].style.visibility = 'hidden'
           }
+        } else {
+          toUpdate.forEach(function (element) {
+            element.value = ''
+            element.placeholder = ''
+            element.disabled = true
+            element.style.border = '1px solid grey'
+            element.style.backgroundColor ='#eee'
+          })
+          rowData[12].style.visibility = 'hidden'
+        }
+      }
+    }
+    function updateTextInput (element, databaseValue, overwrite) {
+      let inputText = element.value
+      if (databaseValue != null) {
+        element.placeholder = databaseValue
+        if (element.value === '') {
+          element.style.border = '2px solid orange'
+        } else if (overwrite) {
+          element.style.border = '2px solid blue'
+        } else {
+          element.style.border = '2px solid red'
+        }
+      } else {
+        element.placeholder = ''
+        if (element.value === '') {
+          element.style.border = '1px solid grey'
+        } else {
+          element.style.border = '2px solid green'
         }
       }
     }
@@ -307,7 +352,7 @@
       console.log(grid.get(0))
       let inputVal = $(form).children('input').eq(0).val()
       console.log(inputVal)
-      grid.find('div.gridData > input.' + className).val(inputVal)
+      grid.find('div.gridData > input.' + className).filter(':enabled').val(inputVal).keyup()
     }
     function loadTungsten () {
       document.getElementById('sectionSelection').style.display = 'none'
@@ -339,18 +384,14 @@
           return string
         }
       }
-    function usDateToYYYYMMDD (usDate) {
-      let splitDate = usDate.split('/')
-      if (splitDate.length === 3) {
-        let month = to2digits(splitDate[0])
-        let day = to2digits(splitDate[1])
-        let year = splitDate[2]
-        return parseInt(year + month + day)
-      } else {
-        console.log("helpful hint of the day: '" + usDate + "' is NOT a date.")
-        return null
+      function dateToYYYYMMDD (date) {
+        let y = date.getFullYear().toString()
+        let m = (date.getMonth() + 1).toString()
+        let d = date.getDate().toString()
+        if (m.length === 1) {m = '0' + m}
+        if (d.length === 1) {d = '0' + d}
+        return parseInt(y + m + d)
       }
-    }
     function dateToUS (date) {
       let m = (date.getMonth() + 1).toString()
       let d = (date.getDate()).toString()
@@ -446,14 +487,14 @@
         this.emptyMoldMass = (!dataPresent(array[17])) ? null : parseInt(array[17])
         this.filledMoldMass = (!dataPresent(array[18])) ? null : parseInt(array[18])
         this.tungstenMass = (!dataPresent(array[19]) || parseInt(array[19]) === 0) ? null : parseInt(array[19])
-        this.tungstenFillingDate = (!dataPresent(array[21])) ? null : usDateToYYYYMMDD(array[21])
+        this.tungstenFillingDate = (!dataPresent(array[21])) ? null : array[21]
         this.tungstenFiller = (!dataPresent(array[22])) ? null : array[22]
         this.epoxyBatch = (!dataPresent(array[23])) ? null : parseInt(array[23])
         this.resinMass = (!dataPresent(array[24])) ? null : parseInt(array[24])
         this.hardenerMass = (!dataPresent(array[25])) ? null : parseInt(array[25])
         this.pottingNotes = (!dataPresent(array[26])) ? null : array[26]
         this.epoxyFillingTime = (!dataPresent(array[27])) ? null : parseFloat(array[27])
-        this.epoxyFillingDate = (!dataPresent(array[28])) ? null : usDateToYYYYMMDD(array[28])
+        this.epoxyFillingDate = (!dataPresent(array[28])) ? null : array[28]
         this.epoxyPreparer = (!dataPresent(array[29])) ? null : array[29]
         this.l = (!dataPresent(array[33])) ? null : parseFloat(array[33])
         this.bt = (!dataPresent(array[34])) ? null : parseFloat(array[34])
