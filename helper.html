@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+  <script>
+    //HELPER FUNCTIONS
+    function dataPresent (data) {
+      return (data != null && data !== '' && data !== '#NUM!' && data !== '#DIV/0!' && data !== 'NaN')
+    }
+    function to2digits (string) {
+      if (string.length < 2) {
+        return '0' + string
+      } else {
+        return string
+      }
+    }
+    function dateToYYYYMMDD (date) {
+      const y = date.getFullYear().toString()
+      let m = (date.getMonth() + 1).toString()
+      let d = date.getDate().toString()
+      if (m.length === 1) { m = '0' + m }
+      if (d.length === 1) { d = '0' + d }
+      return parseInt(y + m + d)
+    }
+    function dateToUS (date) {
+      const m = (date.getMonth() + 1).toString()
+      const d = (date.getDate()).toString()
+      const y = (date.getFullYear()).toString()
+      return m + '/' + d + '/' + y
+    }
+    /**
+     * calculates the volume of a block
+     * @param {Number[]} dimensions The dimensions of the block (in) as [l,bt,bb,bh,st,sb,sh]
+     * @return {Number} The volume of the block (mL)
+     */
+    function getVolume (dimensions) {
+      const l = dimensions[0]
+      const bt = dimensions[1]
+      const bb = dimensions[2]
+      const bh = dimensions[3]
+      const st = dimensions[4]
+      const sb = dimensions[5]
+      const sh = dimensions[6]
+      return 16.39 * l * (1 / 2) * (((bt + bb) * bh / 2) + ((st + sb) * sh / 2))
+    }
+    /**
+     * 
+     * @param {Number}
+     * @return {String}
+     */
+    function columnToLetter(column) {
+      let temp = ''
+      let letter = ''
+      while (column > 0) {
+        temp = (column - 1) % 26
+        letter = String.fromCharCode(temp + 65) + letter
+        column = (column - temp - 1) / 26
+      }
+      return letter
+    }
+    /**
+     * 
+     * @param {String}
+     * @return {Number} the (one-based) column index 
+     */
+    function letterToColumn(letter) {
+      let column = 0
+      const length = letter.length
+      for (let i = 0; i < length; i++) {
+        column += (letter.charCodeAt(i) - 64) * Math.pow(26, length - i - 1)
+      }
+      return column
+    }
+
+    // CONSTANTS
+    // store the ZERO-BASED index for each column
+    const columns = {
+      dbn: 0,
+      block: 2,
+      status: 3,
+      shipment: 4,
+      shipmentDate: 5,
+      comment: 6,
+      sector: 7,
+      powder: 14,
+      bucket: 15,
+      moldSeries: 16,
+      emptyMoldMass: 17,
+      filledMoldMass: 18,
+      tungstenMass: 19,
+      tungstenFillingDate: 21,
+      tungstenFiller: 22,
+      epoxyBatch: 23,
+      resinMass: 24,
+      hardenerMass: 25,
+      pottingNotes: 26,
+      epoxyFillingTime: 27,
+      epoxyFillingDate: 28,
+      epoxyPreparer: 29,
+      machiningDate: 31,
+      l: 33,
+      bt: 34,
+      bb: 35,
+      bh: 36,
+      st: 37,
+      sb: 38,
+      sh: 39,
+      volume: 40,
+      dimensionTester: 41,
+      mass: 42,
+      massTester: 43,
+      density: 44,
+      densityDate: 45,
+      goodEnd: 47,
+      fiberPercentage: 49,
+      tower1: 55,
+      tower2: 56,
+      tower3: 57,
+      tower4: 58,
+      missingRow: 59,
+      thirteenHoles: 60,
+      lightTransTester: 63,
+      lightTransDate: 64,
+      scintillation: 65,
+      scintRatio: 67,
+      scintDate: 69,
+      natLightDate: 70,
+      natLightTester: 71,
+      densityCheckedBy: 73,
+      lightTransCheckedBy: 74,
+      natLightCheckedBy: 75,
+      pregrade: 80
+    }
+    // stores the expected dimensions for each block type
+    //BL     L        BT      BB      BH      ST      SB      SH
+    const dimensionsMap = new Map([
+    [123, [5.5000,	2.0850,	2.0850,	1.9890,	1.8150,	1.8150,	1.9890]],
+    [  4, [5.4460,	2.0850,	2.0820,	2.2740,	1.8180,	1.8150,	1.9900]],
+    [  5, [5.3500,	2.0850,	2.0760,	2.2630,	1.8230,	1.8150,	1.9900]],
+    [  6, [5.2700,	2.0850,	2.0710,	2.2530,	1.8280,	1.8150,	1.9900]],
+    [  7, [5.2050,	2.0850,	2.0650,	2.2430,	1.8320,	1.8150,	1.9900]],
+    [  8, [5.1550,	2.0850,	2.0600,	2.2340,	1.8370,	1.8150,	1.9890]],
+    [  9, [5.1180,	2.0850,	2.0560,	2.2250,	1.8410,	1.8150,	1.9890]],
+    [ 10, [5.0940,	2.0850,	2.0510,	2.2160,	1.8460,	1.8150,	1.9890]],
+    [ 11, [5.0820,	2.0850,	2.0470,	2.2080,	1.8500,	1.8150,	1.9890]],
+    [ 12, [5.0810,	2.0850,	2.0420,	2.2010,	1.8530,	1.8150,	1.9890]],
+    [ 13, [5.0900,	2.0850,	2.0390,	2.1930,	1.8570,	1.8150,	1.9890]],
+    [ 14, [5.1100,	2.0850,	2.0350,	2.1860,	1.8600,	1.8150,	1.9890]],
+    [ 15, [5.1390,	2.0850,	2.0320,	2.1800,	1.8640,	1.8150,	1.9890]],
+    [ 16, [5.1770,	2.0850,	2.0280,	2.1740,	1.8670,	1.8150,	1.9890]],
+    [ 17, [5.2240,	2.0850,	2.0250,	2.1680,	1.8700,	1.8150,	1.9890]],
+    [ 18, [5.2790,	2.0850,	2.0230,	2.1620,	1.8720,	1.8150,	1.9890]],
+    [ 19, [5.3420,	2.0850,	2.0200,	2.1570,	1.8750,	1.8150,	1.9890]],
+    [ 20, [5.4120,	2.0850,	2.0180,	2.1520,	1.8770,	1.8150,	1.9890]],
+    [ 21, [5.4890,	2.0850,	2.0150,	2.1470,	1.8790,	1.8150,	1.9890]],
+    [ 22, [5.5720,	2.0850,	2.0130,	2.1420,	1.8810,	1.8150,	1.9890]],
+    [ 23, [5.6620,	2.0850,	2.0120,	2.1380,	1.8830,	1.8150,	1.9890]],
+    [ 24, [5.7580,	2.0850,	2.0100,	2.1330,	1.8850,	1.8150,	1.9890]]
+    ])
+  </script>
+</html>

@@ -1,0 +1,30 @@
+{
+  "name": "lint",
+  "version": "1.0.0",
+  "description": "",
+  "main": "Code.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/masonrh2/npl-data-entry.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/masonrh2/npl-data-entry/issues"
+  },
+  "homepage": "https://github.com/masonrh2/npl-data-entry#readme",
+  "devDependencies": {
+    "eslint": "^7.18.0",
+    "eslint-config-standard": "^16.0.2",
+    "eslint-plugin-googleappsscript": "^1.0.3",
+    "eslint-plugin-html": "^6.1.1",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jquery": "^1.5.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.2.1"
+  },
+  "dependencies": {}
+}
