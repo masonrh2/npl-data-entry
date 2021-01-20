@@ -3,8 +3,6 @@
  * me: include some list of all status X blocks to choose from, and just click all of the ones you need
  * me: incluce some functionality for testing (add date and name to NL, checks?) (and file validation? could be really useful)
  * 
- * good news: requesting a few cells (or one row) takes just a couple of seconds! (requesting the entire databast takes 30-60 seconds...not ideal)
- * 
  * handle reloading/warning when there is old data in page...or when the input windows are open, automatically refresh
  * the dbns when have been entered every 10 seconds or so?
  * 
@@ -15,18 +13,15 @@
  * 
  * could do a very multipurpose framework which allows you to select and DBNs and change values in any colummn(s)
  * (could be more dangerous?) (would be more work, but a lot could be borrowed from "find blocks" of info station)
- * 
- * add X rows (or ask for number of rows) (or just use the find by status > select)
+ * (this would pretty much just be the database...)
  * 
  * make colors less weird or more clear?
- * 
- * test in a copy of the database extensively
  * 
  * include ghost text for what it should look like (e.g. HCS-56 and not 56) or do some basic data validation and show red if it fails
  * 
  * consider consolidating blocks class variables e.g. put all dimensions into a subobject or the like (block.dimensions.bt instead of block.bt) (would be cleaner)
  * 
- * consider caching the database using CacheService? or would it be just as slow as an access to database? idk look into it
+ * look into caching and see if it could be use (quick access to a 20-minute old version of the database maybe?)
  * (https://developers.google.com/apps-script/guides/support/best-practices)
  * 
  * could add framework to add and remove tags from blocks (using the comments column)
@@ -35,21 +30,16 @@
  * if we are unable to find a DBN, can ask return to HTML and say "unable to find this DBN, would you like to reload
  * the database and try again?" (this way our rows are updated and we are able to quickly find any newly added blocks)
  * 
+ * find a way to update blocksCollection with blocks or with refreshing the database...
+ * 
  * we can reload database every 60 seconds (if the previous call to google script has returned)
  * (or even call as soon as the previous call is returned, but that's excessive)
  * 
- * the index block property might not be necessary
+ * the index block property might not be necessary...
  * 
  * warnings if status is not as expected (perhaps include status column on all pages which is green/red)
  * (perhaps also check again what the status is on the google script side, and return a warning "are you sure?")
  * (or perhaps also allow you to change status)
- * 
- * ..what to do if there are any discrepancies (expected vs actual) perhaps send an message to HTML which tell you
- * a list of expected and actual entries, then gives you option of overwriting (avoid infinite cycle) or refresh database and try again
- * 
- * submit to all button could be useful
- * 
- * clear row or clear all option?
  * 
  * catch data validation error (is there a way to check what the valdation rules in a cell are?) (e.g. powder)
  * 
@@ -62,6 +52,16 @@
  * dimensions: 4 -> 5?
  * 
  * add volume column to density
+ * 
+ * do we need overwrite column, or is the red enough? would save some room
+ * 
+ * list of other sections/functionality to add:
+ * - mass change of status/
+ * 
+ * begin each section with "how many blocks would you like to add?" then add that many rows
+ * OR use select blocks by status (and other things?) easy to add checkboxes to datatable, I think (or just CSS grid)
+ * 
+ *  * clear row or clear all option?
  */
 
 function doGet () {
@@ -104,7 +104,6 @@ function getDatabase () {
     sheet2: blocks13_64.getDataRange().getDisplayValues()
   }
 }
-
 /**
  * returns the requested range
  */
@@ -164,7 +163,7 @@ function setBlockData (data) {
   const blocks13_64 = SpreadsheetApp.openById(fileIDs.database_ID).getSheetByName('Blocks1364DB')
   const unexpectedValueErrors = []
   const dataValidationErrors = []
-  const invalidDateErrors = []
+  const rangesToSet = []
 
   for (let i = 0; i < data.length; i++) {
     const sheet = data[i].sheet
@@ -186,8 +185,14 @@ function setBlockData (data) {
     for (let j = 0; j < cols.length; j++) {
       // here we can alter behavior when database has changed during request
       const cur = rowData[cols[j]]
-      if (cur !== values[j].expected) {
-        unexpectedValueErrors.push({ loc: { sheet: sheet, row: row, col: cols[j] }, expected: values[j].expected, found: cur })
+      if (cur != values[j].expected && !values[j].ignoreError) {
+        unexpectedValueErrors.push({
+          loc: { sheet: sheet, row: row, col: cols[j] },
+          expected: values[j].expected,
+          found: cur,
+          fatal: false,
+          id: [i, j]
+        })
       }
       rowData[cols[j]] = values[j].set
     }
@@ -198,43 +203,65 @@ function setBlockData (data) {
       const rule = rules[cols[j]]
       const loc = { sheet: sheet, row: row, col: cols[j] }
       if (rule != null) {
-        const type = rule.getCriteriaType()
+        const type = rule.getCriteriaType().toString()
         const args = rule.getCriteriaValues()
         const value = rowData[cols[j]]
         const allowInvalid = rule.getAllowInvalid()
-        const err = { loc: loc, type: type, value: value, args: args, allowInvalid: allowInvalid }
-        // only throw a fit if !allowInvalid (else give warning and ask to overwrite?)
-        if (type === 'VALUE_IN_LIST') {
-          const requiredValues = args[0]
-          if (!requiredValues.includes(value)) {
+        const err = {
+          loc: loc,
+          type: type,
+          value: value,
+          args: args,
+          fatal: !allowInvalid,
+          id: [i, j]
+        }
+        if (!allowInvalid || (allowInvalid && !values[j].ignoreError)) {
+          if (type === 'VALUE_IN_LIST') {
+            const requiredValues = args[0]
+            if (!requiredValues.includes(value)) {
+              dataValidationErrors.push(err)
+            }
+          } else if (type === 'DATE_IS_VALID_DATE') {
+            if (!isValidDate(value)) {
+              dataValidationErrors.push(err)
+            }
+          } else {
+            Logger.log('unexpected data validation type: ' + type)
             dataValidationErrors.push(err)
+            // will need to add some function to evaluate any new data validation types, otherwise
+            // we will always push errors (no way to check if it will cause a prolem or not)
           }
-        } else if (type === 'DATE_IS_VALID_DATE') {
-          if (!isValidDate(value)) {
-            dataValidationErrors.push(err)
-          }
-        } else {
-          Logger.log('unexpected data validation type: ' + type)
-          // dataValidationErrors.push(err)
         }
       }
     }
-    if (dataValidationErrors.length === 0) {
-      // range.setValues([rowData]) //only set if there were no errors (or warnings) in the entire data submission (all rows)?
-      Logger.log('set values in columns ' + cols.map(col => columnToLetter(col)) + ' for DBN ' + rowData[0])
-    } else {
-      Logger.log('failed to set values in columns ' + cols.map(col => columnToLetter(col)) + ' for DBN ' + rowData[0] + ' due to a data validation error')
-    }
+    rangesToSet.push([range, rowData])
+    // range.setValues([rowData])
   }
+
+  if (dataValidationErrors.length + unexpectedValueErrors.length === 0) {
+    // should probably log to Logger which values were changed
+    for (const arr of rangesToSet) {
+      arr[0].setValues([arr[1]])
+    }
+  } else {
+    // failed to set values beacuse we had at least one fatal or unchecked error
+  }
+
   const msg = {
     dataValidationErrors: dataValidationErrors,
     unexpectedValueErrors: unexpectedValueErrors
   }
-  Logger.log(msg)
+  // Logger.log(msg)
   return msg
 }
 /**
- * 
+ * @param {String} value
+ * @return {Boolean}
+ */
+function isValidDate (value) {
+  return true
+}
+/**
  * @param {Number}
  * @return {String}
  */
@@ -249,7 +276,6 @@ function columnToLetter (column) {
   return letter
 }
 /**
- * 
  * @param {String}
  * @return {Number} the (one-based) column index
  */
