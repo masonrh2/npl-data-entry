@@ -3,10 +3,6 @@
  * me: include some list of all status X blocks to choose from, and just click all of the ones you need
  * me: incluce some functionality for testing (add date and name to NL, checks?) (and file validation? could be really useful)
  * 
- * handle reloading/warning when there is old data in page...or when the input windows are open, automatically refresh
- * the dbns when have been entered every 10 seconds or so?
- * 
- * real time calculation of volume once all values are present/entered into dimensions
  * 
  * mass change of status/shipment date/shipment number (..etc?) (include option to enter list of DBNs) (also include a "find blocks be status" and way to
  * easily select blocks to change) (do some pretty thing with arrows showing status before and after)
@@ -15,9 +11,8 @@
  * (could be more dangerous?) (would be more work, but a lot could be borrowed from "find blocks" of info station)
  * (this would pretty much just be the database...)
  * 
- * make colors less weird or more clear?
- * 
  * include ghost text for what it should look like (e.g. HCS-56 and not 56) or do some basic data validation and show red if it fails
+ * this is a problem since we use placeholder for the current database values (if they exist) ... I think the basic validation is sufficient
  * 
  * consider consolidating blocks class variables e.g. put all dimensions into a subobject or the like (block.dimensions.bt instead of block.bt) (would be cleaner)
  * 
@@ -26,14 +21,6 @@
  * 
  * could add framework to add and remove tags from blocks (using the comments column)
  * this is probably a much better system than using non-numeric DBNs (but it's too late for that)
- * 
- * if we are unable to find a DBN, can ask return to HTML and say "unable to find this DBN, would you like to reload
- * the database and try again?" (this way our rows are updated and we are able to quickly find any newly added blocks)
- * 
- * find a way to update blocksCollection with blocks or with refreshing the database...
- * 
- * we can reload database every 60 seconds (if the previous call to google script has returned)
- * (or even call as soon as the previous call is returned, but that's excessive)
  * 
  * the index block property might not be necessary...
  * 
@@ -49,19 +36,40 @@
  * add status volumes to all sections:
  * tungsten: 1 -> 2
  * epoxy: 2 -> 3
- * dimensions: 4 -> 5?
- * 
- * add volume column to density
- * 
- * do we need overwrite column, or is the red enough? would save some room
- * 
- * list of other sections/functionality to add:
- * - mass change of status/
+ * dimensions: 4 -> 5? or 3 -> 5 (not consistent)
  * 
  * begin each section with "how many blocks would you like to add?" then add that many rows
  * OR use select blocks by status (and other things?) easy to add checkboxes to datatable, I think (or just CSS grid)
  * 
- *  * clear row or clear all option?
+ * clear row or clear all option?
+ * 
+ * + 7 hrs
+ * + 3.5 hrs
+ * + 6.5 hrs
+ * + 3 hrs
+ * 
+ * grading density things
+ * 
+ * fiber loading section
+ * 
+ * testing? (LT and NL)
+ * 
+ * shipment
+ * 
+ * test grading
+ * 
+ * experiment or think about unexpected behavior (mashing submit button, things like that)
+ * perhaps safest to hide submit button while interacting with the google script
+ * (that way, if something goes wrong like an unexpected error, you can't press the submit button)
+ * 
+ * could make some object where you can do obj.selectDensity which takes care of changing displays
+ * 
+ * current TODO:
+ * - ready for testing
+ * - show dimension and density grades
+ * - automate keyups
+ * - show status in all sections
+ * - shipment, fiber loading, test grading (and testing NL and LT?) sections
  */
 
 function doGet () {
@@ -163,10 +171,14 @@ function setBlockData (data) {
   const blocks13_64 = SpreadsheetApp.openById(fileIDs.database_ID).getSheetByName('Blocks1364DB')
   const unexpectedValueErrors = []
   const dataValidationErrors = []
+  const newRowData = []
+  const sheets = []
+  const rows = []
   const rangesToSet = []
 
   for (let i = 0; i < data.length; i++) {
     const sheet = data[i].sheet
+    const dbn = data[i].expectedDBN
     const row = data[i].row
     const cols = data[i].cols
     const values = data[i].values
@@ -182,9 +194,21 @@ function setBlockData (data) {
     const rangeName = 'A' + row + ':' + row
     const range = spreadsheet.getRange(rangeName)
     const rowData = range.getDisplayValues()[0]
+    if (dbn !== rowData[0]) {
+      // I thought there was another DBN here! stop everything!
+      return {
+        unexpectedDBNError: {
+          loc: { sheet: sheet, row: row },
+          expectedDBN: dbn,
+          foundDBN: rowData[0]
+        }
+      }
+    }
     for (let j = 0; j < cols.length; j++) {
       // here we can alter behavior when database has changed during request
       const cur = rowData[cols[j]]
+      // we use a castful comparison since google script does not know when to cast to Number
+      // so do some automatic casting (which means '' == 0, but I think that's fine for Excel)
       if (cur != values[j].expected && !values[j].ignoreError) {
         unexpectedValueErrors.push({
           loc: { sheet: sheet, row: row, col: cols[j] },
@@ -218,7 +242,9 @@ function setBlockData (data) {
         if (!allowInvalid || (allowInvalid && !values[j].ignoreError)) {
           if (type === 'VALUE_IN_LIST') {
             const requiredValues = args[0]
-            if (!requiredValues.includes(value)) {
+            // perform a castful comparison, since we have not cast to numbers where appropriate...
+            // (this way, '' == 0, but I think that's fine, since excel does that)
+            if (!requiredValues.some(function (element) { return element == value })) {
               dataValidationErrors.push(err)
             }
           } else if (type === 'DATE_IS_VALID_DATE') {
@@ -234,7 +260,7 @@ function setBlockData (data) {
         }
       }
     }
-    rangesToSet.push([range, rowData])
+    rangesToSet.push([range, rowData, sheet, row])
     // range.setValues([rowData])
   }
 
@@ -242,6 +268,9 @@ function setBlockData (data) {
     // should probably log to Logger which values were changed
     for (const arr of rangesToSet) {
       arr[0].setValues([arr[1]])
+      newRowData.push(arr[1])
+      sheets.push(arr[2])
+      rows.push(arr[3])
     }
   } else {
     // failed to set values beacuse we had at least one fatal or unchecked error
@@ -249,7 +278,8 @@ function setBlockData (data) {
 
   const msg = {
     dataValidationErrors: dataValidationErrors,
-    unexpectedValueErrors: unexpectedValueErrors
+    unexpectedValueErrors: unexpectedValueErrors,
+    newBlockData: { rowData: newRowData, sheets: sheets, rows: rows }
   }
   // Logger.log(msg)
   return msg

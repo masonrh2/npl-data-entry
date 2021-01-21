@@ -13,8 +13,12 @@
       <img src="https://drive.google.com/uc?id=1JLX7vfDnqgYd_OrgPNtvj1sqV8n4ANpd"/>
       <h1>NPL Data Entry</h1>
     </div>
+    <div id="timestamp" style="display: none; margin-bottom: 1em;">
+      <p style="display: inline;"></p><button style="margin-left: 1em" onclick="updateDatabase()">Refresh Database</button>
+    </div>
     <div id="loadingDatabase" style="display: none;">Loading Database...</div>
-    <div id="sectionSelection" style="display: none;">
+    <div id="submittingData" style="display: none;">Submitting Data...</div>
+    <div id="sectionSelection" class="hideWhenLoading" style="display: none;">
       <button onclick="loadTungsten()">Tungsten</button>
       <button onclick="loadEpoxy()">Epoxy</button>
       <button onclick="loadDensity()">Density</button>
@@ -25,71 +29,83 @@
         </form>
 		  </section>
     </div>
-    <section id="tungstenSection" class="dataEntrySection" style="display: none;">
+    <section id="tungstenSection" class="dataEntrySection hideWhenLoading" style="display: none;">
       <button onclick="sectionReturn()">Back</button>
-      <button onclick="submitTungstenData()">SUBMIT</button><br>
+      <button onclick="generalSubmitData(tungstenSettings)">SUBMIT</button><br>
       <form action="javascript:" onsubmit="batchInput(this, 'inputPowder')" style="margin-top: 1em; display: block;">
-        <label style="font-weight: bold; width: 120px; display: inline-block;">Powder: </label><input type="text" style="width: 80px;">
+        <label style="font-weight: bold; width: 120px; display: inline-block;">Powder: </label>
+          <input type="text" style="width: 80px;" value="HCS">
         <button style="margin-left: 1em">Submit</button>
       </form>
       <form action="javascript:" onsubmit="batchInput(this, 'inputBucket')" style="margin-top: 1em; display: block;">
-        <label style="font-weight: bold; width: 120px; display: inline-block;">Bucket #: </label><input type="text" style="width: 80px;">
+        <label style="font-weight: bold; width: 120px; display: inline-block;">Bucket #: </label>
+          <input type="text" style="width: 80px;" value="HCS-">
         <button style="margin-left: 1em">Submit</button>
       </form>
       <form action="javascript:" onsubmit="batchInput(this, 'inputDate')" style="margin-top: 1em; display: block;">
-        <label style="font-weight: bold; width: 120px; display: inline-block;">Date: </label><input type="text" class="batchDateUS" style="width: 80px;">
+        <label style="font-weight: bold; width: 120px; display: inline-block;">Date: </label>
+          <input type="text" class="batchDateUS" style="width: 80px;">
         <button style="margin-left: 1em">Submit</button>
       </form>
       <form action="javascript:" onsubmit="batchInput(this, 'inputFiller')" style="margin-top: 1em; display: block;">
-        <label style="font-weight: bold; width: 120px; display: inline-block;">Filler Initials: </label><input type="text" style="width: 80px;">
+        <label style="font-weight: bold; width: 120px; display: inline-block;">Filler Initials: </label>
+          <input type="text" style="width: 80px;">
         <button style="margin-left: 1em">Submit</button>
       </form>
       <div id="tungstenGridTable" class="grid"></div>
-      <button onclick="addRow('tungstenSection', 1)" style="margin-top: 1em;">Add Row</button>
+      <button onclick="addRowByConfig(tungstenSettings, 1)" style="margin-top: 1em;">Add Row</button>
     </section>
-    <section id="epoxySection" class="dataEntrySection" style="display: none;">
+    <section id="epoxySection" class="dataEntrySection hideWhenLoading" style="display: none;">
       <button onclick="sectionReturn()">Back</button>
-      <button onclick="submitEpoxyData()">SUBMIT</button><br>
+      <button onclick="generalSubmitData(epoxySettings)">SUBMIT</button><br>
       <form action="javascript:" onsubmit="batchInput(this, 'inputBatch')" style="margin-top: 1em; display: block;">
-        <label style="font-weight: bold; width: 120px; display: inline-block;">Epoxy Batch: </label><input type="text" style="width: 80px;">
+        <label style="font-weight: bold; width: 120px; display: inline-block;">Epoxy Batch: </label>
+          <input type="text" style="width: 80px;">
         <button style="margin-left: 1em">Submit</button>
       </form>
       <form action="javascript:" onsubmit="batchInput(this, 'inputResinMass')" style="margin-top: 1em; display: block;">
-        <label style="font-weight: bold; width: 120px; display: inline-block;">Resin Mass: </label><input type="text" style="width: 80px;">
+        <label style="font-weight: bold; width: 120px; display: inline-block;">Resin Mass: </label>
+          <input type="text" style="width: 80px;" value="110">
         <button style="margin-left: 1em">Submit</button>
       </form>
       <form action="javascript:" onsubmit="batchInput(this, 'inputHardenerMass')" style="margin-top: 1em; display: block;">
-        <label style="font-weight: bold; width: 120px; display: inline-block;">Hardener Mass: </label><input type="text" style="width: 80px;">
+        <label style="font-weight: bold; width: 120px; display: inline-block;">Hardener Mass: </label>
+          <input type="text" style="width: 80px;" value="25">
         <button style="margin-left: 1em">Submit</button>
       </form>
       <form action="javascript:" onsubmit="batchInput(this, 'inputPottingNotes')" style="margin-top: 1em; display: block;">
-        <label style="font-weight: bold; width: 120px; display: inline-block;">Potting Notes: </label><input type="text" style="width: 80px;">
+        <label style="font-weight: bold; width: 120px; display: inline-block;">Potting Notes: </label>
+          <input type="text" style="width: 80px;" value="d40g">
         <button style="margin-left: 1em">Submit</button>
       </form>
       <form action="javascript:" onsubmit="batchInput(this, 'inputDate')" style="margin-top: 1em; display: block;">
-        <label style="font-weight: bold; width: 120px; display: inline-block;">Date: </label><input type="text" class="batchDateUS" style="width: 80px;">
+        <label style="font-weight: bold; width: 120px; display: inline-block;">Date: </label>
+          <input type="text" class="batchDateUS" style="width: 80px;">
         <button style="margin-left: 1em">Submit</button>
       </form>
       <form action="javascript:" onsubmit="batchInput(this, 'inputPreparer')" style="margin-top: 1em; display: block;">
-        <label style="font-weight: bold; width: 120px; display: inline-block;">Preparer Initials: </label><input type="text" style="width: 80px;">
+        <label style="font-weight: bold; width: 120px; display: inline-block;">Preparer Initials: </label>
+          <input type="text" style="width: 80px;">
         <button style="margin-left: 1em">Submit</button>
       </form>
       <div id="epoxyGridTable" class="grid"></div>
-      <button onclick="addRow('epoxySection', 1)" style="margin-top: 1em;">Add Row</button>
+      <button onclick="addRowByConfig(epoxySettings, 1)" style="margin-top: 1em;">Add Row</button>
     </section>
-    <section id="densitySection" class="dataEntrySection" style="display: none;">
+    <section id="densitySection" class="dataEntrySection hideWhenLoading" style="display: none;">
       <button onclick="sectionReturn()">Back</button>
-      <button onclick="submitDensityData()">SUBMIT</button><br>
+      <button onclick="generalSubmitData(densitySettings)">SUBMIT</button><br>
       <form action="javascript:" onsubmit="batchInput(this, 'inputDate')" style="margin-top: 1em; display: block;">
-        <label style="font-weight: bold; width: 120px; display: inline-block;">Date: </label><input type="text" class="batchDate" style="width: 80px;">
+        <label style="font-weight: bold; width: 120px; display: inline-block;">Date: </label>
+          <input type="text" class="batchDate" style="width: 80px;">
         <button style="margin-left: 1em">Submit</button>
       </form>
       <form action="javascript:" onsubmit="batchInput(this, 'inputTester')" style="margin-top: 1em; display: block;">
-        <label style="font-weight: bold; width: 120px; display: inline-block;">Tester Initials: </label><input type="text" style="width: 80px;">
+        <label style="font-weight: bold; width: 120px; display: inline-block;">Tester Initials: </label>
+          <input type="text" style="width: 80px;">
         <button style="margin-left: 1em">Submit</button>
       </form>
       <div id="densityGridTable" class="grid"></div>
-      <button onclick="addRow('densitySection', 1)" style="margin-top: 1em;">Add Row</button>
+      <button onclick="addRowByConfig(densitySettings, 1)" style="margin-top: 1em;">Add Row</button>
     </section>
   </body>
   <script>
@@ -423,7 +439,7 @@
               valid: false,
               msg: "expected bucket to begin with 'HCS'"
             }
-          } else if (isNaN(suf)) {
+          } else if (suf === '' || isNaN(suf)) {
             return {
               valid: false,
               msg: "expected number after 'HCS'"
@@ -570,9 +586,12 @@
         width: 1,
         minWidth: 60,
         numeric: false,
+        toFixed: null,
         update: false,
         input: true,
-        disabled: false
+        batchInputClass: null,
+        disabled: false,
+        calculation: null
       },
       {
         headerName: 'Powder',
@@ -580,9 +599,12 @@
         width: 2,
         minWidth: 60,
         numeric: false,
+        toFixed: null,
         update: true,
         input: true,
-        disabled: true
+        batchInputClass: 'inputPowder',
+        disabled: true,
+        calculation: null
       },
       {
         headerName: 'Bucket #',
@@ -590,9 +612,12 @@
         width: 2,
         minWidth: 60,
         numeric: false,
+        toFixed: null,
         update: true,
         input: true,
-        disabled: true
+        batchInputClass: 'inputBucket',
+        disabled: true,
+        calculation: null
       },
       {
         headerName: 'Mold #',
@@ -600,9 +625,12 @@
         width: 1,
         minWidth: 60,
         numeric: false,
+        toFixed: null,
         update: true,
         input: true,
-        disabled: true
+        batchInputClass: null,
+        disabled: true,
+        calculation: null
       },
       {
         headerName: 'Empty Mass (g)',
@@ -610,9 +638,12 @@
         width: 2,
         minWidth: 100,
         numeric: true,
+        toFixed: null,
         update: true,
         input: true,
-        disabled: true
+        batchInputClass: null,
+        disabled: true,
+        calculation: null
       },
       {
         headerName: 'Filled Mass (g)',
@@ -620,9 +651,12 @@
         width: 2,
         minWidth: 100,
         numeric: true,
+        toFixed: null,
         update: true,
         input: true,
-        disabled: true
+        batchInputClass: null,
+        disabled: true,
+        calculation: null
       },
       {
         headerName: 'Filling Date',
@@ -630,9 +664,12 @@
         width: 2,
         minWidth: 80,
         numeric: false,
+        toFixed: null,
         update: true,
         input: true,
-        disabled: true
+        batchInputClass: 'inputDate',
+        disabled: true,
+        calculation: null
       },
       {
         headerName: 'Filler Initials',
@@ -640,9 +677,12 @@
         width: 2,
         minWidth: 80,
         numeric: false,
+        toFixed: null,
         update: true,
         input: true,
-        disabled: true
+        batchInputClass: 'inputFiller',
+        disabled: true,
+        calculation: null
       }
     ]
     const epoxyConfig = [
@@ -652,9 +692,12 @@
         width: 1,
         minWidth: 60,
         numeric: false,
+        toFixed: null,
         update: false,
         input: true,
-        disabled: false
+        batchInputClass: null,
+        disabled: false,
+        calculation: null
       },
       {
         headerName: 'Batch',
@@ -662,9 +705,12 @@
         width: 1,
         minWidth: 60,
         numeric: false,
+        toFixed: null,
         update: true,
         input: true,
-        disabled: true
+        batchInputClass: 'inputBatch',
+        disabled: true,
+        calculation: null
       },
       {
         headerName: 'Resin Mass (g)',
@@ -672,9 +718,12 @@
         width: 2,
         minWidth: 100,
         numeric: true,
+        toFixed: null,
         update: true,
         input: true,
-        disabled: true
+        batchInputClass: 'inputResinMass',
+        disabled: true,
+        calculation: null
       },
       {
         headerName: 'Hardener Mass (g)',
@@ -682,9 +731,12 @@
         width: 2,
         minWidth: 120,
         numeric: true,
+        toFixed: null,
         update: true,
         input: true,
-        disabled: true
+        batchInputClass: 'inputHardenerMass',
+        disabled: true,
+        calculation: null
       },
       {
         headerName: 'Potting Notes',
@@ -692,19 +744,25 @@
         width: 2,
         minWidth: 100,
         numeric: false,
+        toFixed: null,
         update: true,
         input: true,
-        disabled: true
+        batchInputClass: 'inputPottingNotes',
+        disabled: true,
+        calculation: null
       },
       {
-        headerName: 'Filling Time',
+        headerName: 'Filling Time (min)',
         propertyName: 'epoxyFillingTime',
         width: 2,
         minWidth: 80,
         numeric: true,
+        toFixed: null,
         update: true,
         input: true,
-        disabled: true
+        batchInputClass: null,
+        disabled: true,
+        calculation: null
       },
       {
         headerName: 'Filling Date',
@@ -712,9 +770,12 @@
         width: 2,
         minWidth: 80,
         numeric: false,
+        toFixed: null,
         update: true,
         input: true,
-        disabled: true
+        batchInputClass: 'inputDate',
+        disabled: true,
+        calculation: null
       },
       {
         headerName: 'Preparer Initials',
@@ -722,9 +783,12 @@
         width: 2,
         minWidth: 100,
         numeric: false,
+        toFixed: null,
         update: true,
         input: true,
-        disabled: true
+        batchInputClass: 'inputPreparer',
+        disabled: true,
+        calculation: null
       }
     ]
     const densityConfig = [
@@ -734,9 +798,12 @@
         width: 1,
         minWidth: 60,
         numeric: false,
+        toFixed: null,
         update: false,
         input: true,
-        disabled: false
+        batchInputClass: null,
+        disabled: false,
+        calculation: null
       },
       {
         headerName: 'L (in)',
@@ -744,9 +811,12 @@
         width: 1,
         minWidth: 60,
         numeric: true,
+        toFixed: 4,
         update: true,
         input: true,
-        disabled: true
+        batchInputClass: null,
+        disabled: true,
+        calculation: null
       },
       {
         headerName: 'BT (in)',
@@ -754,9 +824,12 @@
         width: 1,
         minWidth: 60,
         numeric: true,
+        toFixed: 4,
         update: true,
         input: true,
-        disabled: true
+        batchInputClass: null,
+        disabled: true,
+        calculation: null
       },
       {
         headerName: 'BB (in)',
@@ -764,9 +837,12 @@
         width: 1,
         minWidth: 60,
         numeric: true,
+        toFixed: 4,
         update: true,
         input: true,
-        disabled: true
+        batchInputClass: null,
+        disabled: true,
+        calculation: null
       },
       {
         headerName: 'BH (in)',
@@ -774,9 +850,12 @@
         width: 1,
         minWidth: 60,
         numeric: true,
+        toFixed: 4,
         update: true,
         input: true,
-        disabled: true
+        batchInputClass: null,
+        disabled: true,
+        calculation: null
       },
       {
         headerName: 'ST (in)',
@@ -784,9 +863,12 @@
         width: 1,
         minWidth: 60,
         numeric: true,
+        toFixed: 4,
         update: true,
         input: true,
-        disabled: true
+        batchInputClass: null,
+        disabled: true,
+        calculation: null
       },
       {
         headerName: 'SB (in)',
@@ -794,9 +876,12 @@
         width: 1,
         minWidth: 60,
         numeric: true,
+        toFixed: 4,
         update: true,
         input: true,
-        disabled: true
+        batchInputClass: null,
+        disabled: true,
+        calculation: null
       },
       {
         headerName: 'SH (in)',
@@ -804,9 +889,12 @@
         width: 1,
         minWidth: 60,
         numeric: true,
+        toFixed: 4,
         update: true,
         input: true,
-        disabled: true
+        batchInputClass: null,
+        disabled: true,
+        calculation: null
       },
       {
         headerName: 'Volume',
@@ -814,9 +902,69 @@
         width: 1,
         minWidth: 60,
         numeric: true,
+        toFixed: null,
         update: false,
         input: false,
-        disabled: false
+        batchInputClass: null,
+        disabled: false,
+        calculation: {
+          hasData: function (index, rowData, block) {
+            const blockDimensions = [block.l, block.bt, block.bb, block.bh, block.st, block.sb, block.sh]
+            const inputDimensions = [
+              rowData[densitySettings.properties.l].value,
+              rowData[densitySettings.properties.bt].value,
+              rowData[densitySettings.properties.bb].value,
+              rowData[densitySettings.properties.bh].value,
+              rowData[densitySettings.properties.st].value,
+              rowData[densitySettings.properties.sb].value,
+              rowData[densitySettings.properties.sh].value
+            ]
+            const useDimensions = []
+            for (let i = 0; i < inputDimensions.length; i++) {
+              const inputValue = inputDimensions[i]
+              if (inputValue !== '' && !isNaN(inputValue)) {
+                useDimensions.push(Number(inputValue))
+              } else {
+                useDimensions.push(blockDimensions[i])
+              }
+            }
+            if (useDimensions.every((element) => element != null)) {
+              const vol = getVolume(useDimensions)
+              const inputMass = rowData[densitySettings.properties.mass].value
+              const mass = inputMass !== '' && !isNaN(inputMass) ? Number(inputMass) : block.mass
+              let density
+              if (mass != null) { density = mass / vol }
+              if (density != null) {
+                rowData[densitySettings.properties.density].innerHTML = density.toFixed(2)
+              } else {
+                rowData[densitySettings.properties.density].innerHTML = ''
+              }
+              // grade these and display checkmark or something like that (don't make the colors confusing..)
+              // (see info station for checkmarks, etc)
+              rowData[index].innerHTML = vol.toFixed(1)
+            } else {
+              rowData[index].innerHTML = ''
+              rowData[densitySettings.properties.density].innerHTML = ''
+            }
+          },
+          noData: function (index, rowData, block) {
+            rowData[index].innerHTML = ''
+            rowData[densitySettings.properties.density].innerHTML = ''
+          }
+        }
+      },
+      {
+        headerName: 'Density (g/mL)',
+        propertyName: 'density',
+        width: 1,
+        minWidth: 60,
+        numeric: true,
+        toFixed: null,
+        update: false,
+        input: false,
+        batchInputClass: null,
+        disabled: false,
+        calculation: null
       },
       {
         headerName: 'Tester Initials',
@@ -824,19 +972,25 @@
         width: 2,
         minWidth: 100,
         numeric: false,
+        toFixed: null,
         update: true,
         input: true,
-        disabled: true
+        batchInputClass: 'inputTester',
+        disabled: true,
+        calculation: null
       },
       {
-        headerName: 'Mass',
+        headerName: 'Mass (g)',
         propertyName: 'mass',
         width: 1,
         minWidth: 60,
         numeric: true,
+        toFixed: null,
         update: true,
         input: true,
-        disabled: true
+        batchInputClass: null,
+        disabled: true,
+        calculation: null
       },
       {
         headerName: 'Tester Initials',
@@ -844,9 +998,12 @@
         width: 2,
         minWidth: 100,
         numeric: false,
+        toFixed: null,
         update: true,
         input: true,
-        disabled: true
+        batchInputClass: 'inputTester',
+        disabled: true,
+        calculation: null
       },
       {
         headerName: 'Date',
@@ -854,22 +1011,54 @@
         width: 2,
         minWidth: 80,
         numeric: false,
+        toFixed: null,
         update: true,
         input: true,
-        disabled: true
+        batchInputClass: 'inputDate',
+        disabled: true,
+        calculation: null
       }
     ]
+    const tungstenRows = []
+    const epoxyRows = []
+    const densityRows = []
+    const tungstenSettings = {
+      config: tungstenConfig,
+      table: $('#tungstenGridTable'),
+      properties: null,
+      rows: tungstenRows
+    }
+    const epoxySettings = {
+      config: epoxyConfig,
+      table: $('#epoxyGridTable'),
+      properties: null,
+      rows: epoxyRows
+    }
+    const densitySettings = {
+      config: densityConfig,
+      table: $('#densityGridTable'),
+      properties: null,
+      rows: densityRows
+    }
+    const allSettings = [tungstenSettings, epoxySettings, densitySettings]
     let currentDate
     let database
     const headers = []
     const sheetNames = ['Blocks DB', 'Blocks1364DB']
     let blocksCollection
+    let lastDatabaseLoad
+    let reloadDatabaseTimer
+    let selectedSection
+    let blockPropertyToCellIndex
     function doOnload () {
       function getDatabaseOnLoad () {
         currentDate = new Date()
         document.getElementById('loadingDatabase').style.display = 'block'
         google.script.run.withSuccessHandler(onSuccess).withFailureHandler(onFailure).getDatabase()
         function onSuccess (gotDatabase) {
+          lastDatabaseLoad = new Date()
+          updateTimestamp()
+          $('#timestamp').css('display', 'block')
           console.log('loaded database in ' + (Date.now() - currentDate.getTime()) / 1000 + ' s')
           database = [gotDatabase.sheet1, gotDatabase.sheet2]
           const blocks = []
@@ -888,14 +1077,16 @@
           blocksCollection = new BlocksCollection(blocks)
           document.getElementById('loadingDatabase').style.display = 'none'
           document.getElementById('sectionSelection').style.display = 'block'
+          selectedSection = 'sectionSelection'
+          addSectionProperties()
           setupGridTables()
-          addRowByConfig('tungstenGridTable', tungstenConfig, tungstenRows, tungstenKeyup, 8)
-          addRowByConfig('epoxyGridTable', epoxyConfig, epoxyRows, epoxyKeyup, 8)
-          addRowByConfig('densityGridTable', densityConfig, densityRows, densityKeyup, 8)
+          addRowByConfig(tungstenSettings, 8)
+          addRowByConfig(epoxySettings, 8)
+          addRowByConfig(densitySettings, 8)
         }
         function onFailure (err) {
           console.warn('failed to load database...retrying in 10 seconds')
-          window.setTimeout(getDatabaseOnLoad, 10000)
+          window.setTimeout(getDatabaseOnLoad, 10 * 1000)
           throw err
         }
         $('input.batchDateUS').val(dateToUS(currentDate))
@@ -905,29 +1096,28 @@
         getDatabaseOnLoad()
       } catch (err) {
         console.error('unexpected error while getting database...retrying in 10 seconds')
-        window.setTimeout(getDatabaseOnLoad, 10000)
+        window.setTimeout(getDatabaseOnLoad, 10 * 1000)
         throw (err)
       }
     }
     function setupGridTables () {
-      addHeaders('tungstenGridTable', tungstenConfig)
-      addHeaders('epoxyGridTable', epoxyConfig)
-      addHeaders('densityGridTable', densityConfig)
-      function addHeaders (tableID, tableConfig) {
-        const table = $('#' + tableID)
+      for (const tableSettings of allSettings) {
+        addHeaders(tableSettings)
+      }
+      function addHeaders (tableSettings) {
         let template = ''
-        for (const config of tableConfig) {
-          table.append($('<div>' + config.headerName + '</div>').addClass('gridTableHeader'))
-          template += config.width + 'fr '
+        for (const columnConfig of tableSettings.config) {
+          tableSettings.table.append($('<div>' + columnConfig.headerName + '</div>').addClass('gridTableHeader'))
+          template += columnConfig.width + 'fr '
         }
-        table.css('grid-template-columns', template).css('margin-top', '1em')
+        tableSettings.table.css('grid-template-columns', template).css('margin-top', '1em')
       }
     }
-    const tungstenRows = []
-    const epoxyRows = []
-    const densityRows = []
-    function addRowByConfig (tableID, tableConfig, rows, keyup, count) {
-      const numRows = Math.floor($('#' + tableID + ' > div.gridData').length / 8)
+    function addRowByConfig (tableSettings, count) {
+      const rows = tableSettings.rows
+      const table = tableSettings.table
+      const tableConfig = tableSettings.config
+      const numRows = Math.floor(table.children('div.gridData').length / tableConfig.length)
       for (let i = 0; i < count; i++) {
         const row = []
         const rowNum = numRows + i
@@ -936,7 +1126,10 @@
           let child
           if (config.input) {
             child = $('<input/>').attr('type', 'text').attr('data-row', rowNum).css('min-width', config.minWidth + 'px')
-              .prop('placeholder', '').keyup(function () { keyup(rowNum) })
+              .prop('placeholder', '').keyup(function () { generalKeyup(tableSettings, rowNum) })
+            if (config.batchInputClass !== null) {
+              child.addClass(config.batchInputClass)
+            }
           } else {
             child = $('<p></p>').attr('data-row', rowNum).addClass('centerP').css('min-width', config.minWidth + 'px')
           }
@@ -946,130 +1139,53 @@
           element.append(child)
           row.push(element)
         }
-        $('#' + tableID).append(row)
-        const rowData = $('#' + tableID).find('[data-row="' + (numRows + i) + '"]').toArray()
+        table.append(row)
+        const rowData = table.find('[data-row="' + (numRows + i) + '"]').toArray()
         rows.push(rowData)
       }
     }
-    function tungstenKeyup (row) {
-      const rowData = tungstenRows[parseInt(row)]
-      const block = blocksCollection.getBlockByStringDBN(rowData[0].value)
-      const toUpdate = rowData.slice(1, 8)
-      if (rowData[0].value !== '' && block != null) {
-        toUpdate.forEach(function (element) {
-          element.disabled = false
-          element.style.backgroundColor = 'transparent'
-        })
-        updateTextInput(rowData[1], block.powder)
-        updateTextInput(rowData[2], block.bucket)
-        updateTextInput(rowData[3], block.moldSeries)
-        updateTextInput(rowData[4], block.emptyMoldMass)
-        updateTextInput(rowData[5], block.filledMoldMass)
-        updateTextInput(rowData[6], block.tungstenFillingDate)
-        updateTextInput(rowData[7], block.tungstenFiller)
-      } else {
-        toUpdate.forEach(function (element) {
-          element.value = ''
-          element.placeholder = ''
-          element.disabled = true
-          element.style.border = '1px solid grey'
-          element.style.backgroundColor = '#eee'
-        })
+    function generalKeyup (tableSettings, rowNum) {
+      const tableConfig = tableSettings.config
+      const properties = tableSettings.properties
+      const rowData = tableSettings.rows[rowNum]
+      const dbn = rowData[properties.dbn].value
+      const block = blocksCollection.getBlockByStringDBN(dbn)
+      const toUpdate = []
+      for (let i = 0; i < tableConfig.length; i++) {
+        if (tableConfig[i].update) {
+          toUpdate.push({ element: rowData[i], config: tableConfig[i] })
+        }
       }
-    }
-    function epoxyKeyup (row) {
-      const rowData = epoxyRows[parseInt(row)]
-      const block = blocksCollection.getBlockByStringDBN(rowData[0].value)
-      const toUpdate = rowData.slice(1, 8)
-      if (rowData[0].value !== '' && block != null) {
-        toUpdate.forEach(function (element) {
-          element.disabled = false
-          element.style.backgroundColor = 'transparent'
-        })
-        updateTextInput(rowData[1], block.epoxyBatch)
-        updateTextInput(rowData[2], block.resinMass)
-        updateTextInput(rowData[3], block.hardenerMass)
-        updateTextInput(rowData[4], block.pottingNotes)
-        updateTextInput(rowData[5], block.epoxyFillingTime)
-        updateTextInput(rowData[6], block.epoxyFillingDate)
-        updateTextInput(rowData[7], block.epoxyPreparer)
-      } else {
-        toUpdate.forEach(function (element) {
-          element.value = ''
-          element.placeholder = ''
-          element.disabled = true
-          element.style.border = '1px solid grey'
-          element.style.backgroundColor = '#eee'
-        })
-      }
-    }
-    function densityKeyup (row) {
-      // console.log('density keyup at row ' + row)
-      const rowData = densityRows[row]
-      // console.log(rowData)
-      const block = blocksCollection.getBlockByStringDBN(rowData[0].value)
-      const toUpdate = rowData.slice(1, 8).concat(rowData.slice(9, 13))
-      if (rowData[0].value !== '' && block != null) {
-        toUpdate.forEach(function (element) {
-          element.disabled = false
-          element.style.backgroundColor = 'transparent'
-        })
-        const l = block.l
-        const bt = block.bt
-        const bb = block.bb
-        const bh = block.bh
-        const st = block.st
-        const sb = block.sb
-        const sh = block.sh
-        const blockDimensions = [l, bt, bb, bh, st, sb, sh]
-        const inputDimensions = []
-        rowData.slice(1, 8).forEach(function (element) {
-          if (element.value === '' || isNaN(element.value)) {
-            inputDimensions.push(null)
+      if (dbn !== '' && block != null) {
+        // found a block, enable inputs and import data
+        toUpdate.forEach(function (obj) {
+          obj.element.disabled = false
+          obj.element.style.backgroundColor = 'transparent'
+          if (obj.config.toFixed != null && block[obj.config.propertyName] != null) {
+            updateTextInput(obj.element, block[obj.config.propertyName].toFixed(obj.config.toFixed))
           } else {
-            inputDimensions.push(Number(element.value))
+            updateTextInput(obj.element, block[obj.config.propertyName])
           }
         })
-        const useDimensions = []
-        // console.log('block: ' + JSON.stringify(blockDimensions))
-        // console.log('input: ' + JSON.stringify(inputDimensions))
-        for (let i = 0; i < inputDimensions.length; i++) {
-          if (inputDimensions[i] != null) {
-            useDimensions.push(inputDimensions[i])
-          } else {
-            useDimensions.push(blockDimensions[i])
+        for (let i = 0; i < tableConfig.length; i++) {
+          if (tableConfig[i].calculation != null) {
+            tableConfig[i].calculation.hasData(i, rowData, block)
           }
         }
-        if (useDimensions.every((element) => element != null)) {
-          // console.log(JSON.stringify(useDimensions))
-          const vol = getVolume(useDimensions)
-          rowData[8].innerHTML = vol.toFixed(1)
-          // console.log('DBN ' + block.dbn + ' has volume ' + vol)
-        } else {
-          rowData[8].innerHTML = ''
-        }
-        // console.log(rowData)
-        updateTextInput(rowData[1], block.l == null ? null : block.l.toFixed(4))
-        updateTextInput(rowData[2], block.bt == null ? null : block.bt.toFixed(4))
-        updateTextInput(rowData[3], block.bb == null ? null : block.bb.toFixed(4))
-        updateTextInput(rowData[4], block.bh == null ? null : block.bh.toFixed(4))
-        updateTextInput(rowData[5], block.st == null ? null : block.st.toFixed(4))
-        updateTextInput(rowData[6], block.sb == null ? null : block.sb.toFixed(4))
-        updateTextInput(rowData[7], block.sh == null ? null : block.sh.toFixed(4))
-
-        updateTextInput(rowData[9], block.dimensionTester)
-        updateTextInput(rowData[10], block.mass)
-        updateTextInput(rowData[11], block.massTester)
-        updateTextInput(rowData[12], block.densityDate)
       } else {
-        toUpdate.forEach(function (element) {
-          element.value = ''
-          element.placeholder = ''
-          element.disabled = true
-          element.style.border = '1px solid grey'
-          element.style.backgroundColor = '#eee'
+        // no dbn found, disable all inputs
+        toUpdate.forEach(function (obj) {
+          obj.element.value = ''
+          obj.element.placeholder = ''
+          obj.element.disabled = true
+          obj.element.style.border = '1px solid grey'
+          obj.element.style.backgroundColor = '#eee'
         })
-        rowData[8].innerHTML = ''
+        for (let i = 0; i < tableConfig.length; i++) {
+          if (tableConfig[i].calculation != null) {
+            tableConfig[i].calculation.noData(i, rowData, block)
+          }
+        }
       }
     }
     function updateTextInput (element, databaseValue) {
@@ -1077,6 +1193,9 @@
         element.placeholder = databaseValue
         if (element.value === '') {
           element.style.border = '2px solid orange'
+          // we knowinglly use a castful comparison to avoid tedium
+        } else if (element.value == databaseValue) {
+          element.style.border = '2px solid green'
         } else {
           element.style.border = '2px solid red'
         }
@@ -1089,6 +1208,7 @@
         }
       }
     }
+    // this is quite an elegant function - I like it
     function batchInput (form, className) {
       const grid = $(form).parent('section').children('div.grid').eq(0)
       const inputVal = $(form).children('input').eq(0).val()
@@ -1097,18 +1217,22 @@
     function loadTungsten () {
       document.getElementById('sectionSelection').style.display = 'none'
       document.getElementById('tungstenSection').style.display = 'block'
+      selectedSection = 'tungstenSection'
     }
     function loadEpoxy () {
       document.getElementById('sectionSelection').style.display = 'none'
       document.getElementById('epoxySection').style.display = 'block'
+      selectedSection = 'epoxySection'
     }
     function loadDensity () {
       document.getElementById('sectionSelection').style.display = 'none'
       document.getElementById('densitySection').style.display = 'block'
+      selectedSection = 'densitySection'
     }
     function sectionReturn () {
       $('.dataEntrySection').css('display', 'none')
       document.getElementById('sectionSelection').style.display = 'block'
+      selectedSection = 'sectionSelection'
     }
     function onLogBlock () {
       const blockName = document.getElementById('logBlockInput').value
@@ -1130,122 +1254,38 @@
         }
       }
       function onFailure (err) {
+        alert('The server encountered an uncaught error while logging block:\n' + JSON.stringify(err))
         throw err
       }
     }
-    function submitTungstenData () {
+    function generalSubmitData (tableSettings) {
       const blocks = []
       const values = []
-      const columnNames = ['powder', 'bucket', 'moldSeries', 'emptyMoldMass', 'filledMoldMass', 'tungstenFillingDate', 'tungstenFiller']
-      for (const tungstenRow of tungstenRows) {
-        const stringDBN = tungstenRow[0].value
+      const columnNames = []
+      const rows = tableSettings.rows
+      for (const row of rows) {
+        const stringDBN = row[tableSettings.properties.dbn].value
         if (stringDBN !== '') {
           const block = blocksCollection.getBlockByStringDBN(stringDBN)
           if (block != null) {
             blocks.push(block)
             const blockValues = []
-            for (let i = 0; i < columnNames.length; i++) {
-              let _set = tungstenRow[i + 1].value
-              if (_set !== '') {
-                let _expected = block[columnNames[i]]
-                if (_expected == null) { _expected = '' }
-                // cast set value to num if needed
-                let config
-                for (const obj of tungstenConfig) {
-                  if (obj.propertyName === columnNames[i]) {
-                    config = obj
-                    break
+            for (let i = 0; i < tableSettings.config.length; i++) {
+              const columnConfig = tableSettings.config[i]
+              if (columnConfig.input && columnConfig.update) {
+                let _set = row[i].value
+                if (_set !== '') {
+                  let _expected = block[columnConfig.propertyName]
+                  if (_expected == null) { _expected = '' }
+                  // cast set value to num if needed
+                  if (columnConfig.numeric && _set !== '' && !isNaN(_set)) {
+                    _set = Number(_set)
                   }
+                  blockValues.push({ set: _set, expected: _expected, ignoreError: false })
+                } else {
+                  blockValues.push(null)
                 }
-                if (config.numeric && _set !== '' && !isNaN(_set)) {
-                  _set = Number(_set)
-                }
-                blockValues.push({ set: _set, expected: _expected, ignoreError: false })
-              } else {
-                blockValues.push(null)
-              }
-            }
-            values.push(blockValues)
-          } else {
-            console.error('unable to find DBN ' + stringDBN + ' (I could offer to refresh database here)')
-          }
-        }
-      }
-      submitData(blocks, columnNames, values)
-    }
-
-    function submitEpoxyData () {
-      const blocks = []
-      const values = []
-      const columnNames = ['epoxyBatch', 'resinMass', 'hardenerMass', 'pottingNotes', 'epoxyFillingTime', 'epoxyFillingDate', 'epoxyPreparer']
-      for (const epoxyRow of epoxyRows) {
-        const stringDBN = epoxyRow[0].value
-        if (stringDBN !== '') {
-          const block = blocksCollection.getBlockByStringDBN(stringDBN)
-          if (block != null) {
-            blocks.push(block)
-            const blockValues = []
-            for (let i = 0; i < columnNames.length; i++) {
-              let _set = epoxyRow[i + 1].value
-              if (_set !== '') {
-                let _expected = block[columnNames[i]]
-                if (_expected == null) { _expected = '' }
-                // cast set value to num if needed
-                let config
-                for (const obj of epoxyConfig) {
-                  if (obj.propertyName === columnNames[i]) {
-                    config = obj
-                    break
-                  }
-                }
-                if (config.numeric && _set !== '' && !isNaN(_set)) {
-                  _set = Number(_set)
-                }
-                blockValues.push({ set: _set, expected: _expected, ignoreError: false })
-              } else {
-                blockValues.push(null)
-              }
-            }
-            values.push(blockValues)
-          } else {
-            console.error('unable to find DBN ' + stringDBN + ' (I could offer to refresh database here)')
-          }
-        }
-      }
-      submitData(blocks, columnNames, values)
-    }
-    function submitDensityData () {
-      const blocks = []
-      const values = []
-      const columnNames = ['l', 'bt', 'bb', 'bh', 'st', 'sb', 'sh', 'dimensionTester', 'mass', 'massTester', 'densityDate']
-      for (const densityRowAll of densityRows) {
-        const stringDBN = densityRowAll[0].value
-        // this is not an ideal solution:
-        const densityRow = densityRowAll.slice(0, 8).concat(densityRowAll.slice(9)) // densityRow.splice(8, 1)
-        if (stringDBN !== '') {
-          const block = blocksCollection.getBlockByStringDBN(stringDBN)
-          if (block != null) {
-            blocks.push(block)
-            const blockValues = []
-            for (let i = 0; i < columnNames.length; i++) {
-              let _set = densityRow[i + 1].value
-              if (_set !== '') {
-                let _expected = block[columnNames[i]]
-                if (_expected == null) { _expected = '' }
-                // cast set value to num if needed
-                let config
-                for (const obj of densityConfig) {
-                  if (obj.propertyName === columnNames[i]) {
-                    config = obj
-                    break
-                  }
-                }
-                if (config.numeric && _set !== '' && !isNaN(_set)) {
-                  _set = Number(_set)
-                }
-                blockValues.push({ set: _set, expected: _expected, ignoreError: false })
-              } else {
-                blockValues.push(null)
+                columnNames.push(columnConfig.propertyName)
               }
             }
             values.push(blockValues)
@@ -1273,6 +1313,7 @@
       for (let i = 0; i < blocks.length; i++) {
         const block = blocks[i]
         const blockData = {}
+        blockData.expectedDBN = block.dbn
         blockData.sheet = block.sheet
         blockData.row = block.row
         blockData.cols = []
@@ -1297,6 +1338,8 @@
           showWarnings(basicDataValidationWarnings, data)
         } else {
           // submit to the google script
+          $('#' + selectedSection).css('display', 'none')
+          $('#submittingData').css('display', 'block')
           google.script.run.withSuccessHandler(onSubmitDataSuccess).withFailureHandler(onFailure).setBlockData(data)
         }
       }
@@ -1309,7 +1352,7 @@
           for (let j = 0; j < columnNames.length; j++) {
             const value = values[i][j]
             // console.log(value)
-            if (value !== null && value.set != value.expected) {
+            if (value !== null && value.expected !== '' && value.set != value.expected) {
               warnings.push({
                 set: value.set,
                 prev: value.expected,
@@ -1327,7 +1370,7 @@
         let warningMsg = '(WARNING) This submission would overwrite some data in the database:\n'
         for (const warn of overwriteWarnings) {
           warningMsg += 'DBN ' + warn.dbn + ', column "' + warn.col +
-          '": (warning) changing value "' + warn.prev + '" → "' + warn.set + '"\n'
+            '": (warning) changing value "' + warn.prev + '" → "' + warn.set + '"\n'
         }
         warningMsg += 'Are you sure you want to submit this data to the database?'
         const bool = confirm(warningMsg)
@@ -1338,6 +1381,8 @@
             showWarnings(warnings, data)
           } else {
             // submit to the google script
+            $('#' + selectedSection).css('display', 'none')
+            $('#submittingData').css('display', 'block')
             google.script.run.withSuccessHandler(onSubmitDataSuccess).withFailureHandler(onFailure).setBlockData(data)
           }
         }
@@ -1371,17 +1416,27 @@
         let warningMsg = '(WARNING) Some of the data is not as expected:\n'
         for (const warn of warnings) {
           warningMsg += 'DBN ' + warn.dbn + ', column "' + warn.col +
-          '": (warning) for value "' + warn.value + '", ' + warn.msg + '\n'
+            '": (warning) for value "' + warn.value + '", ' + warn.msg + '\n'
         }
         warningMsg += 'Are you sure you want to submit this data to the database?'
         const bool = confirm(warningMsg)
         if (bool) {
+          $('#' + selectedSection).css('display', 'none')
+          $('#submittingData').css('display', 'block')
           google.script.run.withSuccessHandler(onSubmitDataSuccess).withFailureHandler(onFailure).setBlockData(data)
         }
       }
     
       function showErrorAlert (msg, data) {
-        if (msg.dataValidationErrors.length !== 0 || msg.unexpectedValueErrors.length !== 0) {
+        if (msg.unexpectedDBNError !== undefined) {
+          const errorMsg = '(ERROR) Encountered an unexpected DBN (did a DBN change? were rows added or deleted?):\n' +
+            'In sheet ' + sheetNames[msg.unexpectedDBNError.loc.sheet] + ', row ' + msg.unexpectedDBNError.loc.row +
+            ', expected DBN ' + msg.unexpectedDBNError.expectedDBN + ', but found DBN ' + msg.unexpectedDBNError.foundDBN + '\n' +
+            'Try refreshing the database and resubmitting (or Mason needs to fix something)'
+          $('#' + selectedSection).css('display', 'block')
+          $('#submittingData').css('display', 'none')
+          alert(errorMsg)
+        } else if (msg.dataValidationErrors.length !== 0 || msg.unexpectedValueErrors.length !== 0) {
           let errorMsg = ''
           const fatalErrors = []
           for (const error of msg.dataValidationErrors) {
@@ -1396,19 +1451,21 @@
               const dbn = blocksCollection.getBlockByLocation(error.loc.sheet, error.loc.row).dbn
               if (error.type === 'VALUE_IN_LIST') {
                 errorMsg += 'In sheet ' + sheetNames[error.loc.sheet] + ', DBN ' + dbn +
-                ' (row ' + error.loc.row + '), column "' + (headers[error.loc.sheet][error.loc.col]) +
-                '": tried to write value "' + error.value + '" but cell requires a value in ' + JSON.stringify(error.args[0]) + '\n'
+                  ' (row ' + error.loc.row + '), column "' + (headers[error.loc.sheet][error.loc.col]) +
+                  '": tried to write value "' + error.value + '" but cell requires a value in ' + JSON.stringify(error.args[0]) + '\n'
               } else if (error.type === 'DATE_IS_VALID_DATE') {
                 errorMsg += 'In sheet ' + sheetNames[error.loc.sheet] + ', DBN ' + dbn +
-                ' (row ' + error.loc.row + '), column "' + (headers[error.loc.sheet][error.loc.col]) +
-                '": tried to write value "' + error.value + '" but cell requires a valid date\n'
+                  ' (row ' + error.loc.row + '), column "' + (headers[error.loc.sheet][error.loc.col]) +
+                  '": tried to write value "' + error.value + '" but cell requires a valid date\n'
               } else {
                 errorMsg += 'In sheet ' + sheetNames[error.loc.sheet] + ', DBN ' + dbn +
-                ' (row ' + error.loc.row + '), column "' + (headers[error.loc.sheet][error.loc.col]) +
-                '": unknown data validation type (' + error.type + ') at value "' + error.value + '": ' + JSON.stringify(error.args[0]) + '\n'
+                  ' (row ' + error.loc.row + '), column "' + (headers[error.loc.sheet][error.loc.col]) +
+                  '": unknown data validation type (' + error.type + ') at value "' + error.value + '": ' + JSON.stringify(error.args[0]) + '\n'
                 errorMsg += JSON.stringify(error) + '\n'
               }
             }
+            $('#' + selectedSection).css('display', 'block')
+            $('#submittingData').css('display', 'none')
             alert(errorMsg)
           } else {
             // no fatal errors, show warnings and ask to confirm
@@ -1418,16 +1475,16 @@
                 const dbn = blocksCollection.getBlockByLocation(error.loc.sheet, error.loc.row).dbn
                 if (error.type === 'VALUE_IN_LIST') {
                   errorMsg += 'In sheet ' + sheetNames[error.loc.sheet] + ', DBN ' + dbn +
-                  ' (row ' + error.loc.row + '), column "' + (headers[error.loc.sheet][error.loc.col]) +
-                  '": tried to write value "' + error.value + '" but cell suggests a value in ' + JSON.stringify(error.args[0]) + '\n'
+                    ' (row ' + error.loc.row + '), column "' + (headers[error.loc.sheet][error.loc.col]) +
+                    '": tried to write value "' + error.value + '" but cell suggests a value in ' + JSON.stringify(error.args[0]) + '\n'
                 } else if (error.type === 'DATE_IS_VALID_DATE') {
                   errorMsg += 'In sheet ' + sheetNames[error.loc.sheet] + ', DBN ' + dbn +
-                  ' (row ' + error.loc.row + '), column "' + (headers[error.loc.sheet][error.loc.col]) +
-                  '": tried to write value "' + error.value + '" but cell suggests a valid date\n'
+                    ' (row ' + error.loc.row + '), column "' + (headers[error.loc.sheet][error.loc.col]) +
+                    '": tried to write value "' + error.value + '" but cell suggests a valid date\n'
                 } else {
                   errorMsg += 'In sheet ' + sheetNames[error.loc.sheet] + ', DBN ' + dbn +
-                  ' (row ' + error.loc.row + '), column "' + (headers[error.loc.sheet][error.loc.col]) +
-                  '": encountered an unknown data validation type (' + error.type + ') for value "' + error.value + '": ' + JSON.stringify(error.args[0]) + '\n'
+                    ' (row ' + error.loc.row + '), column "' + (headers[error.loc.sheet][error.loc.col]) +
+                    '": encountered an unknown data validation type (' + error.type + ') for value "' + error.value + '": ' + JSON.stringify(error.args[0]) + '\n'
                   errorMsg += JSON.stringify(error) + '\n'
                 }
               }
@@ -1437,8 +1494,8 @@
               for (const error of msg.unexpectedValueErrors) {
                 const dbn = blocksCollection.getBlockByLocation(error.loc.sheet, error.loc.row).dbn
                 errorMsg += 'In sheet ' + sheetNames[error.loc.sheet] + ', DBN ' + dbn +
-                ' (row ' + error.loc.row + '), column "' + (headers[error.loc.sheet][error.loc.col]) +
-                '": expected value "' + error.expected + '" but found "' + error.found + '"\n'
+                  ' (row ' + error.loc.row + '), column "' + (headers[error.loc.sheet][error.loc.col]) +
+                  '": expected value "' + error.expected + '" but found "' + error.found + '"\n'
               }
             }
             errorMsg += 'Press OK to ignore these errors and submit this data to the database'
@@ -1450,9 +1507,14 @@
                 data[i].values[j].ignoreError = true
               }
               google.script.run.withSuccessHandler(onSubmitDataSuccess).withFailureHandler(onFailure).setBlockData(data)
+            } else {
+              $('#' + selectedSection).css('display', 'block')
+              $('#submittingData').css('display', 'none')
             }
           }
         } else {
+          $('#' + selectedSection).css('display', 'block')
+          $('#submittingData').css('display', 'none')
           const successMsg = 'Successfully wrote data to the database'
           alert(successMsg)
         }
@@ -1460,35 +1522,93 @@
       function onSubmitDataSuccess (msg) {
         // console.log(msg)
         showErrorAlert(msg, data)
+        updateBlocks(msg.newBlockData)
       }
       function onFailure (err) {
+        alert('The server encountered an uncaught error while submitting data:\n' + JSON.stringify(err))
         throw err
       }
     }
     
     function updateDatabase() {
       const start = Date.now()
+      document.getElementById('loadingDatabase').style.display = 'block'
+      $('.hideWhenLoading').css('display', 'none')
+      // console.log([$('#sectionSelection').css('display'), $('#tungstenSection').css('display'), $('#epoxySection').css('display'), $('#densitySection').css('display')])
       google.script.run.withSuccessHandler(onSuccess).withFailureHandler(onFailure).getDatabase()
       function onSuccess (sheets) {
+        lastDatabaseLoad = new Date()
         console.log('loaded database in ' + (Date.now() - start) / 1000 + ' s')
+        updateTimestamp()
         database = [sheets.sheet1, sheets.sheet2]
+        const blocks = []
         headers[0] = database[0][0]
         for (let i = 1; i < database[0].length; i++) {
           if (database[0][i][columns.block] !== '' && !isNaN(database[0][i][columns.block])) {
-            blocksCollection.updateBlock(database[0][i], 0, i + 1)
+            blocks.push(new Block(database[0][i], 0, i + 1, blocks.length))
           }
         }
         headers[1] = database[1][0]
         for (let i = 1; i < database[1].length; i++) {
           if (database[1][i][columns.block] !== '' && !isNaN(database[1][i][columns.block])) {
-            blocksCollection.updateBlock(database[1][i], 1, i + 1)
+            blocks.push(new Block(database[1][i], 1, i + 1, blocks.length))
           }
         }
+        blocksCollection = new BlocksCollection(blocks)
+        document.getElementById('loadingDatabase').style.display = 'none'
+        $('#' + selectedSection).css('display', 'block')
+        updateTables()
       }
       function onFailure (err) {
+        alert('The server encountered an uncaught error while refreshing database:\n' + JSON.stringify(err))
         throw err
       }
-      // should also somehow update the UI (idk if there's a nice way to do this)
+    }
+    function updateBlocks (blockData) {
+      if (blockData != null) {
+        const rowData = blockData.rowData
+        const sheets = blockData.sheets
+        const rows = blockData.rows
+        for (let i = 0; i < rowData.length; i++) {
+          blocksCollection.updateBlock(rowData[i], sheets[i], rows[i])
+        }
+        updateTables()
+      }
+    }
+    function updateTables () {
+      for (let i = 0; i < tungstenRows.length; i++) {
+        generalKeyup(tungstenSettings, i)
+      }
+      for (let i = 0; i < epoxyRows.length; i++) {
+        generalKeyup(epoxySettings, i)
+      }
+      for (let i = 0; i < densityRows.length; i++) {
+        generalKeyup(densitySettings, i)
+      }
+    }
+    function updateTimestamp () {
+      // (re)set color/style to the normal
+      const timestampDiv = $('#timestamp')
+      const text = 'Database loaded: ' + String(lastDatabaseLoad)
+      const p = timestampDiv.children('p')
+      // console.log(p)
+      p.html(text).css('color', 'black').css('font-weight', 'normal')
+      window.clearTimeout(reloadDatabaseTimer)
+      reloadDatabaseTimer = window.setTimeout(setRed, 5 * 1000 * 60)
+      function setRed () {
+        p.css('color', 'red').css('font-weight', 'bold')
+        alert('The script is using data which is at least 5 minutes old. Consider refreshing the database.')
+      }
+    }
+    function addSectionProperties () {
+      for (const settings of allSettings) {
+        const tableConfig = settings.config
+        settings.properties = {}
+        for (let i = 0; i < tableConfig.length; i++) {
+          settings.properties[tableConfig[i].propertyName] = i
+        }
+      }
+      console.log(allSettings)
     }
   </script>
 </html>
