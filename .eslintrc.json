@@ -12,6 +12,9 @@
         "ecmaVersion": 12
     },
     "rules": {
+      "no-unused-vars": "warn",
+      "no-trailing-spaces": "warn",
+      "camelcase": "warn"
     },
     "plugins": [
       "html",

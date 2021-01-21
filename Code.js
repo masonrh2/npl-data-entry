@@ -3,10 +3,6 @@
  * me: include some list of all status X blocks to choose from, and just click all of the ones you need
  * me: incluce some functionality for testing (add date and name to NL, checks?) (and file validation? could be really useful)
  * 
- * handle reloading/warning when there is old data in page...or when the input windows are open, automatically refresh
- * the dbns when have been entered every 10 seconds or so?
- * 
- * real time calculation of volume once all values are present/entered into dimensions
  * 
  * mass change of status/shipment date/shipment number (..etc?) (include option to enter list of DBNs) (also include a "find blocks be status" and way to
  * easily select blocks to change) (do some pretty thing with arrows showing status before and after)
@@ -15,9 +11,8 @@
  * (could be more dangerous?) (would be more work, but a lot could be borrowed from "find blocks" of info station)
  * (this would pretty much just be the database...)
  * 
- * make colors less weird or more clear?
- * 
  * include ghost text for what it should look like (e.g. HCS-56 and not 56) or do some basic data validation and show red if it fails
+ * this is a problem since we use placeholder for the current database values (if they exist) ... I think the basic validation is sufficient
  * 
  * consider consolidating blocks class variables e.g. put all dimensions into a subobject or the like (block.dimensions.bt instead of block.bt) (would be cleaner)
  * 
@@ -26,14 +21,6 @@
  * 
  * could add framework to add and remove tags from blocks (using the comments column)
  * this is probably a much better system than using non-numeric DBNs (but it's too late for that)
- * 
- * if we are unable to find a DBN, can ask return to HTML and say "unable to find this DBN, would you like to reload
- * the database and try again?" (this way our rows are updated and we are able to quickly find any newly added blocks)
- * 
- * find a way to update blocksCollection with blocks or with refreshing the database...
- * 
- * we can reload database every 60 seconds (if the previous call to google script has returned)
- * (or even call as soon as the previous call is returned, but that's excessive)
  * 
  * the index block property might not be necessary...
  * 
@@ -49,35 +36,40 @@
  * add status volumes to all sections:
  * tungsten: 1 -> 2
  * epoxy: 2 -> 3
- * dimensions: 4 -> 5?
- * 
- * add volume column to density
- * 
- * do we need overwrite column, or is the red enough? would save some room
- * 
- * list of other sections/functionality to add:
- * - mass change of status/
+ * dimensions: 4 -> 5? or 3 -> 5 (not consistent)
  * 
  * begin each section with "how many blocks would you like to add?" then add that many rows
  * OR use select blocks by status (and other things?) easy to add checkboxes to datatable, I think (or just CSS grid)
  * 
  * clear row or clear all option?
  * 
- * does unexpectedValue check change in DBN? it should
+ * + 7 hrs
+ * + 3.5 hrs
+ * + 6.5 hrs
+ * + 3 hrs
  * 
- * fix batchSubmit
+ * grading density things
  * 
- * +3.5 hrs
- *
- * tell when the database was loaded (and change to bold red or something after 10 minutes or so idk)
+ * fiber loading section
  * 
- * don't complain (turn red) when the input is the same as  (now a problem since block data is updated after submission)
- * OR alternatively, clear the inputs after subission? (to show that this is what's in the database now)
+ * testing? (LT and NL)
  * 
- * bug: when there are multiple calls to getDatabase, you will get multiple alerts asking you to refresh the database
- * (not just one 5 minutes after the most recent one...)
- * ...could keep track of time of most recent database load, then change the setTImeout to recurse and count to some value,
- * checking if MY time was the most recent time (and if not, then breaking the recursive calls)
+ * shipment
+ * 
+ * test grading
+ * 
+ * experiment or think about unexpected behavior (mashing submit button, things like that)
+ * perhaps safest to hide submit button while interacting with the google script
+ * (that way, if something goes wrong like an unexpected error, you can't press the submit button)
+ * 
+ * could make some object where you can do obj.selectDensity which takes care of changing displays
+ * 
+ * current TODO:
+ * - ready for testing
+ * - show dimension and density grades
+ * - automate keyups
+ * - show status in all sections
+ * - shipment, fiber loading, test grading (and testing NL and LT?) sections
  */
 
 function doGet () {
@@ -250,7 +242,9 @@ function setBlockData (data) {
         if (!allowInvalid || (allowInvalid && !values[j].ignoreError)) {
           if (type === 'VALUE_IN_LIST') {
             const requiredValues = args[0]
-            if (!requiredValues.includes(value)) {
+            // perform a castful comparison, since we have not cast to numbers where appropriate...
+            // (this way, '' == 0, but I think that's fine, since excel does that)
+            if (!requiredValues.some(function (element) { return element == value })) {
               dataValidationErrors.push(err)
             }
           } else if (type === 'DATE_IS_VALID_DATE') {
