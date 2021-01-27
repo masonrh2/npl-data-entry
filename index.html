@@ -406,10 +406,120 @@
         return blocks
       }
     }
-    //
-    // could have two types, error (don't try to submit) and warning (ask for confirmation)
-    // (although these esentially do the same thing)
-    //  data validation rules for input data
+    const dimNames = ['l', 'bt', 'bb', 'bh', 'st', 'sb', 'sh']
+    function getDevGrade (dim, dimName, blockType) {
+      const index = dimNames.indexOf(dimName)
+      const expected = dimensionsMap.get(blockType)[index]
+      const dev = dim - expected
+      const gradingFunction = dimName === 'l' ? grade_dL : grade_otherDev
+      return gradingFunction(dev)
+    }
+    // COLORS (HEX)
+    const red = '#800000'
+    const blue = '#0080ff'
+    const greenish = '#00ffbf'
+    const purple = '#aa00ff'
+    const magenta = '#ff00ff'
+    const orange = '#e66000'
+    const green = '#008000'
+    const black = '#000000'
+    const grey = '#ababab'
+    // GRADING
+    // larger grade values are worse
+    const notStartedGrade = 0
+    const aGrade = 1
+    const bGrade = 2
+    const cGrade = 3
+    const fGrade = 4
+    const testColors = [grey, green, orange, blue, red]
+    const testSymbols = ['-', '✓', '!', '!', '✗']
+    const checkColors = { false: grey, true: green }
+    function grade_pregrade (grade) {
+      if (grade === '5a') {
+        return aGrade
+      } else if (grade === '5b') {
+        return bGrade
+      } else if (grade === '5c') {
+        return cGrade
+      } else if (grade === '8') {
+        return fGrade
+      } else {
+        return null
+      }
+    }
+    function grade_density (density) {
+      if (density > 8.8) {
+        return aGrade
+      } else if (density >= 8.7) {
+        return bGrade
+      } else if (density >= 8.4) {
+        return cGrade
+      } else {
+        return fGrade
+      }
+    }
+    function grade_dL (dL) {
+      if (Math.abs(dL) <= 0.03) {
+        return aGrade
+      } else if (dL <= 0.05 && dL >= -0.1) {
+        return bGrade
+      } else {
+        return fGrade
+      }
+    }
+    function grade_otherDev (dev) {
+      if (Math.abs(dev) <= 0.02) {
+        return aGrade
+      } else if (dev <= 0.02 && dev >= -0.04) {
+        return bGrade
+      } else {
+        return fGrade
+      }
+    }
+    function grade_missingRow (x) {
+      if (x) {
+        return fGrade
+      } else {
+        return aGrade
+      }
+    }
+    function grade_thirteenHoles (x) {
+      if (x) {
+        return fGrade
+      } else {
+        return aGrade
+      }
+    }
+    function grade_fiberPercentage (percent) {
+      if (percent >= 98) {
+        return aGrade
+      } else if (percent >= 97) {
+        return bGrade
+      } else if (percent >= 96) {
+        return cGrade
+      } else {
+        return fGrade
+      }
+    }
+    function grade_tower (percent) {
+      if (percent >= 96) {
+        return aGrade
+      } else if (percent >= 94) {
+        return bGrade
+      } else if (percent >= 92) {
+        return cGrade
+      } else {
+        return fGrade
+      }
+    }
+    function grade_scintRatio (ratio) {
+      if (ratio >= 0.7) {
+        return aGrade
+      } else {
+        return fGrade
+      }
+    }
+    // BASIC (CLIENT-SIDE) DATA VALIDATION
     const validate = {
       powder: function (data) {
         if (data === 'HCS') {
@@ -578,337 +688,761 @@
       }
     }
 
+    function getGradeSpan (grade) {
+      const span = document.createElement('span')
+      span.textContent = testSymbols[grade]
+      span.style.color = testColors[grade]
+      span.style.fontWeight = 'bold'
+      span.classList.add('gradeSpan')
+      return span.outerHTML
+    }
+    const defaultGradeSpan = getGradeSpan(0)
+    function getDevHasData (dimName) {
+      return function (index, rowData, block) {
+        const input = rowData[index]
+        const curSpan = $(input).parent().children('span.gradeSpan')
+        const inputValue = input.value
+        const placeholder = input.placeholder
+        let num
+        if (inputValue !== '' && !isNaN(inputValue)) {
+          // then use input
+          num = Number(inputValue)
+        } else if (placeholder !== '' && !isNaN(placeholder)) {
+          // then use block value
+          num = Number(placeholder)
+        }
+        if (num != null) {
+          const newSpan = getGradeSpan(getDevGrade(num, dimName, block.block))
+          curSpan.replaceWith(newSpan)
+        } else {
+          curSpan.replaceWith(defaultGradeSpan)
+        }
+      }
+    }
+    function devNoData (index, rowData, block) {
+      const input = rowData[index]
+      const curSpan = $(input).parent().children('span.gradeSpan')
+      curSpan.replaceWith(defaultGradeSpan)
+    }
+    function dbnChange (divRow, that) {
+      const dbn = $(that).val()
+      const block = dbn === '' ? null : blocksCollection.getBlockByStringDBN(dbn)
+      const findBlock = $(divRow).find("span[data-name='block']")
+      const blockElement = findBlock.length > 0 ? findBlock.eq(0) : null
+      const findStatus = $(divRow).find("span[data-name='status']")
+      const statusElement = findStatus.length > 0 ? findStatus.eq(0) : null
+      if (block != null) {
+        $(divRow).find('input.updateDBvlaue').each(function (index) {
+          const element = this
+          element.disabled = false
+          element.style.backgroundColor = 'transparent'
+          $(element).keyup()
+        })
+        if (blockElement != null) { blockElement.text(block.block) }
+        if (statusElement != null) { statusElement.text(block.status) }
+      } else {
+        $(divRow).find('input.updateDBvlaue').each(function (index) {
+          const element = this
+          element.value = ''
+          element.placeholder = ''
+          element.disabled = true
+          element.style.border = '1px solid grey'
+          element.style.backgroundColor = '#eee'
+        })
+        if (blockElement != null) { blockElement.text('') }
+        if (statusElement != null) { statusElement.text('') }
+      }
+    }
+    function updateThisDBValue (divRow, element, toFixed) {
+      const dbn = $(divRow).find("input[data-name='dbn']").val()
+      const block = dbn === '' ? null : blocksCollection.getBlockByStringDBN(dbn)
+      let placeholder = block[element.getAttribute('data-name')]
+      if (placeholder !== null && toFixed > 0) { placeholder = placeholder.toFixed(toFixed) }
+      updateTextInput(element, placeholder)
+    }
+    function updateTextInput (inputElement, placeholder) {
+      if (placeholder != null) {
+        inputElement.placeholder = placeholder
+        if (inputElement.value === '') {
+          inputElement.style.border = '2px solid orange'
+          // we knowinglly use a castful comparison to avoid tedium
+        } else if (inputElement.value == placeholder) {
+          inputElement.style.border = '2px solid green'
+        } else {
+          inputElement.style.border = '2px solid red'
+        }
+      } else {
+        inputElement.placeholder = ''
+        if (inputElement.value === '') {
+          inputElement.style.border = '1px solid grey'
+        } else {
+          inputElement.style.border = '2px solid green'
+        }
+      }
+    }
+    function updateStatusDiv (divRow, element, statusConfig) {
+
+    }
+    const epoxyStatusConfig = {
+      errorFromStatus: [0, 7],
+      goodFromStatus: [1],
+      errorToStatus: [],
+      goodToStatus: [2]
+    }
+    const tungstenStatusConfig = {
+      errorFromStatus: [0, 7],
+      goodFromStatus: [2],
+      errorToStatus: [],
+      goodToStatus: [3]
+    }
+    const densityStatusConfig = {
+      errorFromStatus: [0, 7],
+      goodFromStatus: [3, 4],
+      errorToStatus: [],
+      goodToStatus: [5]
+    }
     // TABLE CONFIGURATIONS
     const tungstenConfig = [
       {
         headerName: 'DBN',
-        propertyName: 'dbn',
-        width: 1,
-        minWidth: 60,
-        numeric: false,
-        toFixed: null,
-        update: false,
-        input: true,
-        batchInputClass: null,
-        disabled: false,
-        calculation: null
+        colWidth: '60px',
+        DOMs: [
+          {
+            options: {
+              type: 'input',
+              classes: [],
+              attributes: [['data-name', 'dbn'], ['type', 'text']],
+              style: [['min-width', 60]]
+            },
+            update: {
+              numeric: false,
+              fn: function (divRow, that) {
+                dbnChange(divRow, that)
+              }
+            }
+          }
+        ]
+      },
+      {
+        headerName: 'Block',
+        colWidth: '60px',
+        DOMs: [
+          {
+            options: {
+              type: 'span',
+              classes: [],
+              attributes: [['data-name', 'block']],
+              style: [['min-width', 60]]
+            },
+            update: {
+              numeric: true,
+              fn: null
+            }
+          }
+        ]
+      },
+      {
+        headerName: 'Status',
+        colWidth: '60px',
+        colWeaderWidth: '60px'65px',
+        DOMs: [
+          { // CURRENT STATUS
+            options: {
+              type: 'span',
+              classes: [],
+              attributes: [['data-name', 'status']],
+              style: [['width', '40%'],['margin-left', '5px']]
+            },
+            update: {
+              numeric: false,
+              fn: null
+            }
+          },
+          { // (ARROW)
+            options: {
+              type: 'span',
+              classes: [],
+              attributes: [],
+              style: [['margin-left', '5px'], ['width', '20%']],
+              innerHTML: '→'
+            },
+            update: {
+              numeric: false,
+              fn: null
+            }
+          },
+          { // INPUT STATUS
+            options: {
+              type: 'input',
+              classes: ['inputStatus'],
+              attributes: [['data-name', 'status'], ['type', 'text']],
+              style: [['margin-left', '5px'], ['min-width', 20], ['width', '40%']]
+            },
+            update: {
+              numeric: false,
+              fn: function (divRow, that) {
+                // do some checks
+              }
+            }
+          }
+        ]
       },
       {
         headerName: 'Powder',
-        propertyName: 'powder',
-        width: 2,
-        minWidth: 60,
-        numeric: false,
-        toFixed: null,
-        update: true,
-        input: true,
-        batchInputClass: 'inputPowder',
-        disabled: true,
-        calculation: null
+        colWidth: '60px',
+        DOMs: [
+          {
+            options: {
+              type: 'input',
+              classes: ['inputPowder', 'updateDBvlaue'],
+              attributes: [['data-name', 'powder'], ['type', 'text']],
+              style: [['min-width', 60]]
+            },
+            update: {
+              numeric: false,
+              fn: function (divRow, that) {
+                updateThisDBValue(divRow, that, -1)
+              }
+            }
+          }
+        ]
       },
       {
         headerName: 'Bucket #',
-        propertyName: 'bucket',
-        width: 2,
-        minWidth: 60,
-        numeric: false,
-        toFixed: null,
-        update: true,
-        input: true,
-        batchInputClass: 'inputBucket',
-        disabled: true,
-        calculation: null
+        colWidth: '60px',
+        DOMs: [
+          {
+            options: {
+              type: 'input',
+              classes: ['inputBucket', 'updateDBvlaue'],
+              attributes: [['data-name', 'bucket'], ['type', 'text']],
+              style: [['min-width', 60]]
+            },
+            update: {
+              numeric: false,
+              fn: function (divRow, that) {
+                updateThisDBValue(divRow, that, -1)
+              }
+            }
+          }
+        ]
       },
       {
         headerName: 'Mold #',
-        propertyName: 'moldSeries',
-        width: 1,
-        minWidth: 60,
-        numeric: false,
-        toFixed: null,
-        update: true,
-        input: true,
-        batchInputClass: null,
-        disabled: true,
-        calculation: null
+        colWidth: '60px',
+        DOMs: [
+          {
+            options: {
+              type: 'input',
+              classes: ['updateDBvlaue'],
+              attributes: [['data-name', 'moldSeries'], ['type', 'text']],
+              style: [['min-width', 60]]
+            },
+            update: {
+              numeric: false,
+              fn: function (divRow, that) {
+                updateThisDBValue(divRow, that, -1)
+              }
+            }
+          }
+        ]
       },
       {
         headerName: 'Empty Mass (g)',
-        propertyName: 'emptyMoldMass',
-        width: 2,
-        minWidth: 100,
-        numeric: true,
-        toFixed: null,
-        update: true,
-        input: true,
-        batchInputClass: null,
-        disabled: true,
-        calculation: null
+        colWidth: '60px',
+        DOMs: [
+          {
+            options: {
+              type: 'input',
+              classes: ['updateDBvlaue'],
+              attributes: [['data-name', 'emptyMoldMass'], ['type', 'text']],
+              style: [['min-width', 100]]
+            },
+            update: {
+              numeric: true,
+              fn: function (divRow, that) {
+                updateThisDBValue(divRow, that, -1)
+              }
+            }
+          }
+        ]
       },
       {
         headerName: 'Filled Mass (g)',
-        propertyName: 'filledMoldMass',
-        width: 2,
-        minWidth: 100,
-        numeric: true,
-        toFixed: null,
-        update: true,
-        input: true,
-        batchInputClass: null,
-        disabled: true,
-        calculation: null
+        colWidth: '60px',
+        DOMs: [
+          {
+            options: {
+              type: 'input',
+              classes: ['updateDBvlaue'],
+              attributes: [['data-name', 'filledMoldMass'], ['type', 'text']],
+              style: [['min-width', 100]]
+            },
+            update: {
+              numeric: true,
+              fn: function (divRow, that) {
+                updateThisDBValue(divRow, that, -1)
+              }
+            }
+          }
+        ]
       },
       {
         headerName: 'Filling Date',
-        propertyName: 'tungstenFillingDate',
-        width: 2,
-        minWidth: 80,
-        numeric: false,
-        toFixed: null,
-        update: true,
-        input: true,
-        batchInputClass: 'inputDate',
-        disabled: true,
-        calculation: null
+        colWidth: '60px',
+        DOMs: [
+          {
+            options: {
+              type: 'input',
+              classes: ['inputDate', 'updateDBvlaue'],
+              attributes: [['data-name', 'tungstenFillingDate'], ['type', 'text']],
+              style: [['min-width', 80]]
+            },
+            update: {
+              numeric: false,
+              fn: function (divRow, that) {
+                updateThisDBValue(divRow, that, -1)
+              }
+            }
+          }
+        ]
       },
       {
         headerName: 'Filler Initials',
-        propertyName: 'tungstenFiller',
-        width: 2,
-        minWidth: 80,
-        numeric: false,
-        toFixed: null,
-        update: true,
-        input: true,
-        batchInputClass: 'inputFiller',
-        disabled: true,
-        calculation: null
+        colWidth: '60px',
+        DOMs: [
+          {
+            options: {
+              type: 'input',
+              classes: ['inputFiller', 'updateDBvlaue'],
+              attributes: [['data-name', 'tungstenFiller'], ['type', 'text']],
+              style: [['min-width', 80]]
+            },
+            update: {
+              numeric: false,
+              fn: function (divRow, that) {
+                updateThisDBValue(divRow, that, -1)
+              }
+            }
+          }
+        ]
       }
     ]
     const epoxyConfig = [
       {
         headerName: 'DBN',
-        propertyName: 'dbn',
-        width: 1,
-        minWidth: 60,
-        numeric: false,
-        toFixed: null,
-        update: false,
-        input: true,
-        batchInputClass: null,
-        disabled: false,
-        calculation: null
+        colWidth: '60px',
+        DOMs: [
+          {
+            options: {
+              type: 'input',
+              classes: [],
+              attributes: [['data-name', 'dbn'], ['type', 'text']],
+              style: [['min-width', 60]]
+            },
+            update: {
+              numeric: false,
+              fn: function (divRow, that) {
+                dbnChange(divRow, that)
+              }
+            }
+          }
+        ]
+      },
+      {
+        headerName: 'Block',
+        colWidth: '60px',
+        DOMs: [
+          {
+            options: {
+              type: 'span',
+              classes: [],
+              attributes: [['data-name', 'block']],
+              style: [['min-width', 60]]
+            },
+            update: {
+              numeric: true,
+              fn: null
+            }
+          }
+        ]
       },
       {
         headerName: 'Batch',
-        propertyName: 'epoxyBatch',
-        width: 1,
-        minWidth: 60,
-        numeric: false,
-        toFixed: null,
-        update: true,
-        input: true,
-        batchInputClass: 'inputBatch',
-        disabled: true,
-        calculation: null
+        colWidth: '60px',
+        DOMs: [
+          {
+            options: {
+              type: 'input',
+              classes: ['inputBatch', 'updateDBvlaue'],
+              attributes: [['data-name', 'epoxyBatch'], ['type', 'text']],
+              style: [['min-width', 60]]
+            },
+            update: {
+              numeric: false,
+              fn: function (divRow, that) {
+                updateThisDBValue(divRow, that, -1)
+              }
+            }
+          }
+        ]
       },
       {
         headerName: 'Resin Mass (g)',
-        propertyName: 'resinMass',
-        width: 2,
-        minWidth: 100,
-        numeric: true,
-        toFixed: null,
-        update: true,
-        input: true,
-        batchInputClass: 'inputResinMass',
-        disabled: true,
-        calculation: null
+        colWidth: '60px',
+        DOMs: [
+          {
+            options: {
+              type: 'input',
+              classes: ['inputResinMass', 'updateDBvlaue'],
+              attributes: [['data-name', 'resinMass'], ['type', 'text']],
+              style: [['min-width', 100]]
+            },
+            update: {
+              numeric: true,
+              fn: function (divRow, that) {
+                updateThisDBValue(divRow, that, -1)
+              }
+            }
+          }
+        ]
       },
       {
         headerName: 'Hardener Mass (g)',
-        propertyName: 'hardenerMass',
-        width: 2,
-        minWidth: 120,
-        numeric: true,
-        toFixed: null,
-        update: true,
-        input: true,
-        batchInputClass: 'inputHardenerMass',
-        disabled: true,
-        calculation: null
+        colWidth: '60px',
+        DOMs: [
+          {
+            options: {
+              type: 'input',
+              classes: ['inputHardenerMass', 'updateDBvlaue'],
+              attributes: [['data-name', 'hardenerMass'], ['type', 'text']],
+              style: [['min-width', 120]]
+            },
+            update: {
+              numeric: true,
+              fn: function (divRow, that) {
+                updateThisDBValue(divRow, that, -1)
+              }
+            }
+          }
+        ]
       },
       {
         headerName: 'Potting Notes',
-        propertyName: 'pottingNotes',
-        width: 2,
-        minWidth: 100,
-        numeric: false,
-        toFixed: null,
-        update: true,
-        input: true,
-        batchInputClass: 'inputPottingNotes',
-        disabled: true,
-        calculation: null
+        colWidth: '60px',
+        DOMs: [
+          {
+            options: {
+              type: 'input',
+              classes: ['inputPottingNotes', 'updateDBvlaue'],
+              attributes: [['data-name', 'pottingNotes'], ['type', 'text']],
+              style: [['min-width', 100]]
+            },
+            update: {
+              numeric: false,
+              fn: function (divRow, that) {
+                updateThisDBValue(divRow, that, -1)
+              }
+            }
+          }
+        ]
       },
       {
         headerName: 'Filling Time (min)',
-        propertyName: 'epoxyFillingTime',
-        width: 2,
-        minWidth: 80,
-        numeric: true,
-        toFixed: null,
-        update: true,
-        input: true,
-        batchInputClass: null,
-        disabled: true,
-        calculation: null
+        colWidth: '60px',
+        DOMs: [
+          {
+            options: {
+              type: 'input',
+              classes: ['updateDBvlaue'],
+              attributes: [['data-name', 'epoxyFillingTime'], ['type', 'text']],
+              style: [['min-width', 80]]
+            },
+            update: {
+              numeric: true,
+              fn: function (divRow, that) {
+                updateThisDBValue(divRow, that, -1)
+              }
+            }
+          }
+        ]
       },
       {
         headerName: 'Filling Date',
-        propertyName: 'epoxyFillingDate',
-        width: 2,
-        minWidth: 80,
-        numeric: false,
-        toFixed: null,
-        update: true,
-        input: true,
-        batchInputClass: 'inputDate',
-        disabled: true,
-        calculation: null
+        colWidth: '60px',
+        DOMs: [
+          {
+            options: {
+              type: 'input',
+              classes: ['inputDate', 'updateDBvlaue'],
+              attributes: [['data-name', 'epoxyFillingDate'], ['type', 'text']],
+              style: [['min-width', 80]]
+            },
+            update: {
+              numeric: false,
+              fn: function (divRow, that) {
+                updateThisDBValue(divRow, that, -1)
+              }
+            }
+          }
+        ]
       },
       {
         headerName: 'Preparer Initials',
-        propertyName: 'epoxyPreparer',
-        width: 2,
-        minWidth: 100,
-        numeric: false,
-        toFixed: null,
-        update: true,
-        input: true,
-        batchInputClass: 'inputPreparer',
-        disabled: true,
-        calculation: null
+        colWidth: '60px',
+        DOMs: [
+          {
+            options: {
+              type: 'input',
+              classes: ['inputPreparer', 'updateDBvlaue'],
+              attributes: [['data-name', 'epoxyPreparer'], ['type', 'text']],
+              style: [['min-width', 100]]
+            },
+            update: {
+              numeric: false,
+              fn: function (divRow, that) {
+                updateThisDBValue(divRow, that, -1)
+              }
+            }
+          }
+        ]
       }
     ]
     const densityConfig = [
       {
         headerName: 'DBN',
-        propertyName: 'dbn',
-        width: 1,
-        minWidth: 60,
-        numeric: false,
-        toFixed: null,
-        update: false,
-        input: true,
-        batchInputClass: null,
-        disabled: false,
-        calculation: null
+        colWidth: '60px',
+        DOMs: [
+          {
+            options: {
+              type: 'input',
+              classes: [],
+              attributes: [['data-name', 'dbn'], ['type', 'text']],
+              style: [['min-width', 60]]
+            },
+            update: {
+              numeric: false,
+              fn: function (divRow, that) {
+                dbnChange(divRow, that)
+              }
+            }
+          }
+        ]
+      },
+      {
+        headerName: 'Block',
+        colWidth: '60px',
+        DOMs: [
+          {
+            options: {
+              type: 'span',
+              classes: [],
+              attributes: [['data-name', 'block']],
+              style: [['min-width', 60]]
+            },
+            update: {
+              numeric: true,
+              fn: null
+            }
+          }
+        ]
       },
       {
         headerName: 'L (in)',
-        propertyName: 'l',
-        width: 1,
-        minWidth: 60,
-        numeric: true,
-        toFixed: 4,
-        update: true,
-        input: true,
-        batchInputClass: null,
-        disabled: true,
-        calculation: null
+        colWidth: '60px',
+        DOMs: [
+          {
+            options: {
+              type: 'input',
+              classes: ['updateDBvlaue'],
+              attributes: [['data-name', 'l'], ['type', 'text']],
+              style: [['min-width', 60]]
+            },
+            update: {
+              numeric: true,
+              fn: function (divRow, that) {
+                updateThisDBValue(divRow, that, 4)
+              }
+            }
+          }
+        ],
+        append: defaultGradeSpan,
+        calculation: {
+          hasData: getDevHasData('l'),
+          noData: devNoData
+        }
       },
       {
         headerName: 'BT (in)',
-        propertyName: 'bt',
-        width: 1,
-        minWidth: 60,
-        numeric: true,
-        toFixed: 4,
-        update: true,
-        input: true,
-        batchInputClass: null,
-        disabled: true,
-        calculation: null
+        colWidth: '60px',
+        DOMs: [
+          {
+            options: {
+              type: 'input',
+              classes: ['updateDBvlaue'],
+              attributes: [['data-name', 'bt'], ['type', 'text']],
+              style: [['min-width', 60]]
+            },
+            update: {
+              numeric: true,
+              fn: function (divRow, that) {
+                updateThisDBValue(divRow, that, 4)
+              }
+            }
+          }
+        ],
+        append: defaultGradeSpan,
+        calculation: {
+          hasData: getDevHasData('bt'),
+          noData: devNoData
+        }
       },
       {
         headerName: 'BB (in)',
-        propertyName: 'bb',
-        width: 1,
-        minWidth: 60,
-        numeric: true,
-        toFixed: 4,
-        update: true,
-        input: true,
-        batchInputClass: null,
-        disabled: true,
-        calculation: null
+        colWidth: '60px',
+        DOMs: [
+          {
+            options: {
+              type: 'input',
+              classes: ['updateDBvlaue'],
+              attributes: [['data-name', 'bb'], ['type', 'text']],
+              style: [['min-width', 60]]
+            },
+            update: {
+              numeric: true,
+              fn: function (divRow, that) {
+                updateThisDBValue(divRow, that, 4)
+              }
+            }
+          }
+        ],
+        append: defaultGradeSpan,
+        calculation: {
+          hasData: getDevHasData('bb'),
+          noData: devNoData
+        }
       },
       {
         headerName: 'BH (in)',
-        propertyName: 'bh',
-        width: 1,
-        minWidth: 60,
-        numeric: true,
-        toFixed: 4,
-        update: true,
-        input: true,
-        batchInputClass: null,
-        disabled: true,
-        calculation: null
+        colWidth: '60px',
+        DOMs: [
+          {
+            options: {
+              type: 'input',
+              classes: ['updateDBvlaue'],
+              attributes: [['data-name', 'bh'], ['type', 'text']],
+              style: [['min-width', 60]]
+            },
+            update: {
+              numeric: true,
+              fn: function (divRow, that) {
+                updateThisDBValue(divRow, that, 4)
+              }
+            }
+          }
+        ],
+        append: defaultGradeSpan,
+        calculation: {
+          hasData: getDevHasData('bh'),
+          noData: devNoData
+        }
       },
       {
         headerName: 'ST (in)',
-        propertyName: 'st',
-        width: 1,
-        minWidth: 60,
-        numeric: true,
-        toFixed: 4,
-        update: true,
-        input: true,
-        batchInputClass: null,
-        disabled: true,
-        calculation: null
+        colWidth: '60px',
+        DOMs: [
+          {
+            options: {
+              type: 'input',
+              classes: ['updateDBvlaue'],
+              attributes: [['data-name', 'st'], ['type', 'text']],
+              style: [['min-width', 60]]
+            },
+            update: {
+              numeric: true,
+              fn: function (divRow, that) {
+                updateThisDBValue(divRow, that, 4)
+              }
+            }
+          }
+        ],
+        append: defaultGradeSpan,
+        calculation: {
+          hasData: getDevHasData('st'),
+          noData: devNoData
+        }
       },
       {
         headerName: 'SB (in)',
-        propertyName: 'sb',
-        width: 1,
-        minWidth: 60,
-        numeric: true,
-        toFixed: 4,
-        update: true,
-        input: true,
-        batchInputClass: null,
-        disabled: true,
-        calculation: null
+        colWidth: '60px',
+        DOMs: [
+          {
+            options: {
+              type: 'input',
+              classes: ['updateDBvlaue'],
+              attributes: [['data-name', 'sb'], ['type', 'text']],
+              style: [['min-width', 60]]
+            },
+            update: {
+              numeric: true,
+              fn: function (divRow, that) {
+                updateThisDBValue(divRow, that, 4)
+              }
+            }
+          }
+        ],
+        append: defaultGradeSpan,
+        calculation: {
+          hasData: getDevHasData('sb'),
+          noData: devNoData
+        }
       },
       {
         headerName: 'SH (in)',
-        propertyName: 'sh',
-        width: 1,
-        minWidth: 60,
-        numeric: true,
-        toFixed: 4,
-        update: true,
-        input: true,
-        batchInputClass: null,
-        disabled: true,
-        calculation: null
+        colWidth: '60px',
+        DOMs: [
+          {
+            options: {
+              type: 'input',
+              classes: ['updateDBvlaue'],
+              attributes: [['data-name', 'sh'], ['type', 'text']],
+              style: [['min-width', 60]]
+            },
+            update: {
+              numeric: true,
+              fn: function (divRow, that) {
+                updateThisDBValue(divRow, that, 4)
+              }
+            }
+          }
+        ],
+        append: defaultGradeSpan,
+        calculation: {
+          hasData: getDevHasData('sh'),
+          noData: devNoData
+        }
       },
       {
         headerName: 'Volume',
-        propertyName: 'volume',
-        width: 1,
-        minWidth: 60,
-        numeric: true,
-        toFixed: null,
-        update: false,
-        input: false,
-        batchInputClass: null,
-        disabled: false,
+        colWidth: '60px',
+        DOMs: [
+          {
+            options: {
+              type: 'span',
+              classes: [],
+              attributes: [['data-name', 'volume']],
+              style: [['min-width', 60]]
+            },
+            update: {
+              numeric: true,
+              fn: null
+            }
+          }
+        ],
         calculation: {
           hasData: function (index, rowData, block) {
+            const densitySpan = rowData[densitySettings.properties.density]
+            const densityGradeSpan = $(densitySpan).parent().children('span.gradeSpan')
             const blockDimensions = [block.l, block.bt, block.bb, block.bh, block.st, block.sb, block.sh]
             const inputDimensions = [
               rowData[densitySettings.properties.l].value,
@@ -935,88 +1469,128 @@
               let density
               if (mass != null) { density = mass / vol }
               if (density != null) {
-                rowData[densitySettings.properties.density].innerHTML = density.toFixed(2)
+                densitySpan.innerHTML = density.toFixed(2)
+                densityGradeSpan.replaceWith(getGradeSpan(grade_density(density)))
               } else {
-                rowData[densitySettings.properties.density].innerHTML = ''
+                densitySpan.innerHTML = ''
+                densityGradeSpan.replaceWith(defaultGradeSpan)
               }
               // grade these and display checkmark or something like that (don't make the colors confusing..)
               // (see info station for checkmarks, etc)
               rowData[index].innerHTML = vol.toFixed(1)
             } else {
               rowData[index].innerHTML = ''
-              rowData[densitySettings.properties.density].innerHTML = ''
+              densitySpan.innerHTML = ''
+              densityGradeSpan.replaceWith(defaultGradeSpan)
             }
           },
           noData: function (index, rowData, block) {
+            const densitySpan = rowData[densitySettings.properties.density]
+            const densityGradeSpan = $(densitySpan).parent().children('span.gradeSpan')
             rowData[index].innerHTML = ''
-            rowData[densitySettings.properties.density].innerHTML = ''
+            densitySpan.innerHTML = ''
+            densityGradeSpan.replaceWith(defaultGradeSpan)
           }
         }
       },
       {
         headerName: 'Density (g/mL)',
-        propertyName: 'density',
-        width: 1,
-        minWidth: 60,
-        numeric: true,
-        toFixed: null,
-        update: false,
-        input: false,
-        batchInputClass: null,
-        disabled: false,
-        calculation: null
+        colWidth: '60px',
+        DOMs: [
+          {
+            options: {
+              type: 'span',
+              classes: [],
+              attributes: [['data-name', 'density']],
+              style: [['min-width', 60]]
+            },
+            update: {
+              numeric: true,
+              fn: null
+            }
+          }
+        ],
+        append: defaultGradeSpan
       },
       {
         headerName: 'Tester Initials',
-        propertyName: 'dimensionTester',
-        width: 2,
-        minWidth: 100,
-        numeric: false,
-        toFixed: null,
-        update: true,
-        input: true,
-        batchInputClass: 'inputTester',
-        disabled: true,
-        calculation: null
+        colWidth: '60px',
+        DOMs: [
+          {
+            options: {
+              type: 'input',
+              classes: ['inputTester', 'updateDBvlaue'],
+              attributes: [['data-name', 'dimensionTester'], ['type', 'text']],
+              style: [['min-width', 60]]
+            },
+            update: {
+              numeric: false,
+              fn: function (divRow, that) {
+                updateThisDBValue(divRow, that, -1)
+              }
+            }
+          }
+        ]
       },
       {
         headerName: 'Mass (g)',
-        propertyName: 'mass',
-        width: 1,
-        minWidth: 60,
-        numeric: true,
-        toFixed: null,
-        update: true,
-        input: true,
-        batchInputClass: null,
-        disabled: true,
-        calculation: null
+        colWidth: '60px',
+        DOMs: [
+          {
+            options: {
+              type: 'input',
+              classes: ['updateDBvlaue'],
+              attributes: [['data-name', 'mass'], ['type', 'text']],
+              style: [['min-width', 60]]
+            },
+            update: {
+              numeric: true,
+              fn: function (divRow, that) {
+                updateThisDBValue(divRow, that, -1)
+              }
+            }
+          }
+        ]
       },
       {
         headerName: 'Tester Initials',
-        propertyName: 'massTester',
-        width: 2,
-        minWidth: 100,
-        numeric: false,
-        toFixed: null,
-        update: true,
-        input: true,
-        batchInputClass: 'inputTester',
-        disabled: true,
-        calculation: null
+        colWidth: '60px',
+        DOMs: [
+          {
+            options: {
+              type: 'input',
+              classes: ['inputTester', 'updateDBvlaue'],
+              attributes: [['data-name', 'massTester'], ['type', 'text']],
+              style: [['min-width', 60]]
+            },
+            update: {
+              numeric: false,
+              fn: function (divRow, that) {
+                updateThisDBValue(divRow, that, -1)
+              }
+            }
+          }
+        ]
       },
       {
         headerName: 'Date',
-        propertyName: 'densityDate',
-        width: 2,
-        minWidth: 80,
-        numeric: false,
-        toFixed: null,
-        update: true,
-        input: true,
-        batchInputClass: 'inputDate',
-        disabled: true,
-        calculation: null
+        colWidth: '60px',
+        DOMs: [
+          {
+            options: {
+              type: 'input',
+              classes: ['inputDate', 'updateDBvlaue'],
+              attributes: [['data-name', 'densityDate'], ['type', 'text']],
+              style: [['min-width', 80]]
+            },
+            update: {
+              numeric: false,
+              fn: function (divRow, that) {
+                updateThisDBValue(divRow, that, -1)
+              }
+            }
+          }
+        ]
       }
     ]
     const tungstenRows = []
@@ -1025,21 +1599,44 @@
     const tungstenSettings = {
       config: tungstenConfig,
       table: $('#tungstenGridTable'),
-      properties: null,
-      rows: tungstenRows
+      rows: tungstenRows,
+      name: 'tungsten'
     }
     const epoxySettings = {
       config: epoxyConfig,
       table: $('#epoxyGridTable'),
-      properties: null,
-      rows: epoxyRows
+      rows: epoxyRows,
+      name: 'epoxy'
     }
     const densitySettings = {
       config: densityConfig,
       table: $('#densityGridTable'),
-      properties: null,
-      rows: densityRows
+      rows: densityRows,
+      name: 'density'
     }
+    /*
+    add as DOM config for each column, then iterate through them in addRows and in keyup
+    this should be a blueprint for how to build each cell (what goes in the div) and how to update values
+
+    hasData and noData translate to "what to do on keyup and a block is found" and "what to do on keyup and a block is not found"
+    perhaps it would be better to do individual keyup functions...but then we would need to define a DBN keyup for EACH column
+    (what to do when the DBN input is changed) (though most of these could be the same (just change placeholder))
+    then volume, density need to change on any dim keyup (and mass too, for density)
+    could define in each column:
+    - what fn to call when I am keyed up
+    - what columns I depend on, and what functions to call when each of these are keyed up (THE MORE LIKELY)
+
+    ^ would the second option be the best / most robust?
+    would we ever need the prior?
+
+    then, of course, we could define self-dependence (for grading)
+
+    ...what's the best way to keyup (iterate through these properties?)
+    we would need to reverse these (do on load) and for each column, add keyups of the columns that depend on THIS column
+    ... that coul work...
+
+    */
+
     const allSettings = [tungstenSettings, epoxySettings, densitySettings]
     let currentDate
     let database
@@ -1078,14 +1675,13 @@
           document.getElementById('loadingDatabase').style.display = 'none'
           document.getElementById('sectionSelection').style.display = 'block'
           selectedSection = 'sectionSelection'
-          addSectionProperties()
           setupGridTables()
           addRowByConfig(tungstenSettings, 8)
           addRowByConfig(epoxySettings, 8)
           addRowByConfig(densitySettings, 8)
         }
         function onFailure (err) {
-          console.warn('failed to load database...retrying in 10 seconds')
+          console.error('failed to load database...retrying in 10 seconds')
           window.setTimeout(getDatabaseOnLoad, 10 * 1000)
           throw err
         }
@@ -1097,7 +1693,7 @@
       } catch (err) {
         console.error('unexpected error while getting database...retrying in 10 seconds')
         window.setTimeout(getDatabaseOnLoad, 10 * 1000)
-        throw (err)
+        // throw (err)
       }
     }
     function setupGridTables () {
@@ -1108,7 +1704,7 @@
         let template = ''
         for (const columnConfig of tableSettings.config) {
           tableSettings.table.append($('<div>' + columnConfig.headerName + '</div>').addClass('gridTableHeader'))
-          template += columnConfig.width + 'fr '
+          template += '1' + 'fr '// columnConfig.width + 'fr '
         }
         tableSettings.table.css('grid-template-columns', template).css('margin-top', '1em')
       }
@@ -1122,22 +1718,23 @@
         const row = []
         const rowNum = numRows + i
         for (const config of tableConfig) {
-          const element = $('<div></div>').addClass('gridData')
-          let child
-          if (config.input) {
-            child = $('<input/>').attr('type', 'text').attr('data-row', rowNum).css('min-width', config.minWidth + 'px')
-              .prop('placeholder', '').keyup(function () { generalKeyup(tableSettings, rowNum) })
-            if (config.batchInputClass !== null) {
-              child.addClass(config.batchInputClass)
+          const div = $('<div/>').addClass('gridData').attr('data-row', rowNum)
+          for (const dom of config.DOMs) {
+            const element = $('<' + dom.options.type + '/>')
+            for (const pair of dom.options.attributes) {
+              element.attr(pair[0], pair[1])
             }
-          } else {
-            child = $('<p></p>').attr('data-row', rowNum).addClass('centerP').css('min-width', config.minWidth + 'px')
+            for (const pair of dom.options.style) {
+              element.css(pair[0], pair[1])
+            }
+            for (const cls of dom.options.classes) {
+              element.addClass(cls)
+            }
+            if (dom.options.innerHTML != null) { element.html(dom.options.innerHTML) }
+            if (dom.update.fn != null) { element.keyup(function () { dom.update.fn(rows[rowNum], this) }) }
+            div.append(element)
           }
-          if (config.disabled) {
-            child.prop('disabled', true).addClass('fillEmpty')
-          }
-          element.append(child)
-          row.push(element)
+          row.push(div)
         }
         table.append(row)
         const rowData = table.find('[data-row="' + (numRows + i) + '"]').toArray()
@@ -1185,48 +1782,6 @@
           if (tableConfig[i].calculation != null) {
             tableConfig[i].calculation.noData(i, rowData, block)
           }
-        }
-        // console.log(rowData)
-        updateTextInput(rowData[1], block.l == null ? null : block.l.toFixed(4))
-        updateTextInput(rowData[2], block.bt == null ? null : block.bt.toFixed(4))
-        updateTextInput(rowData[3], block.bb == null ? null : block.bb.toFixed(4))
-        updateTextInput(rowData[4], block.bh == null ? null : block.bh.toFixed(4))
-        updateTextInput(rowData[5], block.st == null ? null : block.st.toFixed(4))
-        updateTextInput(rowData[6], block.sb == null ? null : block.sb.toFixed(4))
-        updateTextInput(rowData[7], block.sh == null ? null : block.sh.toFixed(4))
-
-        updateTextInput(rowData[9], block.dimensionTester)
-        updateTextInput(rowData[10], block.mass)
-        updateTextInput(rowData[11], block.massTester)
-        updateTextInput(rowData[12], block.densityDate)
-      } else {
-        toUpdate.forEach(function (element) {
-          element.value = ''
-          element.placeholder = ''
-          element.disabled = true
-          element.style.border = '1px solid grey'
-          element.style.backgroundColor = '#eee'
-        })
-        rowData[8].innerHTML = ''
-      }
-    }
-    function updateTextInput (element, databaseValue) {
-      if (databaseValue != null) {
-        element.placeholder = databaseValue
-        if (element.value === '') {
-          element.style.border = '2px solid orange'
-          // we knowinglly use a castful comparison to avoid tedium
-        } else if (element.value == databaseValue) {
-          element.style.border = '2px solid green'
-        } else {
-          element.style.border = '2px solid red'
-        }
-      } else {
-        element.placeholder = ''
-        if (element.value === '') {
-          element.style.border = '1px solid grey'
-        } else {
-          element.style.border = '2px solid green'
         }
       }
     }
@@ -1552,7 +2107,7 @@
       }
     }
     
-    function updateDatabase() {
+    function updateDatabase () {
       const start = Date.now()
       document.getElementById('loadingDatabase').style.display = 'block'
       $('.hideWhenLoading').css('display', 'none')
@@ -1598,6 +2153,9 @@
       }
     }
     function updateTables () {
+      console.log('updated tables?')
+      // call all keyups? ig
+      /*
       for (let i = 0; i < tungstenRows.length; i++) {
         generalKeyup(tungstenSettings, i)
       }
@@ -1607,6 +2165,7 @@
       for (let i = 0; i < densityRows.length; i++) {
         generalKeyup(densitySettings, i)
       }
+      */
     }
     function updateTimestamp () {
       // (re)set color/style to the normal
@@ -1621,16 +2180,6 @@
         p.css('color', 'red').css('font-weight', 'bold')
         alert('The script is using data which is at least 5 minutes old. Consider refreshing the database.')
       }
-    }
-    function addSectionProperties () {
-      for (const settings of allSettings) {
-        const tableConfig = settings.config
-        settings.properties = {}
-        for (let i = 0; i < tableConfig.length; i++) {
-          settings.properties[tableConfig[i].propertyName] = i
-        }
-      }
-      console.log(allSettings)
     }
   </script>
 </html>

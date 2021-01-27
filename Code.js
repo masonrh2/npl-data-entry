@@ -43,10 +43,16 @@
  * 
  * clear row or clear all option?
  * 
- * + 7 hrs
- * + 3.5 hrs
+ * + 2.5 hrs
  * + 6.5 hrs
  * + 3 hrs
+ * + 1 hrs
+ * 
+ * consider using a more general way to construct DOM elements inside each tabel cell div...
+ * something like:
+ * [{type: span (data), width: 75%, hasData: fn () {}, noData: fn () {}}, {type: span (grade), width: 25%, hasData: fn () {}, noData: fn () {}}] for density and
+ * [{type: span (data), width: 40%, hasData: fn () {}, noData: fn () {}}, {type: span (static), width: 20%}, {type: input, width: 40%, hasData: fn () {}, noData: fn () {}}]
+ * could be extended to all coloumns and replace the specific cases in generalKeyup
  * 
  * grading density things
  * 
@@ -64,10 +70,13 @@
  * 
  * could make some object where you can do obj.selectDensity which takes care of changing displays
  * 
+ * show block type?
+ * 
+ * explain possible discrepancies between database grading and app grading (i.e. < vs <=)
+ * 
  * current TODO:
  * - ready for testing
  * - show dimension and density grades
- * - automate keyups
  * - show status in all sections
  * - shipment, fiber loading, test grading (and testing NL and LT?) sections
  */
