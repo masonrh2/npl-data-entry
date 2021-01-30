@@ -43,20 +43,13 @@
  * 
  * clear row or clear all option?
  * 
- * + 7 hrs
- * + 3.5 hrs
+ * + 2.5 hrs
  * + 6.5 hrs
  * + 3 hrs
- * 
- * grading density things
- * 
- * fiber loading section
- * 
- * testing? (LT and NL)
+ * + 1 hrs
+ * + 3 hrs
  * 
  * shipment
- * 
- * test grading
  * 
  * experiment or think about unexpected behavior (mashing submit button, things like that)
  * perhaps safest to hide submit button while interacting with the google script
@@ -64,12 +57,23 @@
  * 
  * could make some object where you can do obj.selectDensity which takes care of changing displays
  * 
+ * explain possible discrepancies between database grading and app grading (i.e. < vs <=)
+ * 
  * current TODO:
  * - ready for testing
- * - show dimension and density grades
- * - automate keyups
  * - show status in all sections
+ * - status error checking (section-specific)
  * - shipment, fiber loading, test grading (and testing NL and LT?) sections
+ * - trigger ALL keyups on any rows that are added (to initialize default values)
+ * - have 14 rows by default (or perhaps better, ask how many rows on section load)
+ * - "fiber loading" section: input cols Q and U (status 0 -> 1)
+ * - change status change for all sections (perhaps also include the config in the table settings to make it easier)
+ * - "shipment" section: input shipment, shipment date (to status 7 by default)
+ *     (perhaps allow "shipment" to be used to change just status on many blocks (for 8/5m/5r purposes, e.g.))
+ * - testing section for testers (based on test) (check for shipment which verifies all?) (LT: 13holes, missing row, name)
+ *     (NL: name, date) (LT check: database cols, also check for files in google drive, status?)
+ *     (NL check) (database cols, also check for files in google drive, status?)
+ *     somewhere also veryify dates? fiber load -> w fill -> epoxy -> mach -> tests (ensure UP-TO-DATE TESTS)
  */
 
 function doGet () {
