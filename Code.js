@@ -48,6 +48,7 @@
  * + 3 hrs
  * + 1 hrs
  * + 3 hrs
+ * + 3.5 hrs
  * 
  * shipment
  * 
@@ -61,13 +62,8 @@
  * 
  * current TODO:
  * - ready for testing
- * - show status in all sections
- * - status error checking (section-specific)
  * - shipment, fiber loading, test grading (and testing NL and LT?) sections
- * - trigger ALL keyups on any rows that are added (to initialize default values)
- * - have 14 rows by default (or perhaps better, ask how many rows on section load)
  * - "fiber loading" section: input cols Q and U (status 0 -> 1)
- * - change status change for all sections (perhaps also include the config in the table settings to make it easier)
  * - "shipment" section: input shipment, shipment date (to status 7 by default)
  *     (perhaps allow "shipment" to be used to change just status on many blocks (for 8/5m/5r purposes, e.g.))
  * - testing section for testers (based on test) (check for shipment which verifies all?) (LT: 13holes, missing row, name)

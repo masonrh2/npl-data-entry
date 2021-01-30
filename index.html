@@ -30,8 +30,14 @@
 		  </section>
     </div>
     <section id="tungstenSection" class="dataEntrySection hideWhenLoading" style="display: none;">
+      <h1>Tungsten Data Entry</h1>
       <button onclick="sectionReturn()">Back</button>
       <button onclick="generalSubmitData(tungstenSettings)">SUBMIT</button><br>
+      <form action="javascript:" onsubmit="batchInput(this, 'inputStatus')" style="margin-top: 1em; display: block;">
+        <label style="font-weight: bold; width: 120px; display: inline-block;">Status: </label>
+          <input type="text" style="width: 80px;" value="2">
+        <button style="margin-left: 1em">Submit</button>
+      </form>
       <form action="javascript:" onsubmit="batchInput(this, 'inputPowder')" style="margin-top: 1em; display: block;">
         <label style="font-weight: bold; width: 120px; display: inline-block;">Powder: </label>
           <input type="text" style="width: 80px;" value="HCS">
@@ -53,11 +59,20 @@
         <button style="margin-left: 1em">Submit</button>
       </form>
       <div id="tungstenGridTable" class="grid"></div>
-      <button onclick="addRowByConfig(tungstenSettings, 1)" style="margin-top: 1em;">Add Row</button>
+      <form action="javascript:" onsubmit="addRows(this)" style="margin-top: 1em; display: block;">
+        <input type="number" min="0" value="14" style="width: 40px;">
+        <button style="margin-left: 1em">Add Rows</button>
+      </form>
     </section>
     <section id="epoxySection" class="dataEntrySection hideWhenLoading" style="display: none;">
+      <h1>Epoxy Data Entry</h1>
       <button onclick="sectionReturn()">Back</button>
       <button onclick="generalSubmitData(epoxySettings)">SUBMIT</button><br>
+      <form action="javascript:" onsubmit="batchInput(this, 'inputStatus')" style="margin-top: 1em; display: block;">
+        <label style="font-weight: bold; width: 120px; display: inline-block;">Status: </label>
+          <input type="text" style="width: 80px;" value="3">
+        <button style="margin-left: 1em">Submit</button>
+      </form>
       <form action="javascript:" onsubmit="batchInput(this, 'inputBatch')" style="margin-top: 1em; display: block;">
         <label style="font-weight: bold; width: 120px; display: inline-block;">Epoxy Batch: </label>
           <input type="text" style="width: 80px;">
@@ -89,11 +104,20 @@
         <button style="margin-left: 1em">Submit</button>
       </form>
       <div id="epoxyGridTable" class="grid"></div>
-      <button onclick="addRowByConfig(epoxySettings, 1)" style="margin-top: 1em;">Add Row</button>
+      <form action="javascript:" onsubmit="addRows(this)" style="margin-top: 1em; display: block;">
+        <input type="number" min="0" value="8" style="width: 40px;">
+        <button style="margin-left: 1em">Add Rows</button>
+      </form>
     </section>
     <section id="densitySection" class="dataEntrySection hideWhenLoading" style="display: none;">
+      <h1>Density Data Entry</h1>
       <button onclick="sectionReturn()">Back</button>
       <button onclick="generalSubmitData(densitySettings)">SUBMIT</button><br>
+      <form action="javascript:" onsubmit="batchInput(this, 'inputStatus')" style="margin-top: 1em; display: block;">
+        <label style="font-weight: bold; width: 120px; display: inline-block;">Status: </label>
+          <input type="text" style="width: 80px;" value="5">
+        <button style="margin-left: 1em">Submit</button>
+      </form>
       <form action="javascript:" onsubmit="batchInput(this, 'inputDate')" style="margin-top: 1em; display: block;">
         <label style="font-weight: bold; width: 120px; display: inline-block;">Date: </label>
           <input type="text" class="batchDate" style="width: 80px;">
@@ -105,7 +129,10 @@
         <button style="margin-left: 1em">Submit</button>
       </form>
       <div id="densityGridTable" class="grid"></div>
-      <button onclick="addRowByConfig(densitySettings, 1)" style="margin-top: 1em;">Add Row</button>
+      <form action="javascript:" onsubmit="addRows(this)" style="margin-top: 1em; display: block;">
+        <input type="number" min="0" value="8" style="width: 40px;">
+        <button style="margin-left: 1em">Add Rows</button>
+      </form>
     </section>
   </body>
   <script>
@@ -432,7 +459,7 @@
     const cGrade = 3
     const fGrade = 4
     const testColors = [grey, green, orange, blue, red]
-    const testSymbols = ['-', '✓', '!', '!', '✗']
+    const testSymbols = ['-', 'A', 'B', 'C', 'F']
     const checkColors = { false: grey, true: green }
     function grade_pregrade (grade) {
       if (grade === '5a') {
@@ -687,43 +714,6 @@
         }
       }
     }
-
-    function getGradeSpan (grade) {
-      const span = document.createElement('span')
-      span.textContent = testSymbols[grade]
-      span.style.color = testColors[grade]
-      span.style.fontWeight = 'bold'
-      span.classList.add('gradeSpan')
-      return span.outerHTML
-    }
-    const defaultGradeSpan = getGradeSpan(0)
-    function getDevHasData (dimName) {
-      return function (index, rowData, block) {
-        const input = rowData[index]
-        const curSpan = $(input).parent().children('span.gradeSpan')
-        const inputValue = input.value
-        const placeholder = input.placeholder
-        let num
-        if (inputValue !== '' && !isNaN(inputValue)) {
-          // then use input
-          num = Number(inputValue)
-        } else if (placeholder !== '' && !isNaN(placeholder)) {
-          // then use block value
-          num = Number(placeholder)
-        }
-        if (num != null) {
-          const newSpan = getGradeSpan(getDevGrade(num, dimName, block.block))
-          curSpan.replaceWith(newSpan)
-        } else {
-          curSpan.replaceWith(defaultGradeSpan)
-        }
-      }
-    }
-    function devNoData (index, rowData, block) {
-      const input = rowData[index]
-      const curSpan = $(input).parent().children('span.gradeSpan')
-      curSpan.replaceWith(defaultGradeSpan)
-    }
     function dbnChange (divRow, that) {
       const dbn = $(that).val()
       const block = dbn === '' ? null : blocksCollection.getBlockByStringDBN(dbn)
@@ -780,13 +770,18 @@
     function updateTextInput (inputElement, placeholder) {
       if (placeholder != null) {
         inputElement.placeholder = placeholder
+        // to avoid bad string comparison such as '5' == '5.0000', we cast
+        // to number when the number is numeric and not '' (for comparison only)
+        const inputValue = inputElement.value !== '' && !isNaN(inputElement.value) ? Number(inputElement.value) : inputElement.value
+        const placeholderValue = placeholder !== '' && !isNaN(placeholder) ? Number(placeholder) : placeholder
         if (inputElement.value === '') {
           inputElement.style.border = '2px solid orange'
           // we knowinglly use a castful comparison to avoid tedium
-        } else if (inputElement.value == placeholder) {
+        } else if (inputValue == placeholderValue) {
           inputElement.style.border = '2px solid green'
         } else {
           inputElement.style.border = '2px solid red'
+          // console.log('found that ' + inputElement.value + ' !=' + placeholder)
         }
       } else {
         inputElement.placeholder = ''
@@ -916,7 +911,7 @@
         }
       } else {
         for (let i = 0; i < gradeSpans.length; i++) {
-          setGradeSpan(gradeSpans[i], 0)
+          setGradeSpan(gradeSpans[i], notStartedGrade)
         }
       }
       if (useDimensions.every((element) => element !== null)) {
@@ -939,22 +934,13 @@
           setGradeSpan(densityGradeSpan, grade_density(density))
         } else {
           densitySpan.text('-')
-          setGradeSpan(densityGradeSpan, 0)
+          setGradeSpan(densityGradeSpan, notStartedGrade)
         }
       } else {
         volumeSpan.text('-')
         densitySpan.text('-')
-        setGradeSpan(densityGradeSpan, 0)
+        setGradeSpan(densityGradeSpan, notStartedGrade)
       }
-      /*
-      noData: function (index, rowData, block) {
-        const densitySpan = rowData[densitySettings.properties.density]
-        const densityGradeSpan = $(densitySpan).parent().children('span.gradeSpan')
-        rowData[index].innerHTML = ''
-        densitySpan.innerHTML = ''
-        densityGradeSpan.replaceWith(defaultGradeSpan)
-      }
-      */
     }
     function setGradeSpan (jQuery, grade) {
       jQuery.text(testSymbols[grade]).css('color', testColors[grade]).css('font-weight', 'bold')
@@ -986,17 +972,25 @@
       ['epoxyGridTable', epoxyStatusConfig],
       ['densityGridTable', densityStatusConfig]
     ])
-    const dateColWidth = '70px'
+    const colWidths = {
+      dbn: '40px',
+      block: '40px',
+      status: '70px',
+      initials: '50px',
+      dim: '75px',
+      date: '70px',
+      usDate: '80px'
+    }
     // TABLE CONFIGURATIONS
     const tungstenConfig = [
       {
         headerName: 'DBN',
-        colWidth: '60px',
+        colWidth: colWidths.dbn,
         DOMs: [
           {
             options: {
               type: 'input',
-              classes: ['submit'],
+              classes: [],
               attributes: [['data-name', 'dbn'], ['type', 'text']],
               style: [['width', '100%']]
             },
@@ -1011,7 +1005,7 @@
       },
       {
         headerName: 'Block',
-        colWidth: '60px',
+        colWidth: colWidths.block,
         DOMs: [
           {
             options: {
@@ -1029,15 +1023,14 @@
       },
       {
         headerName: 'Status',
-        colWidth: '70px',
-        colWeaderWidth: '60px',
+        colWidth: colWidths.status,
         DOMs: [
           { // CURRENT STATUS
             options: {
               type: 'span',
               classes: [],
               attributes: [['data-name', 'status']],
-              style: [['width', '40%'], ['margin-left', '5px']]
+              style: [['width', 'calc(30% - 10px)'], ['margin-left', '5px']]
             },
             update: {
               numeric: false,
@@ -1049,7 +1042,7 @@
               type: 'span',
               classes: ['static'],
               attributes: [],
-              style: [['margin-left', '5px'], ['width', '20%']],
+              style: [['margin-left', '5px'], ['width', 'calc(20% - 10px)']],
               innerHTML: '→'
             },
             update: {
@@ -1062,7 +1055,7 @@
               type: 'input',
               classes: ['inputStatus', 'submit'],
               attributes: [['data-name', 'status'], ['type', 'text']],
-              style: [['margin-left', '5px'], ['min-width', 20], ['width', '40%']]
+              style: [['margin-left', '5px'], ['width', 'calc(50% - 10px)']]
             },
             update: {
               numeric: false,
@@ -1115,6 +1108,7 @@
           }
         ]
       },
+      /*
       {
         headerName: 'Mold #',
         colWidth: '60px',
@@ -1135,6 +1129,7 @@
           }
         ]
       },
+      */
       {
         headerName: 'Empty Mass (g)',
         colWidth: '60px',
@@ -1177,7 +1172,7 @@
       },
       {
         headerName: 'Filling Date',
-        colWidth: '60px',
+        colWidth: colWidths.date,
         DOMs: [
           {
             options: {
@@ -1197,7 +1192,7 @@
       },
       {
         headerName: 'Filler Initials',
-        colWidth: '60px',
+        colWidth: colWidths.initials,
         DOMs: [
           {
             options: {
@@ -1219,12 +1214,12 @@
     const epoxyConfig = [
       {
         headerName: 'DBN',
-        colWidth: '60px',
+        colWidth: colWidths.dbn,
         DOMs: [
           {
             options: {
               type: 'input',
-              classes: ['submit'],
+              classes: [],
               attributes: [['data-name', 'dbn'], ['type', 'text']],
               style: [['width', '100%']]
             },
@@ -1239,7 +1234,7 @@
       },
       {
         headerName: 'Block',
-        colWidth: '60px',
+        colWidth: colWidths.block,
         DOMs: [
           {
             options: {
@@ -1251,6 +1246,53 @@
             update: {
               numeric: true,
               fn: null
+            }
+          }
+        ]
+      },
+      {
+        headerName: 'Status',
+        colWidth: colWidths.status,
+        DOMs: [
+          { // CURRENT STATUS
+            options: {
+              type: 'span',
+              classes: [],
+              attributes: [['data-name', 'status']],
+              style: [['width', 'calc(30% - 10px)'], ['margin-left', '5px']]
+            },
+            update: {
+              numeric: false,
+              fn: null
+            }
+          },
+          { // (ARROW)
+            options: {
+              type: 'span',
+              classes: ['static'],
+              attributes: [],
+              style: [['margin-left', '5px'], ['width', 'calc(20% - 10px)']],
+              innerHTML: '→'
+            },
+            update: {
+              numeric: false,
+              fn: null
+            }
+          },
+          { // INPUT STATUS
+            options: {
+              type: 'input',
+              classes: ['inputStatus', 'submit'],
+              attributes: [['data-name', 'status'], ['type', 'text']],
+              style: [['margin-left', '5px'], ['width', 'calc(50% - 10px)']]
+            },
+            update: {
+              numeric: false,
+              fn: function (divRow, that) {
+                // do some checks and change style accordingly
+                // also include errors (probably during inital checks (client-side))
+                updateStatusInput(that)
+              }
             }
           }
         ]
@@ -1357,7 +1399,7 @@
       },
       {
         headerName: 'Filling Date',
-        colWidth: '60px',
+        colWidth: colWidths.date,
         DOMs: [
           {
             options: {
@@ -1399,12 +1441,12 @@
     const densityConfig = [
       {
         headerName: 'DBN',
-        colWidth: '60px',
+        colWidth: colWidths.dbn,
         DOMs: [
           {
             options: {
               type: 'input',
-              classes: ['submit'],
+              classes: [],
               attributes: [['data-name', 'dbn'], ['type', 'text']],
               style: [['width', '100%']]
             },
@@ -1420,7 +1462,7 @@
       },
       {
         headerName: 'Block',
-        colWidth: '60px',
+        colWidth: colWidths.block,
         DOMs: [
           {
             options: {
@@ -1437,8 +1479,55 @@
         ]
       },
       {
+        headerName: 'Status',
+        colWidth: colWidths.status,
+        DOMs: [
+          { // CURRENT STATUS
+            options: {
+              type: 'span',
+              classes: [],
+              attributes: [['data-name', 'status']],
+              style: [['width', 'calc(30% - 10px)'], ['margin-left', '5px']]
+            },
+            update: {
+              numeric: false,
+              fn: null
+            }
+          },
+          { // (ARROW)
+            options: {
+              type: 'span',
+              classes: ['static'],
+              attributes: [],
+              style: [['margin-left', '5px'], ['width', 'calc(20% - 10px)']],
+              innerHTML: '→'
+            },
+            update: {
+              numeric: false,
+              fn: null
+            }
+          },
+          { // INPUT STATUS
+            options: {
+              type: 'input',
+              classes: ['inputStatus', 'submit'],
+              attributes: [['data-name', 'status'], ['type', 'text']],
+              style: [['margin-left', '5px'], ['width', 'calc(50% - 10px)']]
+            },
+            update: {
+              numeric: false,
+              fn: function (divRow, that) {
+                // do some checks and change style accordingly
+                // also include errors (probably during inital checks (client-side))
+                updateStatusInput(that)
+              }
+            }
+          }
+        ]
+      },
+      {
         headerName: 'L (in)',
-        colWidth: '75px',
+        colWidth: colWidths.dim,
         DOMs: [
           {
             options: {
@@ -1471,7 +1560,7 @@
       },
       {
         headerName: 'BT (in)',
-        colWidth: '75px',
+        colWidth: colWidths.dim,
         DOMs: [
           {
             options: {
@@ -1504,7 +1593,7 @@
       },
       {
         headerName: 'BB (in)',
-        colWidth: '75px',
+        colWidth: colWidths.dim,
         DOMs: [
           {
             options: {
@@ -1537,7 +1626,7 @@
       },
       {
         headerName: 'BH (in)',
-        colWidth: '75px',
+        colWidth: colWidths.dim,
         DOMs: [
           {
             options: {
@@ -1570,7 +1659,7 @@
       },
       {
         headerName: 'ST (in)',
-        colWidth: '75px',
+        colWidth: colWidths.dim,
         DOMs: [
           {
             options: {
@@ -1603,7 +1692,7 @@
       },
       {
         headerName: 'SB (in)',
-        colWidth: '75px',
+        colWidth: colWidths.dim,
         DOMs: [
           {
             options: {
@@ -1636,7 +1725,7 @@
       },
       {
         headerName: 'SH (in)',
-        colWidth: '75px',
+        colWidth: colWidths.dim,
         DOMs: [
           {
             options: {
@@ -1668,8 +1757,8 @@
         ]
       },
       {
-        headerName: 'Volume',
-        colWidth: '60px',
+        headerName: 'Volume (mL)',
+        colWidth: '50px',
         DOMs: [
           {
             options: {
@@ -1686,8 +1775,69 @@
         ]
       },
       {
+        headerName: 'Tester Initials',
+        colWidth: colWidths.initials,
+        DOMs: [
+          {
+            options: {
+              type: 'input',
+              classes: ['inputTester', 'updateDBvlaue', 'submit'],
+              attributes: [['data-name', 'dimensionTester'], ['type', 'text']],
+              style: [['width', '100%']]
+            },
+            update: {
+              numeric: false,
+              fn: function (divRow, that) {
+                updateThisDBValue(divRow, that, -1)
+              }
+            }
+          }
+        ]
+      },
+      {
+        headerName: 'Mass (g)',
+        colWidth: '45px',
+        DOMs: [
+          {
+            options: {
+              type: 'input',
+              classes: ['updateDBvlaue', 'submit'],
+              attributes: [['data-name', 'mass'], ['type', 'text']],
+              style: [['width', '100%']]
+            },
+            update: {
+              numeric: true,
+              fn: function (divRow, that) {
+                updateThisDBValue(divRow, that, -1)
+                dimensionKeyup(divRow)
+              }
+            }
+          }
+        ]
+      },
+      {
+        headerName: 'Tester Initials',
+        colWidth: colWidths.initials,
+        DOMs: [
+          {
+            options: {
+              type: 'input',
+              classes: ['inputTester', 'updateDBvlaue', 'submit'],
+              attributes: [['data-name', 'massTester'], ['type', 'text']],
+              style: [['width', '100%']]
+            },
+            update: {
+              numeric: false,
+              fn: function (divRow, that) {
+                updateThisDBValue(divRow, that, -1)
+              }
+            }
+          }
+        ]
+      },
+      {
         headerName: 'Density (g/mL)',
-        colWidth: '60px',
+        colWidth: '50px',
         DOMs: [
           {
             options: {
@@ -1716,68 +1866,8 @@
         ]
       },
       {
-        headerName: 'Tester Initials',
-        colWidth: '60px',
-        DOMs: [
-          {
-            options: {
-              type: 'input',
-              classes: ['inputTester', 'updateDBvlaue', 'submit'],
-              attributes: [['data-name', 'dimensionTester'], ['type', 'text']],
-              style: [['width', '100%']]
-            },
-            update: {
-              numeric: false,
-              fn: function (divRow, that) {
-                updateThisDBValue(divRow, that, -1)
-              }
-            }
-          }
-        ]
-      },
-      {
-        headerName: 'Mass (g)',
-        colWidth: '60px',
-        DOMs: [
-          {
-            options: {
-              type: 'input',
-              classes: ['updateDBvlaue', 'submit'],
-              attributes: [['data-name', 'mass'], ['type', 'text']],
-              style: [['width', '100%']]
-            },
-            update: {
-              numeric: true,
-              fn: function (divRow, that) {
-                updateThisDBValue(divRow, that, -1)
-              }
-            }
-          }
-        ]
-      },
-      {
-        headerName: 'Tester Initials',
-        colWidth: '60px',
-        DOMs: [
-          {
-            options: {
-              type: 'input',
-              classes: ['inputTester', 'updateDBvlaue', 'submit'],
-              attributes: [['data-name', 'massTester'], ['type', 'text']],
-              style: [['width', '100%']]
-            },
-            update: {
-              numeric: false,
-              fn: function (divRow, that) {
-                updateThisDBValue(divRow, that, -1)
-              }
-            }
-          }
-        ]
-      },
-      {
         headerName: 'Date',
-        colWidth: '60px',
+        colWidth: colWidths.date,
         DOMs: [
           {
             options: {
@@ -1817,7 +1907,11 @@
       rows: densityRows,
       name: 'density'
     }
-
+    const tableNameToSettings = new Map([
+      ['tungstenGridTable', tungstenSettings],
+      ['epoxyGridTable', epoxySettings],
+      ['densityGridTable', densitySettings]
+    ])
     const allSettings = [tungstenSettings, epoxySettings, densitySettings]
     let currentDate
     let database
@@ -1857,10 +1951,10 @@
           document.getElementById('sectionSelection').style.display = 'block'
           selectedSection = 'sectionSelection'
           setupGridTables()
-          addRowByConfig(tungstenSettings, 8)
-          addRowByConfig(epoxySettings, 8)
-          addRowByConfig(densitySettings, 8)
-          updateTables()
+          // addRowByConfig(tungstenSettings, 8)
+          // addRowByConfig(epoxySettings, 8)
+          // addRowByConfig(densitySettings, 8)
+          // updateTables()
         }
         function onFailure (err) {
           console.error('failed to load database...retrying in 10 seconds')
@@ -1883,14 +1977,12 @@
         addHeaders(tableSettings)
       }
       function addHeaders (tableSettings) {
-        let template = ''
         for (const columnConfig of tableSettings.config) {
           tableSettings.table.append(
             $('<div>' + columnConfig.headerName + '</div>').addClass('gridTableHeader').css('width', columnConfig.colWidth)
           )
-          template += '1' + 'fr '// columnConfig.width + 'fr '
         }
-        tableSettings.table.css('grid-template-columns', template).css('margin-top', '1em')
+        tableSettings.table.css('grid-template-columns', 'repeat(' + tableSettings.config.length + ', auto)')
       }
     }
     function addRowByConfig (tableSettings, count) {
@@ -1918,56 +2010,20 @@
             if (dom.update.fn != null) { element.keyup(function () { dom.update.fn(rows[rowNum], this) }) }
             div.append(element)
           }
-          row.push(div)
+          row.push(div.get(0))
         }
         table.append(row)
         const rowData = table.find('[data-row="' + (numRows + i) + '"]').toArray()
         rows.push(rowData)
+        $(row).find("input[data-name='dbn']").keyup()
+        // console.log(row)
       }
     }
-    function generalKeyup (tableSettings, rowNum) {
-      const tableConfig = tableSettings.config
-      const properties = tableSettings.properties
-      const rowData = tableSettings.rows[rowNum]
-      const dbn = rowData[properties.dbn].value
-      const block = blocksCollection.getBlockByStringDBN(dbn)
-      const toUpdate = []
-      for (let i = 0; i < tableConfig.length; i++) {
-        if (tableConfig[i].update) {
-          toUpdate.push({ element: rowData[i], config: tableConfig[i] })
-        }
-      }
-      if (dbn !== '' && block != null) {
-        // found a block, enable inputs and import data
-        toUpdate.forEach(function (obj) {
-          obj.element.disabled = false
-          obj.element.style.backgroundColor = 'transparent'
-          if (obj.config.toFixed != null && block[obj.config.propertyName] != null) {
-            updateTextInput(obj.element, block[obj.config.propertyName].toFixed(obj.config.toFixed))
-          } else {
-            updateTextInput(obj.element, block[obj.config.propertyName])
-          }
-        })
-        for (let i = 0; i < tableConfig.length; i++) {
-          if (tableConfig[i].calculation != null) {
-            tableConfig[i].calculation.hasData(i, rowData, block)
-          }
-        }
-      } else {
-        // no dbn found, disable all inputs
-        toUpdate.forEach(function (obj) {
-          obj.element.value = ''
-          obj.element.placeholder = ''
-          obj.element.disabled = true
-          obj.element.style.border = '1px solid grey'
-          obj.element.style.backgroundColor = '#eee'
-        })
-        for (let i = 0; i < tableConfig.length; i++) {
-          if (tableConfig[i].calculation != null) {
-            tableConfig[i].calculation.noData(i, rowData, block)
-          }
-        }
-      }
+    function addRows (form) {
+      const inputVal = $(form).children('input').eq(0).val()
+      const tableName = $(form).parent('section').children('div.grid').eq(0).attr('id')
+      const tableSettings = tableNameToSettings.get(tableName)
+      addRowByConfig(tableSettings, Number(inputVal))
     }
     // this is quite an elegant function - I like it
     function batchInput (form, className) {
@@ -2025,7 +2081,7 @@
       const columnNames = []
       const rows = tableSettings.rows
       for (const row of rows) {
-        const stringDBN = row[tableSettings.properties.dbn].value
+        const stringDBN = $(row).find("input[data-name='dbn']").val()
         if (stringDBN !== '') {
           const block = blocksCollection.getBlockByStringDBN(stringDBN)
           if (block != null) {
@@ -2033,29 +2089,37 @@
             const blockValues = []
             for (let i = 0; i < tableSettings.config.length; i++) {
               const columnConfig = tableSettings.config[i]
-              if (columnConfig.input && columnConfig.update) {
-                let _set = row[i].value
-                if (_set !== '') {
-                  let _expected = block[columnConfig.propertyName]
-                  if (_expected == null) { _expected = '' }
-                  // cast set value to num if needed
-                  if (columnConfig.numeric && _set !== '' && !isNaN(_set)) {
-                    _set = Number(_set)
+              // iterate through DOMs
+              for (let j = 0; j < columnConfig.DOMs.length; j++) {
+                if (columnConfig.DOMs[j].options.classes.includes('submit')) {
+                  const propertyName = columnConfig.DOMs[j].options.attributes[0][1]
+                  let _set = $(row[i]).find('input.submit').val()
+                  if (_set !== '') {
+                    let _expected = block[propertyName]
+                    if (_expected == null) { _expected = '' }
+                    // cast set value to num if needed... or if it CAN be?
+                    if (columnConfig.DOMs[j].update.numeric && _set !== '' && !isNaN(_set)) {
+                      _set = Number(_set)
+                    }
+                    blockValues.push({ set: _set, expected: _expected, ignoreError: false })
+                    // console.log('submitting ' + propertyName)
+                  } else {
+                    blockValues.push(null)
+                    // console.log('NOT submitting ' + propertyName)
                   }
-                  blockValues.push({ set: _set, expected: _expected, ignoreError: false })
-                } else {
-                  blockValues.push(null)
+                  columnNames.push(propertyName)
+                  break
                 }
-                columnNames.push(columnConfig.propertyName)
               }
             }
             values.push(blockValues)
           } else {
-            console.error('unable to find DBN ' + stringDBN + ' (I could offer to refresh database here)')
+            console.error('unable to find DBN ' + stringDBN + ' (you could try refreshing the database?)')
           }
         }
       }
-      submitData(blocks, columnNames, values)
+      // console.log('table name was: ' + tableSettings.name)
+      submitData(blocks, columnNames, values, tableSettings.name + 'GridTable')
     }
     
     /**
@@ -2064,7 +2128,7 @@
      * @param {String[]} columnNames Names of columns (which correspond to the columns in values)
      * @param {String[][]} values Values to submit to the database (row corresponds to blocks, column corresponds to columnNames)
      */
-    function submitData (blocks, columnNames, values) {
+    function submitData (blocks, columnNames, values, tableName) {
       // first, organize data to send to the google script
       const data = []
       const cols = []
@@ -2091,10 +2155,10 @@
       const overwriteWarnings = validateOverwrites(blocks, columnNames, values)
       if (overwriteWarnings.length !== 0) {
         // if there are overwrites, ask to confirm before proceeding
-        showOverwriteWarnings(overwriteWarnings, blocks, columnNames, values, data)
+        showOverwriteWarnings(overwriteWarnings, blocks, columnNames, values, data, tableName)
       } else {
         // if not, proceed to perform basic data validation before sending to google script
-        const basicDataValidationWarnings = validateData(blocks, columnNames, values)
+        const basicDataValidationWarnings = validateData(blocks, columnNames, values, tableName)
         if (basicDataValidationWarnings.length !== 0) {
           showWarnings(basicDataValidationWarnings, data)
         } else {
@@ -2106,6 +2170,7 @@
       }
     
       function validateOverwrites (blocks, columnNames, values) {
+        const statusConfig = tableNameToStatusConfig.get(tableName)
         const warnings = []
         // console.log(values)
         for (let i = 0; i < values.length; i++) {
@@ -2113,31 +2178,52 @@
           for (let j = 0; j < columnNames.length; j++) {
             const value = values[i][j]
             // console.log(value)
-            if (value !== null && value.expected !== '' && value.set != value.expected) {
+            if (columnNames[j] === 'status') {
+              if (statusConfig.goodFromStatus.some(function (element) { return element == value.expected })) {
+                continue
+              } else if (statusConfig.errorFromStatus.some(function (element) { return element == value.expected })) {
+                // error
+                warnings.push({
+                  dbn: block.dbn,
+                  custom: '(ERROR) this block is status ' + value.expected
+                })
+              } else {
+                // warning
+                warnings.push({
+                  dbn: block.dbn,
+                  custom: '(WARNING) this block is status ' + value.expected
+                })
+              }
+            } else if (value !== null && value.expected !== '' && value.set != value.expected) {
               warnings.push({
                 set: value.set,
                 prev: value.expected,
                 col: columnNames[j],
                 dbn: block.dbn,
-                value: value.set
+                custom: null
               })
             }
           }
         }
         return warnings
       }
-      function showOverwriteWarnings (overwriteWarnings, blocks, columnNames, values, data) {
+      function showOverwriteWarnings (overwriteWarnings, blocks, columnNames, values, data, tableName) {
         // console.log(data)
+        // console.log('table name was: ' + tableName)
         let warningMsg = '(WARNING) This submission would overwrite some data in the database:\n'
         for (const warn of overwriteWarnings) {
-          warningMsg += 'DBN ' + warn.dbn + ', column "' + warn.col +
-            '": (warning) changing value "' + warn.prev + '" → "' + warn.set + '"\n'
+          if (warn.custom !== null) {
+            warningMsg += 'DBN ' + warn.dbn + ': ' + warn.custom + '\n'
+          } else {
+            warningMsg += 'DBN ' + warn.dbn + ', column "' + warn.col +
+              '": (warning) changing value "' + warn.prev + '" → "' + warn.set + '"\n'
+          }
         }
         warningMsg += 'Are you sure you want to submit this data to the database?'
         const bool = confirm(warningMsg)
         if (bool) {
           // overwrite was confirmed, perform basic data validation before sending to google script
-          const warnings = validateData(blocks, columnNames, values)
+          const warnings = validateData(blocks, columnNames, values, tableName)
           if (warnings.length !== 0) {
             showWarnings(warnings, data)
           } else {
@@ -2149,7 +2235,9 @@
         }
       }
     
-      function validateData (blocks, columnNames, values) {
+      function validateData (blocks, columnNames, values, tableName) {
+        // console.log('table name was: ' + tableName)
+        const statusConfig = tableNameToStatusConfig.get(tableName)
         const warnings = []
         // console.log(values)
         for (let i = 0; i < values.length; i++) {
@@ -2162,6 +2250,26 @@
               if (!validation.valid) {
                 warnings.push({
                   msg: validation.msg,
+                  col: columnNames[j],
+                  dbn: block.dbn,
+                  value: value.set
+                })
+              }
+            } else if (columnNames[j] === 'status') {
+              if (statusConfig.goodToStatus.some(function (element) { return element == value.set })) {
+                continue
+              } else if (statusConfig.errorToStatus.some(function (element) { return element == value.set })) {
+                // error
+                warnings.push({
+                  msg: 'INCOMPATIBLE STATUS',
+                  col: columnNames[j],
+                  dbn: block.dbn,
+                  value: value.set
+                })
+              } else {
+                // warning
+                warnings.push({
+                  msg: 'UNEXPECTED STATUS',
                   col: columnNames[j],
                   dbn: block.dbn,
                   value: value.set
@@ -2337,7 +2445,7 @@
       }
     }
     function updateTables () {
-      console.log('updated tables?')
+      // console.log('updated tables?')
       // call all keyups? ig
       // ig DBN keyup should change everything necessary, so just call that?
       for (const row of tungstenRows) {
@@ -2349,7 +2457,6 @@
       for (const row of densityRows) {
         $(row).find("input[data-name='dbn']").keyup()
       }
-      console.log($(tungstenRows).find("input[data-name='dbn']"))
     }
     function updateTimestamp () {
       // (re)set color/style to the normal
