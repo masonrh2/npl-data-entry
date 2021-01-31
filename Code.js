@@ -62,15 +62,15 @@
  * explain possible discrepancies between database grading and app grading (i.e. < vs <=)
  * 
  * current TODO:
- * - ready for testing
- * - shipment, fiber loading, test grading (and testing NL and LT?) sections
- * - "fiber loading" section: input cols Q and U (status 0 -> 1)
- * - "shipment" section: input shipment, shipment date (to status 7 by default)
- *     (perhaps allow "shipment" to be used to change just status on many blocks (for 8/5m/5r purposes, e.g.))
+ * - test grading section?
  * - testing section for testers (based on test) (check for shipment which verifies all?) (LT: 13holes, missing row, name)
  *     (NL: name, date) (LT check: database cols, also check for files in google drive, status?)
  *     (NL check) (database cols, also check for files in google drive, status?)
  *     somewhere also veryify dates? fiber load -> w fill -> epoxy -> mach -> tests (ensure UP-TO-DATE TESTS)
+ * - perhaps streamline retreival of data for display-only spans
+ * - status is NOT checked for status in pic tests, since there is no submission data associtated...
+ * - could clean up the error checking (allow ) (make it less of a fucking mess) (make it easier to add new checks/types of checks)
+ * - think about other ways to check for errors (see above not about ensuring up-to-date tests)
  */
 
 function doGet () {
