@@ -2721,6 +2721,18 @@
       const values = []
       const columnNames = []
       const rows = tableSettings.rows
+      // first add to columnNames
+      for (let i = 0; i < tableSettings.config.length; i++) {
+        const columnConfig = tableSettings.config[i]
+        // iterate through DOMs
+        for (let j = 0; j < columnConfig.DOMs.length; j++) {
+          if (columnConfig.DOMs[j].options.classes.includes('submit')) {
+            const propertyName = columnConfig.DOMs[j].options.attributes[0][1]
+            columnNames.push(propertyName)
+          }
+        }
+      }
+      // then add to values
       for (const row of rows) {
         const stringDBN = $(row).find("input[data-name='dbn']").val()
         if (stringDBN !== '') {
@@ -2748,8 +2760,7 @@
                     blockValues.push(null)
                     // console.log('NOT submitting ' + propertyName)
                   }
-                  columnNames.push(propertyName)
-                  break
+                  // columnNames.push(propertyName)
                 }
               }
             }
@@ -2760,7 +2771,14 @@
         }
       }
       // console.log('table name was: ' + tableSettings.name)
-      submitData(blocks, columnNames, values, tableSettings.name + 'GridTable')
+      if (values.length === 0) {
+        alert('no data to submit!')
+      } else if (columnNames.length !== values[0].length) {
+        // bad!
+        alert('the number of entries in columnNames does not match the number of entries in values[0]\n' + '(ask mason to fix this)')
+      } else {
+        submitData(blocks, columnNames, values, tableSettings.name + 'GridTable')
+      }
     }
     
     /**
@@ -2813,6 +2831,7 @@
       function validateOverwrites (blocks, columnNames, values, tableName) {
         const statusConfig = tableNameToStatusConfig.get(tableName)
         const warnings = []
+        // console.log(columnNames)
         // console.log(values)
         for (let i = 0; i < values.length; i++) {
           const block = blocks[i]
@@ -2820,6 +2839,8 @@
             const value = values[i][j]
             // console.log(value)
             if (columnNames[j] === 'status' && value !== null) {
+              // console.log('value[' + i + '][' + j + ']:')
+              // console.log(value)
               if (statusConfig.goodFromStatus.some(function (element) { return element == value.expected })) {
                 continue
               } else if (statusConfig.errorFromStatus.some(function (element) { return element == value.expected })) {
@@ -2896,7 +2917,7 @@
                   value: value.set
                 })
               }
-            } else if (columnNames[j] === 'status') {
+            } else if (value !== null && columnNames[j] === 'status') {
               if (statusConfig.goodToStatus.some(function (element) { return element == value.set })) {
                 continue
               } else if (statusConfig.errorToStatus.some(function (element) { return element == value.set })) {

@@ -7,14 +7,8 @@
  * mass change of status/shipment date/shipment number (..etc?) (include option to enter list of DBNs) (also include a "find blocks be status" and way to
  * easily select blocks to change) (do some pretty thing with arrows showing status before and after)
  * 
- * could do a very multipurpose framework which allows you to select and DBNs and change values in any colummn(s)
- * (could be more dangerous?) (would be more work, but a lot could be borrowed from "find blocks" of info station)
- * (this would pretty much just be the database...)
- * 
  * include ghost text for what it should look like (e.g. HCS-56 and not 56) or do some basic data validation and show red if it fails
  * this is a problem since we use placeholder for the current database values (if they exist) ... I think the basic validation is sufficient
- * 
- * consider consolidating blocks class variables e.g. put all dimensions into a subobject or the like (block.dimensions.bt instead of block.bt) (would be cleaner)
  * 
  * look into caching and see if it could be use (quick access to a 20-minute old version of the database maybe?)
  * (https://developers.google.com/apps-script/guides/support/best-practices)
@@ -22,24 +16,12 @@
  * could add framework to add and remove tags from blocks (using the comments column)
  * this is probably a much better system than using non-numeric DBNs (but it's too late for that)
  * 
- * the index block property might not be necessary...
- * 
- * warnings if status is not as expected (perhaps include status column on all pages which is green/red)
- * (perhaps also check again what the status is on the google script side, and return a warning "are you sure?")
- * (or perhaps also allow you to change status)
- * 
  * catch data validation error (is there a way to check what the valdation rules in a cell are?) (e.g. powder)
  * 
  * option to remove all testing data from a block (sent back to machine shop, e.g.) (could also remove entries from data dumps, but this might not be necessary)
  * (leads to some confusion, though, since we don't have a record of all tests/machining dates.....)
  * 
- * add status volumes to all sections:
- * tungsten: 1 -> 2
- * epoxy: 2 -> 3
- * dimensions: 4 -> 5? or 3 -> 5 (not consistent)
- * 
- * begin each section with "how many blocks would you like to add?" then add that many rows
- * OR use select blocks by status (and other things?) easy to add checkboxes to datatable, I think (or just CSS grid)
+ * use select blocks by status (and other things?) easy to add checkboxes to datatable, I think (or just CSS grid)
  * 
  * clear row or clear all option?
  * 
@@ -50,6 +32,8 @@
  * + 3 hrs
  * + 3.5 hrs
  * + 2.5 hrs
+ * + 1.5 hrs
+ * + 0.5 hrs
  * 
  * shipment
  * 
