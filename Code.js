@@ -33,7 +33,8 @@
  * + 3.5 hrs
  * + 2.5 hrs
  * + 1.5 hrs
- * + 0.5 hrs
+ * + 1 hrs (2/1/2021 1:00 PM)
+ * 
  * 
  * shipment
  * 
@@ -55,6 +56,11 @@
  * - status is NOT checked for status in pic tests, since there is no submission data associtated...
  * - could clean up the error checking (allow ) (make it less of a fucking mess) (make it easier to add new checks/types of checks)
  * - think about other ways to check for errors (see above not about ensuring up-to-date tests)
+ * 
+ * BUGS:
+ * - block status does not update after submission (but does on refresh database)
+ * - caroline: submitting 8 blocks, and then 8 blocks gives script error?
+ * - caroline: deleting DBN does not remove some numbers from the corresponding cells?
  */
 
 function doGet () {
@@ -137,7 +143,7 @@ function getRowData (blocks) {
     } else if (sheet === 1) {
       spreadsheet = blocks13_64
     }
-    const rowData = spreadsheet.getRange('A' + row + ':' + row).getDisplayValues()
+    const rowData = spreadsheet.getRange('A' + row + ':' + row).getValues()
     data.push(rowData)
   }
   // Logger.log(data)
@@ -156,11 +162,12 @@ function setBlockData (data) {
   const blocks13_64 = SpreadsheetApp.openById(fileIDs.database_ID).getSheetByName('Blocks1364DB')
   const unexpectedValueErrors = []
   const dataValidationErrors = []
+  const curRowData = []
   const newRowData = []
   const sheets = []
   const rows = []
   const rangesToSet = []
-
+  const headers = [null, null]
   for (let i = 0; i < data.length; i++) {
     const sheet = data[i].sheet
     const dbn = data[i].expectedDBN
@@ -171,16 +178,24 @@ function setBlockData (data) {
     let spreadsheet
     if (sheet === 0) {
       spreadsheet = blocks1_12
+      if (headers[0] === null) {
+        headers[0] = spreadsheet.getRange('A1:1').getDisplayValues()[0]
+      }
     } else if (sheet === 1) {
       spreadsheet = blocks13_64
+      if (headers[1] === null) {
+        headers[1] = spreadsheet.getRange('A1:1').getDisplayValues()[0]
+      }
     }
-
     // get and modify row
     const rangeName = 'A' + row + ':' + row
     const range = spreadsheet.getRange(rangeName)
     const rowData = range.getDisplayValues()[0]
+    curRowData.push(rowData)
+    const rowDataToSet = new Array(rowData.length).fill(null)
     if (dbn !== rowData[0]) {
       // I thought there was another DBN here! stop everything!
+      Logger.log('found unexpected DBN in sheet ' + spreadsheet.getName() + ', row ' + row + ': ' + rowData[0] + ' (expected ' + dbn + '); not submitting')
       return {
         unexpectedDBNError: {
           loc: { sheet: sheet, row: row },
@@ -203,7 +218,7 @@ function setBlockData (data) {
           id: [i, j]
         })
       }
-      rowData[cols[j]] = values[j].set
+      rowDataToSet[cols[j]] = values[j].set
     }
 
     // check if any values conflict with data validation
@@ -214,7 +229,7 @@ function setBlockData (data) {
       if (rule != null) {
         const type = rule.getCriteriaType().toString()
         const args = rule.getCriteriaValues()
-        const value = rowData[cols[j]]
+        const value = values[j].set
         const allowInvalid = rule.getAllowInvalid()
         const err = {
           loc: loc,
@@ -245,30 +260,82 @@ function setBlockData (data) {
         }
       }
     }
-    rangesToSet.push([range, rowData, sheet, row])
+    rangesToSet.push([range, rowDataToSet, sheet, row])
     // range.setValues([rowData])
   }
 
+  // only submit data to the database if there were no errors for ANY of the blocks in this submission
   if (dataValidationErrors.length + unexpectedValueErrors.length === 0) {
     // should probably log to Logger which values were changed
-    for (const arr of rangesToSet) {
-      arr[0].setValues([arr[1]])
-      newRowData.push(arr[1])
-      sheets.push(arr[2])
-      rows.push(arr[3])
+    let logMsg = 'SUBMISSION to database:\n'
+    for (let i = 0; i < rangesToSet.length; i++) { // (const arr of rangesToSet) {
+      const sheet = rangesToSet[i][0].getSheet().getName()
+      const row = rangesToSet[i][3]
+      const columns = []
+      const setValues = []
+      for (let j = 0; j < rangesToSet[i][1].length; j++) {
+        if (rangesToSet[i][1][j] !== null) { // if null, we ignore this cell and choose not to overwrite it's formula
+          // HTML told us to write this value
+          rangesToSet[i][0].getCell(1, j + 1).setValue(rangesToSet[i][1][j])
+          curRowData[i][j] = rangesToSet[i][1][j]
+          // log this
+          columns.push(headers[rangesToSet[i][2]][j] + ' [col ' + columnToLetter(j + 1) + ']')
+          setValues.push(rangesToSet[i][1][j])
+        }
+      }
+      // rangesToSet[i][0].setValues([rangesToSet[i][1]])
+      logMsg += 'In sheet ' + sheet + ', row ' + row + ', wrote data: '
+      for (let i = 0; i < columns.length - 1; i++) {
+        logMsg += columns[i] + ': ' + "'" + setValues[i] + "', "
+      }
+      logMsg += columns[columns.length - 1] + ': ' + "'" + setValues[columns.length - 1] + "'"
+      logMsg += '\n'
+      newRowData.push(rangesToSet[i][1])
+      sheets.push(rangesToSet[i][2])
+      rows.push(rangesToSet[i][3])
     }
+    Logger.log(logMsg)
+    // Logger.log(curRowData)
   } else {
     // failed to set values beacuse we had at least one fatal or unchecked error
+    Logger.log('found data validation and/or unexpected value errors; not submitting')
   }
 
-  const msg = {
+  return {
     dataValidationErrors: dataValidationErrors,
     unexpectedValueErrors: unexpectedValueErrors,
-    newBlockData: { rowData: newRowData, sheets: sheets, rows: rows }
+    newBlockData: { rowData: curRowData, sheets: sheets, rows: rows }
   }
-  // Logger.log(msg)
-  return msg
 }
+
+function debugGetFormulas () {
+  // for testing:
+  const blocks1_12 = SpreadsheetApp.openById(fileIDs.database_ID).getSheetByName('Blocks DB')
+  const blocks13_64 = SpreadsheetApp.openById(fileIDs.database_ID).getSheetByName('Blocks1364DB')
+  const row = 14
+  const data = blocks13_64.getRange('A' + row + ':' + row).getFormulas()
+  Logger.log(data)
+  return data
+}
+function debugGetDisplayValues () {
+  // for testing:
+  const blocks1_12 = SpreadsheetApp.openById(fileIDs.database_ID).getSheetByName('Blocks DB')
+  const blocks13_64 = SpreadsheetApp.openById(fileIDs.database_ID).getSheetByName('Blocks1364DB')
+  const row = 14
+  const data = blocks13_64.getRange('A' + row + ':' + row).getDisplayValues()
+  Logger.log(data)
+  return data
+}
+function debugGetValues () {
+  // for testing:
+  const blocks1_12 = SpreadsheetApp.openById(fileIDs.database_ID).getSheetByName('Blocks DB')
+  const blocks13_64 = SpreadsheetApp.openById(fileIDs.database_ID).getSheetByName('Blocks1364DB')
+  const row = 14
+  const data = blocks13_64.getRange('A' + row + ':' + row).getValues()
+  Logger.log(data)
+  return data
+}
+
 /**
  * @param {String} value
  * @return {Boolean}

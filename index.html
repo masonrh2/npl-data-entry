@@ -47,10 +47,11 @@
         <button style="margin-left: 1em">Submit</button>
       </form>
       <div id="fiberLoadingGridTable" class="grid"></div>
-      <form action="javascript:" onsubmit="addRows(this)" style="margin-top: 1em; display: block;">
+      <form action="javascript:" onsubmit="addRows(this)" style="margin-top: 1em; display: inline-block;">
         <input type="number" min="0" value="8" style="width: 40px;">
         <button style="margin-left: 1em">Add Rows</button>
       </form>
+      <button onclick="clearTables()"  style="margin-left: 1em">Remove All Rows</button>
     </section>
     <section id="tungstenSection" class="dataEntrySection hideWhenLoading" style="display: none;">
       <h1>Tungsten Data Entry</h1>
@@ -82,10 +83,11 @@
         <button style="margin-left: 1em">Submit</button>
       </form>
       <div id="tungstenGridTable" class="grid"></div>
-      <form action="javascript:" onsubmit="addRows(this)" style="margin-top: 1em; display: block;">
+      <form action="javascript:" onsubmit="addRows(this)" style="margin-top: 1em; display: inline-block;">
         <input type="number" min="0" value="14" style="width: 40px;">
         <button style="margin-left: 1em">Add Rows</button>
       </form>
+      <button onclick="clearTables()"  style="margin-left: 1em">Remove All Rows</button>
     </section>
     <section id="epoxySection" class="dataEntrySection hideWhenLoading" style="display: none;">
       <h1>Epoxy Data Entry</h1>
@@ -127,10 +129,11 @@
         <button style="margin-left: 1em">Submit</button>
       </form>
       <div id="epoxyGridTable" class="grid"></div>
-      <form action="javascript:" onsubmit="addRows(this)" style="margin-top: 1em; display: block;">
+      <form action="javascript:" onsubmit="addRows(this)" style="margin-top: 1em; display: inline-block;">
         <input type="number" min="0" value="8" style="width: 40px;">
         <button style="margin-left: 1em">Add Rows</button>
       </form>
+      <button onclick="clearTables()"  style="margin-left: 1em">Remove All Rows</button>
     </section>
     <section id="densitySection" class="dataEntrySection hideWhenLoading" style="display: none;">
       <h1>Density Data Entry</h1>
@@ -152,10 +155,11 @@
         <button style="margin-left: 1em">Submit</button>
       </form>
       <div id="densityGridTable" class="grid"></div>
-      <form action="javascript:" onsubmit="addRows(this)" style="margin-top: 1em; display: block;">
+      <form action="javascript:" onsubmit="addRows(this)" style="margin-top: 1em; display: inline-block;">
         <input type="number" min="0" value="8" style="width: 40px;">
         <button style="margin-left: 1em">Add Rows</button>
       </form>
+      <button onclick="clearTables()"  style="margin-left: 1em">Remove All Rows</button>
     </section>
     <section id="pictureTestsSection" class="dataEntrySection hideWhenLoading" style="display: none;">
       <h1>LT and NL Data Entry</h1>
@@ -197,10 +201,11 @@
         <button style="margin-left: 1em">Submit</button>
       </form>
       <div id="pictureTestsGridTable" class="grid"></div>
-      <form action="javascript:" onsubmit="addRows(this)" style="margin-top: 1em; display: block;">
+      <form action="javascript:" onsubmit="addRows(this)" style="margin-top: 1em; display: inline-block;">
         <input type="number" min="0" value="8" style="width: 40px;">
         <button style="margin-left: 1em">Add Rows</button>
       </form>
+      <button onclick="clearTables()"  style="margin-left: 1em">Remove All Rows</button>
     </section>
     <section id="shipmentSection" class="dataEntrySection hideWhenLoading" style="display: none;">
       <h1>Shipment Data Entry</h1>
@@ -222,10 +227,11 @@
         <button style="margin-left: 1em">Submit</button>
       </form>
       <div id="shipmentGridTable" class="grid"></div>
-      <form action="javascript:" onsubmit="addRows(this)" style="margin-top: 1em; display: block;">
+      <form action="javascript:" onsubmit="addRows(this)" style="margin-top: 1em; display: inline-block;">
         <input type="number" min="0" value="24" style="width: 40px;">
         <button style="margin-left: 1em">Add Rows</button>
       </form>
+      <button onclick="clearTables()"  style="margin-left: 1em">Remove All Rows</button>
     </section>
   </body>
   <script>
@@ -448,7 +454,7 @@
         this.natLightCheckedBy = dataPresent(array[75]) ? array[75] : null
         this.natLightChecked = this.natLightCheckedBy != null
         this.pregrade = array[80]
-        //other calculations
+        // other calculations
         const densityCompleteVars = [this.volume, this.mass, this.massTester, this.l, this.bt, this.bb, this.bh, this.st, this.sb, this.sh]
         this.densityComplete = densityCompleteVars.every((value) => value != null)
         this.lightTransComplete = this.fiberPercentage != null && this.missingRow != null && this.thirteenHoles != null && this.lightTransTester != null
@@ -535,7 +541,9 @@
         const block = this.getBlockByStringDBN(dbn)
         if (block != null) {
           const i = block.index
+          // console.log('was: ', this.array[i])
           this.array[i] = new Block(rowData, sheet, row, i)
+          // console.log('now: ', this.array[i])
         }
       }
 
@@ -3046,14 +3054,21 @@
         } else {
           $('#' + selectedSection).css('display', 'block')
           $('#submittingData').css('display', 'none')
-          const successMsg = 'Successfully wrote data to the database'
-          alert(successMsg)
+          const successMsg = 'Successfully wrote data to the database.\nPress OK to clear all rows.'
+          const clear = confirm(successMsg)
+          if (clear) { clearTables() }
         }
       }
       function onSubmitDataSuccess (msg) {
         // console.log(msg)
-        showErrorAlert(msg, data)
-        updateBlocks(msg.newBlockData)
+        if (msg === null) {
+          alert('ERROR: msg returned from setBlockData was null; unable to get status of submission or update blocks.' +
+            ' I suspect that this happens for some goddamn reason when you try to return something which isnt a primative ' +
+            ' is or composed of primatives (arrays and objects are OK)...e.g. you try to return a javascript Date or Map...')
+        } else {
+          showErrorAlert(msg, data)
+          updateBlocks(msg.newBlockData)
+        }
       }
       function onFailure (err) {
         alert('The server encountered an uncaught error while submitting data:\n' + JSON.stringify(err))
@@ -3102,13 +3117,12 @@
         const rows = blockData.rows
         for (let i = 0; i < rowData.length; i++) {
           blocksCollection.updateBlock(rowData[i], sheets[i], rows[i])
+          console.log('updated data for DBN ' + rowData[i][0])
         }
         updateTables()
-        // console.log('tried to update tables')
       }
     }
     function updateTables () {
-      // console.log('updated tables?')
       // call all keyups? ig
       // ig DBN keyup should change everything necessary, so just call that?
       const allRows = []
@@ -3116,6 +3130,14 @@
         for (const row of settings.rows) {
           $(row).find("input[data-name='dbn']").keyup()
         }
+      }
+    }
+    function clearTables () {
+      for (const settings of allSettings) {
+        for (const row of settings.rows) {
+          $(row).remove()
+        }
+        settings.rows = []
       }
     }
     function updateTimestamp () {
