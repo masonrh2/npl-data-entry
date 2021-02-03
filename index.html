@@ -47,10 +47,11 @@
         <button style="margin-left: 1em">Submit</button>
       </form>
       <div id="fiberLoadingGridTable" class="grid"></div>
-      <form action="javascript:" onsubmit="addRows(this)" style="margin-top: 1em; display: block;">
+      <form action="javascript:" onsubmit="addRows(this)" style="margin-top: 1em; display: inline-block;">
         <input type="number" min="0" value="8" style="width: 40px;">
         <button style="margin-left: 1em">Add Rows</button>
       </form>
+      <button onclick="clearTables()"  style="margin-left: 1em">Remove All Rows</button>
     </section>
     <section id="tungstenSection" class="dataEntrySection hideWhenLoading" style="display: none;">
       <h1>Tungsten Data Entry</h1>
@@ -82,10 +83,11 @@
         <button style="margin-left: 1em">Submit</button>
       </form>
       <div id="tungstenGridTable" class="grid"></div>
-      <form action="javascript:" onsubmit="addRows(this)" style="margin-top: 1em; display: block;">
+      <form action="javascript:" onsubmit="addRows(this)" style="margin-top: 1em; display: inline-block;">
         <input type="number" min="0" value="14" style="width: 40px;">
         <button style="margin-left: 1em">Add Rows</button>
       </form>
+      <button onclick="clearTables()"  style="margin-left: 1em">Remove All Rows</button>
     </section>
     <section id="epoxySection" class="dataEntrySection hideWhenLoading" style="display: none;">
       <h1>Epoxy Data Entry</h1>
@@ -127,10 +129,11 @@
         <button style="margin-left: 1em">Submit</button>
       </form>
       <div id="epoxyGridTable" class="grid"></div>
-      <form action="javascript:" onsubmit="addRows(this)" style="margin-top: 1em; display: block;">
+      <form action="javascript:" onsubmit="addRows(this)" style="margin-top: 1em; display: inline-block;">
         <input type="number" min="0" value="8" style="width: 40px;">
         <button style="margin-left: 1em">Add Rows</button>
       </form>
+      <button onclick="clearTables()"  style="margin-left: 1em">Remove All Rows</button>
     </section>
     <section id="densitySection" class="dataEntrySection hideWhenLoading" style="display: none;">
       <h1>Density Data Entry</h1>
@@ -152,30 +155,57 @@
         <button style="margin-left: 1em">Submit</button>
       </form>
       <div id="densityGridTable" class="grid"></div>
-      <form action="javascript:" onsubmit="addRows(this)" style="margin-top: 1em; display: block;">
+      <form action="javascript:" onsubmit="addRows(this)" style="margin-top: 1em; display: inline-block;">
         <input type="number" min="0" value="8" style="width: 40px;">
         <button style="margin-left: 1em">Add Rows</button>
       </form>
+      <button onclick="clearTables()"  style="margin-left: 1em">Remove All Rows</button>
     </section>
     <section id="pictureTestsSection" class="dataEntrySection hideWhenLoading" style="display: none;">
       <h1>LT and NL Data Entry</h1>
       <button onclick="sectionReturn()">Back</button>
       <button onclick="generalSubmitData(pictureTestsSettings)">SUBMIT</button><br>
-      <form action="javascript:" onsubmit="batchInput(this, 'inputDate')" style="margin-top: 1em; display: block;">
-        <label style="font-weight: bold; width: 120px; display: inline-block;">Date: </label>
+      <form action="javascript:" onsubmit="batchInput(this, 'inputMissingRow')" style="margin-top: 1em; display: block;">
+        <label style="font-weight: bold; width: 120px; display: inline-block;">Missing Row?: </label>
+          <input type="text" value="N" style="width: 80px;">
+        <button style="margin-left: 1em">Submit</button>
+      </form>
+      <form action="javascript:" onsubmit="batchInput(this, 'input13Holes')" style="margin-top: 1em; display: block;">
+        <label style="font-weight: bold; width: 120px; display: inline-block;">13 Holes?: </label>
+          <input type="text" value="N" style="width: 80px;">
+        <button style="margin-left: 1em">Submit</button>
+      </form>
+      <form action="javascript:" onsubmit="batchInput(this, 'inputLTTester')" style="margin-top: 1em; display: block;">
+        <label style="font-weight: bold; width: 120px; display: inline-block;">LT Tester: </label>
+          <input type="text" style="width: 80px;">
+        <button style="margin-left: 1em">Submit</button>
+      </form>
+      <form action="javascript:" onsubmit="batchInput(this, 'inputLTChecker')" style="margin-top: 1em; display: block;">
+        <label style="font-weight: bold; width: 120px; display: inline-block;">LT Checked By: </label>
+          <input type="text" style="width: 80px;">
+        <button style="margin-left: 1em">Submit</button>
+      </form>
+      <form action="javascript:" onsubmit="batchInput(this, 'inputNLDate')" style="margin-top: 1em; display: block;">
+        <label style="font-weight: bold; width: 120px; display: inline-block;">NL Date: </label>
           <input type="text" class="batchDate" style="width: 80px;">
         <button style="margin-left: 1em">Submit</button>
       </form>
-      <form action="javascript:" onsubmit="batchInput(this, 'inputTester')" style="margin-top: 1em; display: block;">
-        <label style="font-weight: bold; width: 120px; display: inline-block;">Tester Initials: </label>
+      <form action="javascript:" onsubmit="batchInput(this, 'inputNLTester')" style="margin-top: 1em; display: block;">
+        <label style="font-weight: bold; width: 120px; display: inline-block;">NL Tester: </label>
+          <input type="text" style="width: 80px;">
+        <button style="margin-left: 1em">Submit</button>
+      </form>
+      <form action="javascript:" onsubmit="batchInput(this, 'inputNLChecker')" style="margin-top: 1em; display: block;">
+        <label style="font-weight: bold; width: 120px; display: inline-block;">NL Checked By: </label>
           <input type="text" style="width: 80px;">
         <button style="margin-left: 1em">Submit</button>
       </form>
       <div id="pictureTestsGridTable" class="grid"></div>
-      <form action="javascript:" onsubmit="addRows(this)" style="margin-top: 1em; display: block;">
+      <form action="javascript:" onsubmit="addRows(this)" style="margin-top: 1em; display: inline-block;">
         <input type="number" min="0" value="8" style="width: 40px;">
         <button style="margin-left: 1em">Add Rows</button>
       </form>
+      <button onclick="clearTables()"  style="margin-left: 1em">Remove All Rows</button>
     </section>
     <section id="shipmentSection" class="dataEntrySection hideWhenLoading" style="display: none;">
       <h1>Shipment Data Entry</h1>
@@ -197,10 +227,11 @@
         <button style="margin-left: 1em">Submit</button>
       </form>
       <div id="shipmentGridTable" class="grid"></div>
-      <form action="javascript:" onsubmit="addRows(this)" style="margin-top: 1em; display: block;">
+      <form action="javascript:" onsubmit="addRows(this)" style="margin-top: 1em; display: inline-block;">
         <input type="number" min="0" value="24" style="width: 40px;">
         <button style="margin-left: 1em">Add Rows</button>
       </form>
+      <button onclick="clearTables()"  style="margin-left: 1em">Remove All Rows</button>
     </section>
   </body>
   <script>
@@ -403,8 +434,8 @@
         this.tower2 = (!dataPresent(array[56])) ? null : parseFloat(array[56])
         this.tower3 = (!dataPresent(array[57])) ? null : parseFloat(array[57])
         this.tower4 = (!dataPresent(array[58])) ? null : parseFloat(array[58])
-        this.missingRow = (!dataPresent(array[59])) ? null : ((array[59] === 'Y') ? true : (array[59] === 'N') ? false : null)
-        this.thirteenHoles = (!dataPresent(array[60])) ? null : ((array[60] === 'Y') ? true : (array[60] === 'N') ? false : null)
+        this.missingRow = (!dataPresent(array[59]) || (array[59] !== 'Y' && array[59] !== 'N')) ? null : array[59]
+        this.thirteenHoles = (!dataPresent(array[60]) || (array[60] !== 'Y' && array[60] !== 'N')) ? null : array[60]
         this.lightTransTester = (!dataPresent(array[63])) ? null : array[63]
         this.lightTransDate = (!dataPresent(array[64])) ? null : array[64]
         this.lightTransDateActual = (!dataPresent(array[64]) || isNaN(parseInt(removeSuffix(array[64])))) ? null : parseInt(removeSuffix(array[64]))
@@ -423,7 +454,7 @@
         this.natLightCheckedBy = dataPresent(array[75]) ? array[75] : null
         this.natLightChecked = this.natLightCheckedBy != null
         this.pregrade = array[80]
-        //other calculations
+        // other calculations
         const densityCompleteVars = [this.volume, this.mass, this.massTester, this.l, this.bt, this.bb, this.bh, this.st, this.sb, this.sh]
         this.densityComplete = densityCompleteVars.every((value) => value != null)
         this.lightTransComplete = this.fiberPercentage != null && this.missingRow != null && this.thirteenHoles != null && this.lightTransTester != null
@@ -510,7 +541,9 @@
         const block = this.getBlockByStringDBN(dbn)
         if (block != null) {
           const i = block.index
+          // console.log('was: ', this.array[i])
           this.array[i] = new Block(rowData, sheet, row, i)
+          // console.log('now: ', this.array[i])
         }
       }
 
@@ -828,11 +861,14 @@
     function dbnChange (divRow, that) {
       const dbn = $(that).val()
       const block = dbn === '' ? null : blocksCollection.getBlockByStringDBN(dbn)
-      const findBlock = $(divRow).find("span[data-name='block']")
-      const blockElement = findBlock.length > 0 ? findBlock.eq(0) : null
-      const findStatus = $(divRow).find("span[data-name='status']")
-      const statusDiv = findStatus.length === 1 ? findStatus.parent('div').eq(0) : null
-      const statusInput = findStatus.parent('div.gridData').find('input').eq(0)
+      const findBlockSpan = $(divRow).find("span[data-name='block']")
+      const blockSpan = findBlockSpan.length > 0 ? findBlockSpan.eq(0) : null
+      const findStatusSpan = $(divRow).find("span[data-name='status']")
+      const statusSpan = findStatusSpan.length === 1 ? findStatusSpan.eq(0) : null
+      const findStatusInput = $(divRow).find("input[data-name='status']")
+      const statusInput = findStatusInput.length === 1 ? findStatusInput.eq(0) : null
+      const findFiberSpan = $(divRow).find("span[data-name='fiberPercentage']")
+      const fiberSpan = findFiberSpan.length === 1 ? findFiberSpan.eq(0) : null
       // locate table to find table name to use map.....quite convoluted..
       const tableName = $(that).parents('div.grid').attr('id')
       if (block != null) {
@@ -842,14 +878,15 @@
           element.style.backgroundColor = 'transparent'
           $(element).keyup()
         })
-        if (blockElement != null) { blockElement.text(block.block) }
-        if (statusDiv != null) {
-          updateStatusDiv(statusDiv, block.status, tableNameToStatusConfig.get(tableName))
+        if (blockSpan != null) { blockSpan.text(block.block) }
+        if (statusSpan != null) { updateStatusSpan(statusSpan, block.status, tableNameToStatusConfig.get(tableName)) }
+        if (statusInput != null) {
           const element = statusInput.get(0)
           element.disabled = false
           element.style.backgroundColor = 'transparent'
           // $(element).keyup()
         }
+        if (fiberSpan !== null) { fiberSpan.text(block.fiberPercentage) }
       } else {
         $(divRow).find('input.updateDBvlaue').each(function (index) {
           const element = this
@@ -859,9 +896,9 @@
           element.style.border = '1px solid grey'
           element.style.backgroundColor = '#eee'
         })
-        if (blockElement != null) { blockElement.text('') }
-        if (statusDiv != null) {
-          updateStatusDiv(statusDiv, null, tableNameToStatusConfig.get(tableName))
+        if (blockSpan != null) { blockSpan.text('-') }
+        if (statusSpan != null) { updateStatusSpan(statusSpan, null, tableNameToStatusConfig.get(tableName)) }
+        if (statusInput != null) {
           const element = statusInput.get(0)
           element.value = ''
           element.placeholder = ''
@@ -869,6 +906,7 @@
           element.style.border = '1px solid grey'
           element.style.backgroundColor = '#eee'
         }
+        if (fiberSpan !== null) { fiberSpan.text('-') }
       }
     }
     function updateThisDBValue (divRow, element, toFixed) {
@@ -903,13 +941,12 @@
         }
       }
     }
-    function updateStatusDiv (div, curStatus) {
-      const curStatusSpan = $(div).children("span[data-name='status']")
-      const tableName = $(div).parents('div.grid').attr('id')
+    function updateStatusSpan (span, curStatus) {
+      const tableName = $(span).parents('div.grid').attr('id')
       const config = tableNameToStatusConfig.get(tableName)
       if (curStatus === null) {
         // reset
-        curStatusSpan.text('-').css('font-weight', 'bold').css('color', 'grey')
+        span.text('-').css('font-weight', 'bold').css('color', 'grey')
       } else {
         // change style accordingly
         let color
@@ -920,7 +957,7 @@
         } else {
           color = 'orange'
         }
-        curStatusSpan.text(curStatus).css('font-weight', 'bold').css('color', color)
+        span.text(curStatus).css('font-weight', 'bold').css('color', color)
       }
     }
     function updateStatusInput (that) {
@@ -1084,6 +1121,10 @@
       errorToStatus: [],
       goodToStatus: [5]
     }
+    const testStatusConfig = {
+      errorFromStatus: [0, 1, 2, 7],
+      goodFromStatus: [5]
+    }
     const shipmentStatusConfig = {
       errorFromStatus: [0, 1, 2, 3, 4],
       goodFromStatus: [5, 6],
@@ -1095,6 +1136,7 @@
       ['tungstenGridTable', tungstenStatusConfig],
       ['epoxyGridTable', epoxyStatusConfig],
       ['densityGridTable', densityStatusConfig],
+      ['pictureTestsGridTable', testStatusConfig],
       ['shipmentGridTable', shipmentStatusConfig]
     ])
     const colWidths = {
@@ -2116,6 +2158,222 @@
         ]
       }
     ]
+    const pictureTestsConfig = [
+      {
+        headerName: 'DBN',
+        colWidth: colWidths.dbn,
+        DOMs: [
+          {
+            options: {
+              type: 'input',
+              classes: [],
+              attributes: [['data-name', 'dbn'], ['type', 'text']],
+              style: [['width', '100%']]
+            },
+            update: {
+              numeric: false,
+              fn: function (divRow, that) {
+                dbnChange(divRow, that)
+              }
+            }
+          }
+        ]
+      },
+      {
+        headerName: 'Block',
+        colWidth: colWidths.block,
+        DOMs: [
+          {
+            options: {
+              type: 'span',
+              classes: [],
+              attributes: [['data-name', 'block']],
+              style: [['width', '100%']]
+            },
+            update: {
+              numeric: true,
+              fn: null
+            }
+          }
+        ]
+      },
+      {
+        headerName: 'Status',
+        colWidth: '40px',
+        DOMs: [
+          { // CURRENT STATUS
+            options: {
+              type: 'span',
+              classes: [],
+              attributes: [['data-name', 'status']],
+              style: [['width', '100%']]
+            },
+            update: {
+              numeric: false,
+              fn: null
+            }
+          }
+        ]
+      },
+      {
+        headerName: 'Fiber (%)',
+        colWidth: '50px',
+        DOMs: [
+          {
+            options: {
+              type: 'span',
+              classes: [],
+              attributes: [['data-name', 'fiberPercentage'], ['type', 'text']],
+              style: [['width', '100%']]
+            },
+            update: {
+              numeric: false,
+              fn: null
+            }
+          }
+        ]
+      },
+      {
+        headerName: 'Missing Row?',
+        colWidth: '50px',
+        DOMs: [
+          {
+            options: {
+              type: 'input',
+              classes: ['updateDBvlaue', 'submit', 'inputMissingRow'],
+              attributes: [['data-name', 'missingRow'], ['type', 'text']],
+              style: [['width', '100%']]
+            },
+            update: {
+              numeric: false,
+              fn: function (divRow, that) {
+                updateThisDBValue(divRow, that, -1)
+              }
+            }
+          }
+        ]
+      },
+      {
+        headerName: '13 Holes?',
+        colWidth: '50px',
+        DOMs: [
+          {
+            options: {
+              type: 'input',
+              classes: ['updateDBvlaue', 'submit', 'input13Holes'],
+              attributes: [['data-name', 'thirteenHoles'], ['type', 'text']],
+              style: [['width', '100%']]
+            },
+            update: {
+              numeric: false,
+              fn: function (divRow, that) {
+                updateThisDBValue(divRow, that, -1)
+              }
+            }
+          }
+        ]
+      },
+      {
+        headerName: 'LT Tester',
+        colWidth: '60px',
+        DOMs: [
+          {
+            options: {
+              type: 'input',
+              classes: ['updateDBvlaue', 'submit', 'inputLTTester'],
+              attributes: [['data-name', 'lightTransTester'], ['type', 'text']],
+              style: [['width', '100%']]
+            },
+            update: {
+              numeric: false,
+              fn: function (divRow, that) {
+                updateThisDBValue(divRow, that, -1)
+              }
+            }
+          }
+        ]
+      },
+      {
+        headerName: 'LT Checked By',
+        colWidth: '60px',
+        DOMs: [
+          {
+            options: {
+              type: 'input',
+              classes: ['updateDBvlaue', 'submit', 'inputLTChecker'],
+              attributes: [['data-name', 'lightTransCheckedBy'], ['type', 'text']],
+              style: [['width', '100%']]
+            },
+            update: {
+              numeric: false,
+              fn: function (divRow, that) {
+                updateThisDBValue(divRow, that, -1)
+              }
+            }
+          }
+        ]
+      },
+      {
+        headerName: 'NL Date',
+        colWidth: colWidths.date,
+        DOMs: [
+          {
+            options: {
+              type: 'input',
+              classes: ['updateDBvlaue', 'submit', 'inputNLDate'],
+              attributes: [['data-name', 'natLightDate'], ['type', 'text']],
+              style: [['width', '100%']]
+            },
+            update: {
+              numeric: false,
+              fn: function (divRow, that) {
+                updateThisDBValue(divRow, that, -1)
+              }
+            }
+          }
+        ]
+      },
+      {
+        headerName: 'NL Tester',
+        colWidth: '60px',
+        DOMs: [
+          {
+            options: {
+              type: 'input',
+              classes: ['updateDBvlaue', 'submit', 'inputNLTester'],
+              attributes: [['data-name', 'natLightTester'], ['type', 'text']],
+              style: [['width', '100%']]
+            },
+            update: {
+              numeric: false,
+              fn: function (divRow, that) {
+                updateThisDBValue(divRow, that, -1)
+              }
+            }
+          }
+        ]
+      },
+      {
+        headerName: 'NL Checked By',
+        colWidth: '60px',
+        DOMs: [
+          {
+            options: {
+              type: 'input',
+              classes: ['updateDBvlaue', 'submit', 'inputNLChecker'],
+              attributes: [['data-name', 'natLightCheckedBy'], ['type', 'text']],
+              style: [['width', '100%']]
+            },
+            update: {
+              numeric: false,
+              fn: function (divRow, that) {
+                updateThisDBValue(divRow, that, -1)
+              }
+            }
+          }
+        ]
+      }
+    ]
     const shipmentConfig = [
       {
         headerName: 'DBN',
@@ -2247,6 +2505,7 @@
     const tungstenRows = []
     const epoxyRows = []
     const densityRows = []
+    const pictureTestsRows = []
     const shipmentRows = []
     const fiberLoadingSettings = {
       config: fiberLoadingConfig,
@@ -2272,6 +2531,12 @@
       rows: densityRows,
       name: 'density'
     }
+    const pictureTestsSettings = {
+      config: pictureTestsConfig,
+      table: $('#pictureTestsGridTable'),
+      rows: pictureTestsRows,
+      name: 'pictureTests'
+    }
     const shipmentSettings = {
       config: shipmentConfig,
       table: $('#shipmentGridTable'),
@@ -2283,9 +2548,10 @@
       ['tungstenGridTable', tungstenSettings],
       ['epoxyGridTable', epoxySettings],
       ['densityGridTable', densitySettings],
+      ['pictureTestsGridTable', pictureTestsSettings],
       ['shipmentGridTable', shipmentSettings]
     ])
-    const allSettings = [fiberLoadingSettings, tungstenSettings, epoxySettings, densitySettings, shipmentSettings]
+    const allSettings = [fiberLoadingSettings, tungstenSettings, epoxySettings, densitySettings, pictureTestsSettings, shipmentSettings]
     let currentDate
     let database
     const headers = []
@@ -2294,7 +2560,6 @@
     let lastDatabaseLoad
     let reloadDatabaseTimer
     let selectedSection
-    let blockPropertyToCellIndex
     function doOnload () {
       function getDatabaseOnLoad () {
         currentDate = new Date()
@@ -2420,6 +2685,11 @@
       document.getElementById('densitySection').style.display = 'block'
       selectedSection = 'densitySection'
     }
+    function loadPictureTests () {
+      document.getElementById('sectionSelection').style.display = 'none'
+      document.getElementById('pictureTestsSection').style.display = 'block'
+      selectedSection = 'pictureTestsSection'
+    }
     function loadShipment () {
       document.getElementById('sectionSelection').style.display = 'none'
       document.getElementById('shipmentSection').style.display = 'block'
@@ -2459,6 +2729,18 @@
       const values = []
       const columnNames = []
       const rows = tableSettings.rows
+      // first add to columnNames
+      for (let i = 0; i < tableSettings.config.length; i++) {
+        const columnConfig = tableSettings.config[i]
+        // iterate through DOMs
+        for (let j = 0; j < columnConfig.DOMs.length; j++) {
+          if (columnConfig.DOMs[j].options.classes.includes('submit')) {
+            const propertyName = columnConfig.DOMs[j].options.attributes[0][1]
+            columnNames.push(propertyName)
+          }
+        }
+      }
+      // then add to values
       for (const row of rows) {
         const stringDBN = $(row).find("input[data-name='dbn']").val()
         if (stringDBN !== '') {
@@ -2486,8 +2768,7 @@
                     blockValues.push(null)
                     // console.log('NOT submitting ' + propertyName)
                   }
-                  columnNames.push(propertyName)
-                  break
+                  // columnNames.push(propertyName)
                 }
               }
             }
@@ -2498,7 +2779,14 @@
         }
       }
       // console.log('table name was: ' + tableSettings.name)
-      submitData(blocks, columnNames, values, tableSettings.name + 'GridTable')
+      if (values.length === 0) {
+        alert('no data to submit!')
+      } else if (columnNames.length !== values[0].length) {
+        // bad!
+        alert('the number of entries in columnNames does not match the number of entries in values[0]\n' + '(ask mason to fix this)')
+      } else {
+        submitData(blocks, columnNames, values, tableSettings.name + 'GridTable')
+      }
     }
     
     /**
@@ -2551,6 +2839,7 @@
       function validateOverwrites (blocks, columnNames, values, tableName) {
         const statusConfig = tableNameToStatusConfig.get(tableName)
         const warnings = []
+        // console.log(columnNames)
         // console.log(values)
         for (let i = 0; i < values.length; i++) {
           const block = blocks[i]
@@ -2558,19 +2847,23 @@
             const value = values[i][j]
             // console.log(value)
             if (columnNames[j] === 'status' && value !== null) {
+              // console.log('value[' + i + '][' + j + ']:')
+              // console.log(value)
               if (statusConfig.goodFromStatus.some(function (element) { return element == value.expected })) {
                 continue
               } else if (statusConfig.errorFromStatus.some(function (element) { return element == value.expected })) {
                 // error
                 warnings.push({
                   dbn: block.dbn,
-                  custom: '(ERROR) this block is status ' + value.expected
+                  custom: '(ERROR) this block is status ' + value.expected + ', but expected status in ' +
+                    JSON.stringify(statusConfig.goodFromStatus) + ' for this section'
                 })
               } else {
                 // warning
                 warnings.push({
                   dbn: block.dbn,
-                  custom: '(WARNING) this block is status ' + value.expected
+                  custom: '(WARNING) this block is status ' + value.expected + ', but expected status in ' +
+                    JSON.stringify(statusConfig.goodFromStatus) + ' for this section'
                 })
               }
             } else if (value !== null && value.expected !== '' && value.set != value.expected) {
@@ -2634,7 +2927,7 @@
                   value: value.set
                 })
               }
-            } else if (columnNames[j] === 'status') {
+            } else if (value !== null && columnNames[j] === 'status') {
               if (statusConfig.goodToStatus.some(function (element) { return element == value.set })) {
                 continue
               } else if (statusConfig.errorToStatus.some(function (element) { return element == value.set })) {
@@ -2763,14 +3056,21 @@
         } else {
           $('#' + selectedSection).css('display', 'block')
           $('#submittingData').css('display', 'none')
-          const successMsg = 'Successfully wrote data to the database'
-          alert(successMsg)
+          const successMsg = 'Successfully wrote data to the database.\nPress OK to clear all rows.'
+          const clear = confirm(successMsg)
+          if (clear) { clearTables() }
         }
       }
       function onSubmitDataSuccess (msg) {
         // console.log(msg)
-        showErrorAlert(msg, data)
-        updateBlocks(msg.newBlockData)
+        if (msg === null) {
+          alert('ERROR: msg returned from setBlockData was null; unable to get status of submission or update blocks.' +
+            ' I suspect that this happens for some goddamn reason when you try to return something which isnt a primative ' +
+            ' is or composed of primatives (arrays and objects are OK)...e.g. you try to return a javascript Date or Map...')
+        } else {
+          showErrorAlert(msg, data)
+          updateBlocks(msg.newBlockData)
+        }
       }
       function onFailure (err) {
         alert('The server encountered an uncaught error while submitting data:\n' + JSON.stringify(err))
@@ -2819,29 +3119,27 @@
         const rows = blockData.rows
         for (let i = 0; i < rowData.length; i++) {
           blocksCollection.updateBlock(rowData[i], sheets[i], rows[i])
+          console.log('updated data for DBN ' + rowData[i][0])
         }
         updateTables()
-        // console.log('tried to update tables')
       }
     }
     function updateTables () {
-      // console.log('updated tables?')
       // call all keyups? ig
       // ig DBN keyup should change everything necessary, so just call that?
-      for (const row of fiberLoadingRows) {
-        $(row).find("input[data-name='dbn']").keyup()
+      const allRows = []
+      for (const settings of allSettings) {
+        for (const row of settings.rows) {
+          $(row).find("input[data-name='dbn']").keyup()
+        }
       }
-      for (const row of tungstenRows) {
-        $(row).find("input[data-name='dbn']").keyup()
-      }
-      for (const row of epoxyRows) {
-        $(row).find("input[data-name='dbn']").keyup()
-      }
-      for (const row of densityRows) {
-        $(row).find("input[data-name='dbn']").keyup()
-      }
-      for (const row of shipmentRows) {
-        $(row).find("input[data-name='dbn']").keyup()
+    }
+    function clearTables () {
+      for (const settings of allSettings) {
+        for (const row of settings.rows) {
+          $(row).remove()
+        }
+        settings.rows = []
       }
     }
     function updateTimestamp () {

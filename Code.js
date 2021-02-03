@@ -7,14 +7,8 @@
  * mass change of status/shipment date/shipment number (..etc?) (include option to enter list of DBNs) (also include a "find blocks be status" and way to
  * easily select blocks to change) (do some pretty thing with arrows showing status before and after)
  * 
- * could do a very multipurpose framework which allows you to select and DBNs and change values in any colummn(s)
- * (could be more dangerous?) (would be more work, but a lot could be borrowed from "find blocks" of info station)
- * (this would pretty much just be the database...)
- * 
  * include ghost text for what it should look like (e.g. HCS-56 and not 56) or do some basic data validation and show red if it fails
  * this is a problem since we use placeholder for the current database values (if they exist) ... I think the basic validation is sufficient
- * 
- * consider consolidating blocks class variables e.g. put all dimensions into a subobject or the like (block.dimensions.bt instead of block.bt) (would be cleaner)
  * 
  * look into caching and see if it could be use (quick access to a 20-minute old version of the database maybe?)
  * (https://developers.google.com/apps-script/guides/support/best-practices)
@@ -22,24 +16,12 @@
  * could add framework to add and remove tags from blocks (using the comments column)
  * this is probably a much better system than using non-numeric DBNs (but it's too late for that)
  * 
- * the index block property might not be necessary...
- * 
- * warnings if status is not as expected (perhaps include status column on all pages which is green/red)
- * (perhaps also check again what the status is on the google script side, and return a warning "are you sure?")
- * (or perhaps also allow you to change status)
- * 
  * catch data validation error (is there a way to check what the valdation rules in a cell are?) (e.g. powder)
  * 
  * option to remove all testing data from a block (sent back to machine shop, e.g.) (could also remove entries from data dumps, but this might not be necessary)
  * (leads to some confusion, though, since we don't have a record of all tests/machining dates.....)
  * 
- * add status volumes to all sections:
- * tungsten: 1 -> 2
- * epoxy: 2 -> 3
- * dimensions: 4 -> 5? or 3 -> 5 (not consistent)
- * 
- * begin each section with "how many blocks would you like to add?" then add that many rows
- * OR use select blocks by status (and other things?) easy to add checkboxes to datatable, I think (or just CSS grid)
+ * use select blocks by status (and other things?) easy to add checkboxes to datatable, I think (or just CSS grid)
  * 
  * clear row or clear all option?
  * 
@@ -50,6 +32,11 @@
  * + 3 hrs
  * + 3.5 hrs
  * + 2.5 hrs
+ * + 1.5 hrs
+ * + 1 hrs (2/1/2021 1:00 PM)
+ * + 5 hrs (2/1/2021 10:00 PM)
+ * + 0.5 hrs (2/2/2021 12:00 PM)
+ * 
  * 
  * shipment
  * 
@@ -62,15 +49,34 @@
  * explain possible discrepancies between database grading and app grading (i.e. < vs <=)
  * 
  * current TODO:
- * - ready for testing
- * - shipment, fiber loading, test grading (and testing NL and LT?) sections
- * - "fiber loading" section: input cols Q and U (status 0 -> 1)
- * - "shipment" section: input shipment, shipment date (to status 7 by default)
- *     (perhaps allow "shipment" to be used to change just status on many blocks (for 8/5m/5r purposes, e.g.))
+ * - test grading section?
  * - testing section for testers (based on test) (check for shipment which verifies all?) (LT: 13holes, missing row, name)
  *     (NL: name, date) (LT check: database cols, also check for files in google drive, status?)
  *     (NL check) (database cols, also check for files in google drive, status?)
  *     somewhere also veryify dates? fiber load -> w fill -> epoxy -> mach -> tests (ensure UP-TO-DATE TESTS)
+ * - perhaps streamline retreival of data for display-only spans
+ * - status is NOT checked for status in pic tests, since there is no submission data associtated...
+ * - could clean up the error checking (allow ) (make it less of a fucking mess) (make it easier to add new checks/types of checks)
+ * - think about other ways to check for errors (see above not about ensuring up-to-date tests)
+ * 
+ * - warning for incomplete data submission in SOME sections (warning...some entries are blank, e.g.) (not for pic tests, e.g.)
+ * 
+ * BUGS:
+ * - block status does not update after submission (but does on refresh database)
+ * - caroline: submitting 8 blocks, and then 8 blocks gives script error?
+ * - caroline: deleting DBN does not remove some numbers from the corresponding cells?
+ * 
+ * CURRENT ISSUES:
+ * - removing the DBN does not remove some data from the fields (W empty and filled mass)? [I can't seem to reproduce now]
+ * - clear all button removes data pertaining to the above issue?
+ * 
+ * reconigure shipment tab:
+ * - load all blocks in status 6 [fill them in automatically?]
+ * - display their shipment number and allow changes (if needed) []
+ * - allow to add shipment date as bulk
+ * - move to status 7
+ * 
+ * log name of person running app on submission (if possible)
  */
 
 function doGet () {
@@ -86,9 +92,9 @@ function include (filename) {
 const fileIDs = {
   QATestsFolder_ID: '1z3Ez8X3hzAhQMH3YYLa7PsPFSHhCNW4b',
   // REAL DATABASE:
-  // database_ID: '1qnCxA6FPIh1Y5w-cG3LFzdPnkVu2b0p14_viVjkDldg',
+  database_ID: '1qnCxA6FPIh1Y5w-cG3LFzdPnkVu2b0p14_viVjkDldg',
   // TEST DATABASE:
-  database_ID: '1wxlC31DsosIniAWJdhoCkAlekUpYYV0NygrA07QbMrs',
+  // database_ID: '1wxlC31DsosIniAWJdhoCkAlekUpYYV0NygrA07QbMrs',
   imageUrlsSheet_ID: null,
   lightTransAnalysisFolder_ID: '1bPgaSd7G4TevyRDPs7fjbxsvPrIHkI32',
   lightTransArchiveAnalysisFolder_ID: '12de-XwXEKke-PAjQ0KUgBHSErzj2EiVC',
@@ -153,7 +159,7 @@ function getRowData (blocks) {
     } else if (sheet === 1) {
       spreadsheet = blocks13_64
     }
-    const rowData = spreadsheet.getRange('A' + row + ':' + row).getDisplayValues()
+    const rowData = spreadsheet.getRange('A' + row + ':' + row).getValues()
     data.push(rowData)
   }
   // Logger.log(data)
@@ -172,11 +178,12 @@ function setBlockData (data) {
   const blocks13_64 = SpreadsheetApp.openById(fileIDs.database_ID).getSheetByName('Blocks1364DB')
   const unexpectedValueErrors = []
   const dataValidationErrors = []
+  const curRowData = []
   const newRowData = []
   const sheets = []
   const rows = []
   const rangesToSet = []
-
+  const headers = [null, null]
   for (let i = 0; i < data.length; i++) {
     const sheet = data[i].sheet
     const dbn = data[i].expectedDBN
@@ -187,16 +194,24 @@ function setBlockData (data) {
     let spreadsheet
     if (sheet === 0) {
       spreadsheet = blocks1_12
+      if (headers[0] === null) {
+        headers[0] = spreadsheet.getRange('A1:1').getDisplayValues()[0]
+      }
     } else if (sheet === 1) {
       spreadsheet = blocks13_64
+      if (headers[1] === null) {
+        headers[1] = spreadsheet.getRange('A1:1').getDisplayValues()[0]
+      }
     }
-
     // get and modify row
     const rangeName = 'A' + row + ':' + row
     const range = spreadsheet.getRange(rangeName)
     const rowData = range.getDisplayValues()[0]
+    curRowData.push(rowData)
+    const rowDataToSet = new Array(rowData.length).fill(null)
     if (dbn !== rowData[0]) {
       // I thought there was another DBN here! stop everything!
+      Logger.log('found unexpected DBN in sheet ' + spreadsheet.getName() + ', row ' + row + ': ' + rowData[0] + ' (expected ' + dbn + '); not submitting')
       return {
         unexpectedDBNError: {
           loc: { sheet: sheet, row: row },
@@ -219,7 +234,7 @@ function setBlockData (data) {
           id: [i, j]
         })
       }
-      rowData[cols[j]] = values[j].set
+      rowDataToSet[cols[j]] = values[j].set
     }
 
     // check if any values conflict with data validation
@@ -230,7 +245,7 @@ function setBlockData (data) {
       if (rule != null) {
         const type = rule.getCriteriaType().toString()
         const args = rule.getCriteriaValues()
-        const value = rowData[cols[j]]
+        const value = values[j].set
         const allowInvalid = rule.getAllowInvalid()
         const err = {
           loc: loc,
@@ -261,30 +276,87 @@ function setBlockData (data) {
         }
       }
     }
-    rangesToSet.push([range, rowData, sheet, row])
+    rangesToSet.push([range, rowDataToSet, sheet, row, dbn])
     // range.setValues([rowData])
   }
-
+  // Logger.log(rangesToSet)
+  // only submit data to the database if there were no errors for ANY of the blocks in this submission
   if (dataValidationErrors.length + unexpectedValueErrors.length === 0) {
     // should probably log to Logger which values were changed
-    for (const arr of rangesToSet) {
-      arr[0].setValues([arr[1]])
-      newRowData.push(arr[1])
-      sheets.push(arr[2])
-      rows.push(arr[3])
+    let logMsg = 'SUBMISSION to database (by ' + Session.getActiveUser().getEmail() + '):\n'
+    for (let i = 0; i < rangesToSet.length; i++) { // (const arr of rangesToSet) {
+      // first check if this row has any data to submit
+      if (rangesToSet[i][1].every(function (element) { return element === null })) {
+        continue
+      } // otherwise, there is data to submit
+      const sheet = rangesToSet[i][0].getSheet().getName()
+      const row = rangesToSet[i][3]
+      const dbn = rangesToSet[i][4]
+      const columns = []
+      const setValues = []
+      for (let j = 0; j < rangesToSet[i][1].length; j++) {
+        if (rangesToSet[i][1][j] !== null) { // if null, we ignore this cell and choose not to overwrite it's formula
+          // HTML told us to write this value
+          rangesToSet[i][0].getCell(1, j + 1).setValue(rangesToSet[i][1][j])
+          curRowData[i][j] = rangesToSet[i][1][j]
+          // log this
+          columns.push(headers[rangesToSet[i][2]][j] + ' [col ' + columnToLetter(j + 1) + ']')
+          setValues.push(rangesToSet[i][1][j])
+        }
+      }
+      // rangesToSet[i][0].setValues([rangesToSet[i][1]])
+      logMsg += 'In sheet ' + sheet + ', DBN ' + dbn + ' [row ' + row + '], wrote data: '
+      for (let i = 0; i < columns.length - 1; i++) {
+        logMsg += columns[i] + ': ' + "'" + setValues[i] + "', "
+      }
+      logMsg += columns[columns.length - 1] + ': ' + "'" + setValues[columns.length - 1] + "'"
+      logMsg += '\n'
+      newRowData.push(rangesToSet[i][1])
+      sheets.push(rangesToSet[i][2])
+      rows.push(rangesToSet[i][3])
     }
+    Logger.log(logMsg)
+    // Logger.log(curRowData)
   } else {
     // failed to set values beacuse we had at least one fatal or unchecked error
+    Logger.log('found data validation and/or unexpected value errors; not submitting')
   }
 
-  const msg = {
+  return {
     dataValidationErrors: dataValidationErrors,
     unexpectedValueErrors: unexpectedValueErrors,
-    newBlockData: { rowData: newRowData, sheets: sheets, rows: rows }
+    newBlockData: { rowData: curRowData, sheets: sheets, rows: rows }
   }
-  // Logger.log(msg)
-  return msg
 }
+
+function debugGetFormulas () {
+  // for testing:
+  const blocks1_12 = SpreadsheetApp.openById(fileIDs.database_ID).getSheetByName('Blocks DB')
+  const blocks13_64 = SpreadsheetApp.openById(fileIDs.database_ID).getSheetByName('Blocks1364DB')
+  const row = 14
+  const data = blocks13_64.getRange('A' + row + ':' + row).getFormulas()
+  Logger.log(data)
+  return data
+}
+function debugGetDisplayValues () {
+  // for testing:
+  const blocks1_12 = SpreadsheetApp.openById(fileIDs.database_ID).getSheetByName('Blocks DB')
+  const blocks13_64 = SpreadsheetApp.openById(fileIDs.database_ID).getSheetByName('Blocks1364DB')
+  const row = 14
+  const data = blocks13_64.getRange('A' + row + ':' + row).getDisplayValues()
+  Logger.log(data)
+  return data
+}
+function debugGetValues () {
+  // for testing:
+  const blocks1_12 = SpreadsheetApp.openById(fileIDs.database_ID).getSheetByName('Blocks DB')
+  const blocks13_64 = SpreadsheetApp.openById(fileIDs.database_ID).getSheetByName('Blocks1364DB')
+  const row = 14
+  const data = blocks13_64.getRange('A' + row + ':' + row).getValues()
+  Logger.log(data)
+  return data
+}
+
 /**
  * @param {String} value
  * @return {Boolean}
