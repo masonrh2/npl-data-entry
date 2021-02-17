@@ -65,10 +65,10 @@
  * - block status does not update after submission (but does on refresh database)
  * - caroline: submitting 8 blocks, and then 8 blocks gives script error?
  * - caroline: deleting DBN does not remove some numbers from the corresponding cells?
+ * submitting x to mold series gives an error (see logs) ()
  * 
  * CURRENT ISSUES:
- * - removing the DBN does not remove some data from the fields (W empty and filled mass)? [I can't seem to reproduce now]
- * - clear all button removes data pertaining to the above issue?
+ * - Logs are mostly empty when I don't run them? perhaps look into linking the script to a google cloud project for better logging?
  * 
  * reconigure shipment tab:
  * - load all blocks in status 6 [fill them in automatically?]
@@ -76,7 +76,7 @@
  * - allow to add shipment date as bulk
  * - move to status 7
  * 
- * log name of person running app on submission (if possible)
+ * show date suffix for LT
  */
 
 function doGet () {
@@ -202,6 +202,9 @@ function setBlockData (data) {
       if (headers[1] === null) {
         headers[1] = spreadsheet.getRange('A1:1').getDisplayValues()[0]
       }
+    } else {
+      // idk what the sheet is
+      Logger.log('ERROR: unexpected sheet: ' + sheet + ' (expected 0 for sector 1-12 or 1 for sector 13-64')
     }
     // get and modify row
     const rangeName = 'A' + row + ':' + row
