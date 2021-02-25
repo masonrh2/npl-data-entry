@@ -66,7 +66,7 @@
  * submitting x to mold series gives an error (see logs) ()
  * 
  * CURRENT ISSUES:
- * - Logs are mostly empty when I don't run them? perhaps look into linking the script to a google cloud project for better logging?
+ * - 
  * 
  * reconigure shipment tab:
  * - load all blocks in status 6 [fill them in automatically?]
@@ -75,6 +75,99 @@
  * - move to status 7
  * 
  * show date suffix for LT
+ * 
+ * migrate project to google cloud platform for logging that works
+ * 
+ * change shipment section:
+ * - add blocks to grade (select from status 5 blocks and auto set status to its pregrade if all tests are complete, else warn)
+ * 
+ * functionality for density checking? seperate window?
+ * break all tests sections down?:
+ * 
+ * Fiber: input fiber loading data
+ *    (dbn, block*, status, mold number, fiber loader)
+ *    [do not choose from a group (too many status 0 blocks!)]
+ * Tungsten: input tungsten data
+ *    (dbn, block*, status, powder, bucket #, empty mass, filled mass, date, initials)
+ *    [choose from status 1, sort by DBN?]
+ * Epoxy: input epoxy data
+ *    (dbn, block*, status, batch, resin mass, hardener mass, potting notes, filling time, date, initials)
+ *    [choose from status 2, sort by DBN?]
+ * Machining: input machining data
+ *    (dbn, block*, status, date, initials)
+ *    [choose from status 3? may not be super helpful (>100 blocks...)]
+ * 
+ * Density: 
+ *    (dbn, block*, status, L, BT, BB, BH, ST, SB, SH, volume*, initials, mass, initials, density*, date)
+ *    [choose from status 3 and/or 4?]
+ * Light Trans:
+ *    (dbn, block*, status, fiber count*, missing row, 13 holes, tester)
+ *    [choose from status 5, sort by most recently LT tested, then by DBN]
+ * Natural Light:
+ *    (dbn, block*, status, date, tester)
+ *    [choose from status 5, sort by most recently NL tested, then by DBN]
+ * 
+ * Density Check:
+ *    (dbn, block*, status*, L, BT, BB, BH, ST, SB, SH, initals, mass, initials, date, checked)
+ *    [choose from status 5, sort by those missing check, then by DBN]
+ * Light Trans Check:
+ *    (dbn, block*, status*, fiber count*, missing row, 13 holes, tester, date, checked)
+ *    [choose from status 5, sort by those missing check, then by DBN]
+ * Natural Light Check:
+ *    (dbn, block*, status*, date, tester, checked)
+ *    [choose from status 5, sort by those missing check, then by DBN]
+ * 
+ * Block Grading:
+ *    (dbn, block*, pregrade, status, density*, {indicate dim grades}*, fiber count*, {inidicate tower grades}*, missing row,
+ *        13 holes, scint ratio)
+ *    [choose from status 5, sort by test completeness?]
+ *    {diplay how many blocks are status 5 (and how many need tests, need checks, finished 5a/b/c, finished 8), 5a/b/c}
+ * Shipment:
+ *    (dbn, block*, status, pregrade)
+ *    [choose from status 5a, 5b, 5c, sort by block? grade? dbn?]
+ * 
+ * 
+ * functionality to verify dates and integrity of all tests:
+ * Dates: fiber fill date < tungsten date < epoxy date < (density, light trans, natural light, scint)
+ * (and all are valid dates (some are US dates which may not be valid))
+ * Database: all cells are filled
+ * Google Drive: LT original W and N images are in block pictures, W and N histograms are in analysis,
+ * txt files are in scintiallation folder
+ * 
+ * need to handle errors much better (code is a fucking mess and dialogs are confusing and clunky)
+ * - you should be able to make an array which specifies error-checking functions, the order to try them in,
+ *      when to inform user/ask confirmation, and how to confirmation should appear
+ * - something like this (they should be separated by how they should appear to the end user):
+ *    [
+ *      {fns: [checkInitials, checkDate, checkNumber], msg: alertFn}, // a screw is a screw
+ *      {fns: [checkStatus, checkDateProgression], msg: alertFn}, // are you sure this is the right block?
+ *      {fns: [trySubmit], msg: alertFn} // look good on client-side, try to submit to script
+ *    ]
+ * - when submit is pressed, the first set of checks are run to completion, then display a confirm dialog
+ *    if there were any errors, otherwise continue onto the second set of checks
+ * - repeat the above process with the second set of checks
+ * - trySubmit should simply run a modified server-side submission function
+ * 
+ * - the script-side function should first check if ANY of the cells written to have changed (fatal error if dbn has changed,
+ *      warning if other value has changed (and display the change when asking for confirmation));
+ *      then either try to submit and properly handle data validation and other errors OR try to read data validation
+ *      rules and decide if the data should be submitted (more elegant to handle errors from script)
+ *      (how to get the script-side errors to javscript nicely? does this work? can we just use failure handler?)
+ * 
+ * 
+ *  - somehow need to store what the checking state is (to avoid infinite loops)
+ *  - this was previously handled by adding ignore flags, but this is not very elegant
+ *      (and at least could be significantly improved)
+ * 
+ * ...how to handle script error (incl. unhandled errors and my homemade errors (such as data validation))
+ * 
+ * 
+ * allow enter user to enter a comma-separated list of DBNs?
+ * could change tabbing or have nicer dbn entry (seperate box) which makes inputting many DBNS easier
+ * 
+ * other:
+ * - start logging cropped stencil with difference form template for LT
+ * - improve LT stencil recognition
  */
 
 function doGet () {
