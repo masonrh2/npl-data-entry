@@ -279,11 +279,11 @@ function setBlockData (data) {
   }
   let allSheetData = [null, null]
   if (loadSheets[0]) {
-    allSheetData[0] = blocks1_12.getDataRange().getDisplayValues()
+    allSheetData[0] = blocks1_12.getDataRange().getDisplayValues() // returns strings only
     headers[0] = allSheetData[0][0]
   }
   if (loadSheets[1]) {
-    allSheetData[1] = blocks13_64.getDataRange().getDisplayValues()
+    allSheetData[1] = blocks13_64.getDataRange().getDisplayValues() // returns strings only
     headers[1] = allSheetData[1][0]
   }
   for (let i = 0; i < data.length; i++) {
@@ -305,10 +305,10 @@ function setBlockData (data) {
     // get and modify row
     const rangeName = 'A' + row + ':' + row
     const range = spreadsheet.getRange(rangeName)
-    const rowData = allSheetData[sheet][row - 1] // range.getDisplayValues()[0]
+    const rowData = allSheetData[sheet][row - 1]
     curRowData.push(rowData)
     const rowDataToSet = new Array(rowData.length).fill(null)
-    if (dbn !== rowData[0]) {
+    if (dbn !== rowData[0]) { // !== beacause HTML casts block.dbn to a string
       // I thought there was another DBN here! stop everything!
       Logger.log('found unexpected DBN in sheet ' + spreadsheet.getName() + ', row ' + row + ': ' + rowData[0] + ' (expected ' + dbn + '); not submitting')
       return {
@@ -386,7 +386,7 @@ function setBlockData (data) {
     let logMsg = 'SUBMISSION to database (by ' + Session.getActiveUser().getEmail() + '):\n'
     let startRow = Infinity
     let endRow = 0
-    let dbnsModified = []
+    const dbnsModified = []
     for (let i = 0; i < rangesToSet.length; i++) { // (const arr of rangesToSet) {
       // first check if this row has any data to submit
       if (rangesToSet[i][1].every(function (element) { return element === null })) {
@@ -397,7 +397,7 @@ function setBlockData (data) {
       if (row < startRow) { startRow = row }
       if (row > endRow) { endRow = row }
       const dbn = rangesToSet[i][4]
-      // dbnsModified.push(dbn)
+      dbnsModified.push(dbn)
       const columns = []
       const setValues = []
       for (let j = 0; j < rangesToSet[i][1].length; j++) {
@@ -422,8 +422,8 @@ function setBlockData (data) {
       rows.push(rangesToSet[i][3])
     }
     Logger.log(logMsg)
-    DatabaseScripts.updateRowFormulas(blocks13_64, startRow, endRow, Session.getActiveUser())
-    // ^ pass parameter dbnsModified to DatabaseScripts
+    Logger.log(`Modified DBNs: ${JSON.stringify(dbnsModified)}`)
+    DatabaseScripts.updateRowFormulas(blocks13_64, startRow, endRow, Session.getActiveUser(), dbnsModified)
     // Logger.log(curRowData)
   } else {
     // failed to set values beacuse we had at least one fatal or unchecked error
@@ -437,34 +437,6 @@ function setBlockData (data) {
   }
 }
 
-function debugGetFormulas () {
-  // for testing:
-  const blocks1_12 = SpreadsheetApp.openById(fileIDs.database_ID).getSheetByName('Blocks DB')
-  const blocks13_64 = SpreadsheetApp.openById(fileIDs.database_ID).getSheetByName('Blocks1364DB')
-  const row = 14
-  const data = blocks13_64.getRange('A' + row + ':' + row).getFormulas()
-  Logger.log(data)
-  return data
-}
-function debugGetDisplayValues () {
-  // for testing:
-  const blocks1_12 = SpreadsheetApp.openById(fileIDs.database_ID).getSheetByName('Blocks DB')
-  const blocks13_64 = SpreadsheetApp.openById(fileIDs.database_ID).getSheetByName('Blocks1364DB')
-  const row = 14
-  const data = blocks13_64.getRange('A' + row + ':' + row).getDisplayValues()
-  Logger.log(data)
-  return data
-}
-function debugGetValues () {
-  // for testing:
-  const blocks1_12 = SpreadsheetApp.openById(fileIDs.database_ID).getSheetByName('Blocks DB')
-  const blocks13_64 = SpreadsheetApp.openById(fileIDs.database_ID).getSheetByName('Blocks1364DB')
-  const row = 14
-  const data = blocks13_64.getRange('A' + row + ':' + row).getValues()
-  Logger.log(data)
-  return data
-}
-
 /**
  * @param {String} value
  * @return {Boolean}
@@ -473,7 +445,7 @@ function isValidDate (value) {
   return true
 }
 /**
- * @param {Number}
+ * @param {Number} column
  * @return {String}
  */
 function columnToLetter (column) {
@@ -498,8 +470,3 @@ function letterToColumn (letter) {
   }
   return column
 }
-
-// handle location in database here, or just pass the range and values to google script?
-// if we want to check with CURRENT values, we must either load the relevant dbns before submitting (only takes a few seconds, can easily
-// show user the current values) or check values in google script and put logic there (if anything goes wrong, we have to pass info back to javascript..)
-// maybe, for the very rare case, pass expected values to google script and compare them with the current ones queried in google script before overwriting
