@@ -28,13 +28,11 @@
  * + 2.5 hrs
  * + 6.5 hrs
  * + 3 hrs
- * + 1 hrs
  * + 3 hrs
  * + 3.5 hrs
  * + 1 hrs (2/1/2021 1:00 PM)
  * + 5 hrs (2/1/2021 10:00 PM)
  * + 0.5 hrs (2/2/2021 12:00 PM)
- * + 8 hrs (3/2 and 3/3)
  * 
  * shipment
  * 
@@ -377,6 +375,7 @@ function setBlockData (data) {
         }
       }
     }
+    //                  0          1         2     3    4
     rangesToSet.push([range, rowDataToSet, sheet, row, dbn])
     // range.setValues([rowData])
   }
@@ -387,6 +386,7 @@ function setBlockData (data) {
     let logMsg = 'SUBMISSION to database (by ' + Session.getActiveUser().getEmail() + '):\n'
     let startRow = Infinity
     let endRow = 0
+    let dbnsModified = []
     for (let i = 0; i < rangesToSet.length; i++) { // (const arr of rangesToSet) {
       // first check if this row has any data to submit
       if (rangesToSet[i][1].every(function (element) { return element === null })) {
@@ -397,6 +397,7 @@ function setBlockData (data) {
       if (row < startRow) { startRow = row }
       if (row > endRow) { endRow = row }
       const dbn = rangesToSet[i][4]
+      // dbnsModified.push(dbn)
       const columns = []
       const setValues = []
       for (let j = 0; j < rangesToSet[i][1].length; j++) {
@@ -409,7 +410,7 @@ function setBlockData (data) {
           setValues.push(rangesToSet[i][1][j])
         }
       }
-      // rangesToSet[i][0].setValues([rangesToSet[i][1]])
+
       logMsg += 'In sheet ' + sheet + ', DBN ' + dbn + ' [row ' + row + '], wrote data: '
       for (let i = 0; i < columns.length - 1; i++) {
         logMsg += columns[i] + ': ' + "'" + setValues[i] + "', "
@@ -421,7 +422,8 @@ function setBlockData (data) {
       rows.push(rangesToSet[i][3])
     }
     Logger.log(logMsg)
-    // DatabaseScripts.updateRowFormulas(blocks13_64, startRow, endRow, Session.getActiveUser())
+    DatabaseScripts.updateRowFormulas(blocks13_64, startRow, endRow, Session.getActiveUser())
+    // ^ pass parameter dbnsModified to DatabaseScripts
     // Logger.log(curRowData)
   } else {
     // failed to set values beacuse we had at least one fatal or unchecked error
