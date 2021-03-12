@@ -572,6 +572,7 @@
         return blocks
       }
 
+<<<<<<< HEAD
       getBlocksByStatus (status) { // status must be a string
         const blocks = []
         this.array.forEach(function (block) {
@@ -580,6 +581,15 @@
           }
         })
         console.log(`Status ${status} blocks:`, blocks)
+=======
+      getBlocksByStatus (status) {
+        const blocks = []
+        this.array.forEach(function (block) {
+          if (block.status == status) { // use == because block.status may be a number?
+            blocks.push(block)
+          }
+        })
+>>>>>>> de418358a74ba93303d5fbce3bf8ea0179113416
       }
     }
     function removeSuffix (string) {
