@@ -358,6 +358,7 @@
       scintDate: 69,
       natLightDate: 70,
       natLightTester: 71,
+      retouch: 72,
       densityCheckedBy: 73,
       lightTransCheckedBy: 74,
       natLightCheckedBy: 75,
@@ -395,65 +396,65 @@
         this.sheet = sheet
         this.row = row
         this.index = index
-        this.dbn = array[0]
-        this.block = parseInt(array[2])
-        this.status = array[3]
-        this.shipment = (!dataPresent(array[4]) || parseInt(array[4]) === 0) ? null : parseInt(array[4])
-        this.shipmentDate = (!dataPresent(array[5])) ? null : array[5]
-        this.powder = (!dataPresent(array[14])) ? null : array[14]
-        this.bucket = (!dataPresent(array[15])) ? null : array[15]
-        this.moldSeries = (!dataPresent(array[16])) ? null : array[16]
-        this.emptyMoldMass = (!dataPresent(array[17])) ? null : parseInt(array[17])
-        this.filledMoldMass = (!dataPresent(array[18])) ? null : parseInt(array[18])
-        this.tungstenMass = (!dataPresent(array[19]) || parseInt(array[19]) === 0) ? null : parseInt(array[19])
-        this.fiberLoader = (!dataPresent(array[20])) ? null : array[20]
-        this.tungstenFillingDate = (!dataPresent(array[21])) ? null : array[21]
-        this.tungstenFiller = (!dataPresent(array[22])) ? null : array[22]
-        this.epoxyBatch = (!dataPresent(array[23])) ? null : parseInt(array[23])
-        this.resinMass = (!dataPresent(array[24])) ? null : parseInt(array[24])
-        this.hardenerMass = (!dataPresent(array[25])) ? null : parseInt(array[25])
-        this.pottingNotes = (!dataPresent(array[26])) ? null : array[26]
-        this.epoxyFillingTime = (!dataPresent(array[27])) ? null : parseFloat(array[27])
-        this.epoxyFillingDate = (!dataPresent(array[28])) ? null : array[28]
-        this.epoxyPreparer = (!dataPresent(array[29])) ? null : array[29]
-        this.l = (!dataPresent(array[33])) ? null : parseFloat(array[33])
-        this.bt = (!dataPresent(array[34])) ? null : parseFloat(array[34])
-        this.bb = (!dataPresent(array[35])) ? null : parseFloat(array[35])
-        this.bh = (!dataPresent(array[36])) ? null : parseFloat(array[36])
-        this.st = (!dataPresent(array[37])) ? null : parseFloat(array[37])
-        this.sb = (!dataPresent(array[38])) ? null : parseFloat(array[38])
-        this.sh = (!dataPresent(array[39])) ? null : parseFloat(array[39])
-        this.volume = (!dataPresent(array[40]) || parseInt(array[40]) === 0) ? null : parseFloat(array[40])
-        this.dimensionTester = (!dataPresent(array[41])) ? null : array[41]
-        this.mass = (!dataPresent(array[42])) ? null : parseInt(array[42])
-        this.massTester = (!dataPresent(array[43])) ? null : array[43]
-        this.density = (!dataPresent(array[44])) ? null : parseFloat(array[44])
-        this.densityDate = (!dataPresent(array[45])) ? null : parseInt(array[45])
-        this.fiberPercentage = (!dataPresent(array[49]) || parseInt(array[49]) === 0) ? null : parseFloat(array[49])
-        this.tower1 = (!dataPresent(array[55])) ? null : parseFloat(array[55])
-        this.tower2 = (!dataPresent(array[56])) ? null : parseFloat(array[56])
-        this.tower3 = (!dataPresent(array[57])) ? null : parseFloat(array[57])
-        this.tower4 = (!dataPresent(array[58])) ? null : parseFloat(array[58])
-        this.missingRow = (!dataPresent(array[59]) || (array[59] !== 'Y' && array[59] !== 'N')) ? null : array[59]
-        this.thirteenHoles = (!dataPresent(array[60]) || (array[60] !== 'Y' && array[60] !== 'N')) ? null : array[60]
-        this.lightTransTester = (!dataPresent(array[63])) ? null : array[63]
-        this.lightTransDate = (!dataPresent(array[64])) ? null : array[64]
-        this.lightTransDateActual = (!dataPresent(array[64]) || isNaN(parseInt(removeSuffix(array[64])))) ? null : parseInt(removeSuffix(array[64]))
-        this.scintillation = (!dataPresent(array[65])) ? null : parseFloat(array[65])
-        this.scintRatio = (!dataPresent(array[67])) ? null : parseFloat(array[67])
-        this.scintTester = (!dataPresent(array[68])) ? null : array[68]
-        this.scintDate = (!dataPresent(array[69])) ? null : array[69]
-        this.scintDateActual = (!dataPresent(array[69]) || isNaN(parseInt(removeSuffix(array[69])))) ? null : parseInt(removeSuffix(array[69]))
-        this.natLightDate = (!dataPresent(array[70])) ? null : parseInt(array[70])
-        this.natLightTester = (!dataPresent(array[71])) ? null : array[71]
-        this.retouch = array[72]
-        this.densityCheckedBy = dataPresent(array[73]) ? array[73] : null
+        this.dbn = array[columns.dbn]
+        this.block = parseInt(array[columns.block])
+        this.status = array[columns.status]
+        this.shipment = (!dataPresent(array[columns.shipment]) || parseInt(array[columns.shipment]) === 0) ? null : parseInt(array[columns.shipment])
+        this.shipmentDate = (!dataPresent(array[columns.shipmentDate])) ? null : array[columns.shipmentDate]
+        this.powder = (!dataPresent(array[columns.powder])) ? null : array[columns.powder]
+        this.bucket = (!dataPresent(array[columns.bucket])) ? null : array[columns.bucket]
+        this.moldSeries = (!dataPresent(array[columns.moldSeries])) ? null : array[columns.moldSeries]
+        this.emptyMoldMass = (!dataPresent(array[columns.emptyMoldMass])) ? null : parseInt(array[columns.emptyMoldMass])
+        this.filledMoldMass = (!dataPresent(array[columns.filledMoldMass])) ? null : parseInt(array[columns.filledMoldMass])
+        this.tungstenMass = (!dataPresent(array[columns.tungstenMass]) || parseInt(array[columns.tungstenMass]) === 0) ? null : parseInt(array[columns.tungstenMass])
+        this.fiberLoader = (!dataPresent(array[columns.fiberLoader])) ? null : array[columns.fiberLoader]
+        this.tungstenFillingDate = (!dataPresent(array[columns.tungstenFillingDate])) ? null : array[columns.tungstenFillingDate]
+        this.tungstenFiller = (!dataPresent(array[columns.tungstenFiller])) ? null : array[columns.tungstenFiller]
+        this.epoxyBatch = (!dataPresent(array[columns.epoxyBatch])) ? null : parseInt(array[columns.epoxyBatch])
+        this.resinMass = (!dataPresent(array[columns.resinMass])) ? null : parseInt(array[columns.resinMass])
+        this.hardenerMass = (!dataPresent(array[columns.hardenerMass])) ? null : parseInt(array[columns.hardenerMass])
+        this.pottingNotes = (!dataPresent(array[columns.pottingNotes])) ? null : array[columns.pottingNotes]
+        this.epoxyFillingTime = (!dataPresent(array[columns.epoxyFillingTime])) ? null : parseFloat(array[columns.epoxyFillingTime])
+        this.epoxyFillingDate = (!dataPresent(array[columns.epoxyFillingDate])) ? null : array[columns.epoxyFillingDate]
+        this.epoxyPreparer = (!dataPresent(array[columns.epoxyPreparer])) ? null : array[columns.epoxyPreparer]
+        this.l = (!dataPresent(array[columns.l])) ? null : parseFloat(array[columns.l])
+        this.bt = (!dataPresent(array[columns.bt])) ? null : parseFloat(array[columns.bt])
+        this.bb = (!dataPresent(array[columns.bb])) ? null : parseFloat(array[columns.bb])
+        this.bh = (!dataPresent(array[columns.bh])) ? null : parseFloat(array[columns.bh])
+        this.st = (!dataPresent(array[columns.st])) ? null : parseFloat(array[columns.st])
+        this.sb = (!dataPresent(array[columns.sb])) ? null : parseFloat(array[columns.sb])
+        this.sh = (!dataPresent(array[columns.sh])) ? null : parseFloat(array[columns.sh])
+        this.volume = (!dataPresent(array[columns.volume]) || parseInt(array[columns.volume]) === 0) ? null : parseFloat(array[columns.volume])
+        this.dimensionTester = (!dataPresent(array[columns.dimensionTester])) ? null : array[columns.dimensionTester]
+        this.mass = (!dataPresent(array[columns.mass])) ? null : parseInt(array[columns.mass])
+        this.massTester = (!dataPresent(array[columns.massTester])) ? null : array[columns.massTester]
+        this.density = (!dataPresent(array[columns.density])) ? null : parseFloat(array[columns.density])
+        this.densityDate = (!dataPresent(array[columns.densityDate])) ? null : parseInt(array[columns.densityDate])
+        this.fiberPercentage = (!dataPresent(array[columns.fiberPercentage]) || parseInt(array[columns.fiberPercentage]) === 0) ? null : parseFloat(array[columns.fiberPercentage])
+        this.tower1 = (!dataPresent(array[columns.tower1])) ? null : parseFloat(array[columns.tower1])
+        this.tower2 = (!dataPresent(array[columns.tower2])) ? null : parseFloat(array[columns.tower2])
+        this.tower3 = (!dataPresent(array[columns.tower3])) ? null : parseFloat(array[columns.tower3])
+        this.tower4 = (!dataPresent(array[columns.tower4])) ? null : parseFloat(array[columns.tower4])
+        this.missingRow = (!dataPresent(array[columns.missingRow]) || (array[columns.missingRow] !== 'Y' && array[columns.missingRow] !== 'N')) ? null : array[columns.missingRow]
+        this.thirteenHoles = (!dataPresent(array[columns.thirteenHoles]) || (array[columns.thirteenHoles] !== 'Y' && array[columns.thirteenHoles] !== 'N')) ? null : array[columns.thirteenHoles]
+        this.lightTransTester = (!dataPresent(array[columns.lightTransTester])) ? null : array[columns.lightTransTester]
+        this.lightTransDate = (!dataPresent(array[columns.lightTransDate])) ? null : array[columns.lightTransDate]
+        this.lightTransDateActual = (!dataPresent(array[columns.lightTransDate]) || isNaN(parseInt(removeSuffix(array[columns.lightTransDate])))) ? null : parseInt(removeSuffix(array[columns.lightTransDate]))
+        this.scintillation = (!dataPresent(array[columns.scintillation])) ? null : parseFloat(array[columns.scintillation])
+        this.scintRatio = (!dataPresent(array[columns.scintRatio])) ? null : parseFloat(array[columns.scintRatio])
+        this.scintTester = (!dataPresent(array[columns.scintTester])) ? null : array[columns.scintTester]
+        this.scintDate = (!dataPresent(array[columns.scintDate])) ? null : array[columns.scintDate]
+        this.scintDateActual = (!dataPresent(array[columns.scintDate]) || isNaN(parseInt(removeSuffix(array[columns.scintDate])))) ? null : parseInt(removeSuffix(array[columns.scintDate]))
+        this.natLightDate = (!dataPresent(array[columns.natLightDate])) ? null : parseInt(array[columns.natLightDate])
+        this.natLightTester = (!dataPresent(array[columns.natLightTester])) ? null : array[columns.natLightTester]
+        this.retouch = array[columns.retouch]
+        this.densityCheckedBy = dataPresent(array[columns.densityCheckedBy]) ? array[columns.densityCheckedBy] : null
         this.densityChecked = this.densityCheckedBy != null
-        this.lightTransCheckedBy = dataPresent(array[74]) ? array[74] : null
+        this.lightTransCheckedBy = dataPresent(array[columns.lightTransCheckedBy]) ? array[columns.lightTransCheckedBy] : null
         this.lightTransChecked = this.lightTransCheckedBy != null
-        this.natLightCheckedBy = dataPresent(array[75]) ? array[75] : null
+        this.natLightCheckedBy = dataPresent(array[columns.natLightCheckedBy]) ? array[columns.natLightCheckedBy] : null
         this.natLightChecked = this.natLightCheckedBy != null
-        this.pregrade = array[80]
+        this.pregrade = array[columns.pregrade]
         // other calculations
         const densityCompleteVars = [this.volume, this.mass, this.massTester, this.l, this.bt, this.bb, this.bh, this.st, this.sb, this.sh]
         this.densityComplete = densityCompleteVars.every((value) => value != null)
@@ -569,6 +570,16 @@
           }
         })
         return blocks
+      }
+
+      getBlocksByStatus (status) { // status must be a string
+        const blocks = []
+        this.array.forEach(function (block) {
+          if (block.status === status) { // block.status should always be a string (from getDisplayValues)
+            blocks.push(block)
+          }
+        })
+        console.log(`Status ${status} blocks:`, blocks)
       }
     }
     function removeSuffix (string) {
@@ -2572,15 +2583,17 @@
           console.log('loaded database in ' + (Date.now() - currentDate.getTime()) / 1000 + ' s')
           database = [gotDatabase.sheet1, gotDatabase.sheet2]
           const blocks = []
+          /*
           headers[0] = database[0][0]
           for (let i = 1; i < database[0].length; i++) {
             if (database[0][i][columns.block] !== '' && !isNaN(database[0][i][columns.block])) {
               blocks.push(new Block(database[0][i], 0, i + 1, blocks.length))
             }
           }
+          */
           headers[1] = database[1][0]
           for (let i = 1; i < database[1].length; i++) {
-            if (database[1][i][columns.block] !== '' && !isNaN(database[1][i][columns.block])) {
+            if (database[1][i][columns.block] !== '' && !isNaN(database[1][i][columns.block]) && database[1][i][columns.status] !== '') {
               blocks.push(new Block(database[1][i], 1, i + 1, blocks.length))
             }
           }
@@ -2805,7 +2818,7 @@
       for (let i = 0; i < blocks.length; i++) {
         const block = blocks[i]
         const blockData = {}
-        blockData.expectedDBN = block.dbn
+        blockData.expectedDBN = String(block.dbn) // will be !== with a string from getDisplayValues
         blockData.sheet = block.sheet
         blockData.row = block.row
         blockData.cols = []
@@ -3090,15 +3103,17 @@
         updateTimestamp()
         database = [sheets.sheet1, sheets.sheet2]
         const blocks = []
+        /*
         headers[0] = database[0][0]
         for (let i = 1; i < database[0].length; i++) {
           if (database[0][i][columns.block] !== '' && !isNaN(database[0][i][columns.block])) {
             blocks.push(new Block(database[0][i], 0, i + 1, blocks.length))
           }
         }
+        */
         headers[1] = database[1][0]
         for (let i = 1; i < database[1].length; i++) {
-          if (database[1][i][columns.block] !== '' && !isNaN(database[1][i][columns.block])) {
+          if (database[1][i][columns.block] !== '' && !isNaN(database[1][i][columns.block]) && database[1][i][columns.status] !== '') {
             blocks.push(new Block(database[1][i], 1, i + 1, blocks.length))
           }
         }

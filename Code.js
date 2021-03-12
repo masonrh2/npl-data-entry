@@ -28,13 +28,11 @@
  * + 2.5 hrs
  * + 6.5 hrs
  * + 3 hrs
- * + 1 hrs
  * + 3 hrs
  * + 3.5 hrs
  * + 1 hrs (2/1/2021 1:00 PM)
  * + 5 hrs (2/1/2021 10:00 PM)
  * + 0.5 hrs (2/2/2021 12:00 PM)
- * 
  * 
  * shipment
  * 
@@ -203,10 +201,10 @@ const fileIDs = {
  * returns entire database (blocks1-12 and blocks13-64)
  */
 function getDatabase () {
-  const blocks1_12 = SpreadsheetApp.openById(fileIDs.database_ID).getSheetByName('Blocks DB')
+  // const blocks1_12 = SpreadsheetApp.openById(fileIDs.database_ID).getSheetByName('Blocks DB')
   const blocks13_64 = SpreadsheetApp.openById(fileIDs.database_ID).getSheetByName('Blocks1364DB')
   return {
-    sheet1: blocks1_12.getDataRange().getDisplayValues(),
+    sheet1: null, // blocks1_12.getDataRange().getDisplayValues(),
     sheet2: blocks13_64.getDataRange().getDisplayValues()
   }
 }
@@ -275,6 +273,19 @@ function setBlockData (data) {
   const rows = []
   const rangesToSet = []
   const headers = [null, null]
+  const loadSheets = [false, false]
+  for (let i = 0; i < data.length; i++) {
+    loadSheets[data[i].sheet] = true
+  }
+  let allSheetData = [null, null]
+  if (loadSheets[0]) {
+    allSheetData[0] = blocks1_12.getDataRange().getDisplayValues() // returns strings only
+    headers[0] = allSheetData[0][0]
+  }
+  if (loadSheets[1]) {
+    allSheetData[1] = blocks13_64.getDataRange().getDisplayValues() // returns strings only
+    headers[1] = allSheetData[1][0]
+  }
   for (let i = 0; i < data.length; i++) {
     const sheet = data[i].sheet
     const dbn = data[i].expectedDBN
@@ -285,25 +296,19 @@ function setBlockData (data) {
     let spreadsheet
     if (sheet === 0) {
       spreadsheet = blocks1_12
-      if (headers[0] === null) {
-        headers[0] = spreadsheet.getRange('A1:1').getDisplayValues()[0]
-      }
     } else if (sheet === 1) {
       spreadsheet = blocks13_64
-      if (headers[1] === null) {
-        headers[1] = spreadsheet.getRange('A1:1').getDisplayValues()[0]
-      }
     } else {
       // idk what the sheet is
-      Logger.log('ERROR: unexpected sheet: ' + sheet + ' (expected 0 for sector 1-12 or 1 for sector 13-64')
+      Logger.log('ERROR: unexpected sheet: ' + sheet + ' (expected 0 for sector 1-12 or 1 for sector 13-64)')
     }
     // get and modify row
     const rangeName = 'A' + row + ':' + row
     const range = spreadsheet.getRange(rangeName)
-    const rowData = range.getDisplayValues()[0]
+    const rowData = allSheetData[sheet][row - 1]
     curRowData.push(rowData)
     const rowDataToSet = new Array(rowData.length).fill(null)
-    if (dbn !== rowData[0]) {
+    if (dbn !== rowData[0]) { // !== beacause HTML casts block.dbn to a string
       // I thought there was another DBN here! stop everything!
       Logger.log('found unexpected DBN in sheet ' + spreadsheet.getName() + ', row ' + row + ': ' + rowData[0] + ' (expected ' + dbn + '); not submitting')
       return {
@@ -370,6 +375,7 @@ function setBlockData (data) {
         }
       }
     }
+    //                  0          1         2     3    4
     rangesToSet.push([range, rowDataToSet, sheet, row, dbn])
     // range.setValues([rowData])
   }
@@ -378,6 +384,9 @@ function setBlockData (data) {
   if (dataValidationErrors.length + unexpectedValueErrors.length === 0) {
     // should probably log to Logger which values were changed
     let logMsg = 'SUBMISSION to database (by ' + Session.getActiveUser().getEmail() + '):\n'
+    let startRow = Infinity
+    let endRow = 0
+    const dbnsModified = []
     for (let i = 0; i < rangesToSet.length; i++) { // (const arr of rangesToSet) {
       // first check if this row has any data to submit
       if (rangesToSet[i][1].every(function (element) { return element === null })) {
@@ -385,7 +394,10 @@ function setBlockData (data) {
       } // otherwise, there is data to submit
       const sheet = rangesToSet[i][0].getSheet().getName()
       const row = rangesToSet[i][3]
+      if (row < startRow) { startRow = row }
+      if (row > endRow) { endRow = row }
       const dbn = rangesToSet[i][4]
+      dbnsModified.push(dbn)
       const columns = []
       const setValues = []
       for (let j = 0; j < rangesToSet[i][1].length; j++) {
@@ -398,7 +410,7 @@ function setBlockData (data) {
           setValues.push(rangesToSet[i][1][j])
         }
       }
-      // rangesToSet[i][0].setValues([rangesToSet[i][1]])
+
       logMsg += 'In sheet ' + sheet + ', DBN ' + dbn + ' [row ' + row + '], wrote data: '
       for (let i = 0; i < columns.length - 1; i++) {
         logMsg += columns[i] + ': ' + "'" + setValues[i] + "', "
@@ -410,6 +422,8 @@ function setBlockData (data) {
       rows.push(rangesToSet[i][3])
     }
     Logger.log(logMsg)
+    Logger.log(`Modified DBNs: ${JSON.stringify(dbnsModified)}`)
+    DatabaseScripts.updateRowFormulas(blocks13_64, startRow, endRow, Session.getActiveUser(), dbnsModified)
     // Logger.log(curRowData)
   } else {
     // failed to set values beacuse we had at least one fatal or unchecked error
@@ -423,34 +437,6 @@ function setBlockData (data) {
   }
 }
 
-function debugGetFormulas () {
-  // for testing:
-  const blocks1_12 = SpreadsheetApp.openById(fileIDs.database_ID).getSheetByName('Blocks DB')
-  const blocks13_64 = SpreadsheetApp.openById(fileIDs.database_ID).getSheetByName('Blocks1364DB')
-  const row = 14
-  const data = blocks13_64.getRange('A' + row + ':' + row).getFormulas()
-  Logger.log(data)
-  return data
-}
-function debugGetDisplayValues () {
-  // for testing:
-  const blocks1_12 = SpreadsheetApp.openById(fileIDs.database_ID).getSheetByName('Blocks DB')
-  const blocks13_64 = SpreadsheetApp.openById(fileIDs.database_ID).getSheetByName('Blocks1364DB')
-  const row = 14
-  const data = blocks13_64.getRange('A' + row + ':' + row).getDisplayValues()
-  Logger.log(data)
-  return data
-}
-function debugGetValues () {
-  // for testing:
-  const blocks1_12 = SpreadsheetApp.openById(fileIDs.database_ID).getSheetByName('Blocks DB')
-  const blocks13_64 = SpreadsheetApp.openById(fileIDs.database_ID).getSheetByName('Blocks1364DB')
-  const row = 14
-  const data = blocks13_64.getRange('A' + row + ':' + row).getValues()
-  Logger.log(data)
-  return data
-}
-
 /**
  * @param {String} value
  * @return {Boolean}
@@ -459,7 +445,7 @@ function isValidDate (value) {
   return true
 }
 /**
- * @param {Number}
+ * @param {Number} column
  * @return {String}
  */
 function columnToLetter (column) {
@@ -484,8 +470,3 @@ function letterToColumn (letter) {
   }
   return column
 }
-
-// handle location in database here, or just pass the range and values to google script?
-// if we want to check with CURRENT values, we must either load the relevant dbns before submitting (only takes a few seconds, can easily
-// show user the current values) or check values in google script and put logic there (if anything goes wrong, we have to pass info back to javascript..)
-// maybe, for the very rare case, pass expected values to google script and compare them with the current ones queried in google script before overwriting
