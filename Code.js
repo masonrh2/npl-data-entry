@@ -423,7 +423,7 @@ function setBlockData (data) {
     }
     Logger.log(logMsg)
     Logger.log(`Modified DBNs: ${JSON.stringify(dbnsModified)}`)
-    DatabaseScripts.updateRowFormulas(blocks13_64, startRow, endRow, Session.getActiveUser(), dbnsModified)
+    if (dbnsModified.length !== 0) { DatabaseScripts.updateRowFormulas(blocks13_64, startRow, endRow, Session.getActiveUser(), dbnsModified) }
     // Logger.log(curRowData)
   } else {
     // failed to set values beacuse we had at least one fatal or unchecked error
