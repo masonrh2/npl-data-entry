@@ -36,6 +36,7 @@
       <h1>Fiber Loading Data Entry</h1>
       <button onclick="sectionReturn()">Back</button>
       <button class="submitDataButton" onclick="generalSubmitData(fiberLoadingSettings)">SUBMIT</button><br>
+      <span class="batchInputLabel">Use the inputs below to fill data in the table:</span>
       <form action="javascript:" onsubmit="batchInput(this, 'inputStatus')" style="margin-top: 1em; display: block;">
         <label style="font-weight: bold; width: 120px; display: inline-block;">Status: </label>
           <input type="text" style="width: 80px;" value="1">
@@ -46,6 +47,7 @@
           <input type="text" style="width: 80px;">
         <button style="margin-left: 1em">Fill</button>
       </form>
+      <span class="tableLabel">Press the red "SUBMIT" button to write any data in the table below to the database:</span>
       <div id="fiberLoadingGridTable" class="grid"></div>
       <form action="javascript:" onsubmit="addRows(this)" style="margin-top: 1em; display: inline-block;">
         <input type="number" min="0" value="8" style="width: 40px;">
@@ -57,7 +59,8 @@
       <h1>Tungsten Data Entry</h1>
       <button onclick="sectionReturn()">Back</button>
       <button class="submitDataButton" onclick="generalSubmitData(tungstenSettings)">SUBMIT</button><br>
-      <div id="tungstenSelectBlocks" class="grid">
+      <span class="batchInputLabel">Use the inputs below to fill data in the table:</span>
+      <div id="tungstenSelectBlocks" class="grid" style="display: none;">
 
       </div>
       <form action="javascript:" onsubmit="batchInput(this, 'inputStatus')" style="margin-top: 1em; display: block;">
@@ -85,6 +88,7 @@
           <input type="text" style="width: 80px;">
         <button style="margin-left: 1em">Fill</button>
       </form>
+      <span class="tableLabel">Press the red "SUBMIT" button to write any data in the table below to the database:</span>
       <div id="tungstenGridTable" class="grid"></div>
       <form action="javascript:" onsubmit="addRows(this)" style="margin-top: 1em; display: inline-block;">
         <input type="number" min="0" value="14" style="width: 40px;">
@@ -96,6 +100,7 @@
       <h1>Epoxy Data Entry</h1>
       <button onclick="sectionReturn()">Back</button>
       <button class="submitDataButton" onclick="generalSubmitData(epoxySettings)">SUBMIT</button><br>
+      <span class="batchInputLabel">Use the inputs below to fill data in the table:</span>
       <form action="javascript:" onsubmit="batchInput(this, 'inputStatus')" style="margin-top: 1em; display: block;">
         <label style="font-weight: bold; width: 120px; display: inline-block;">Status: </label>
           <input type="text" style="width: 80px;" value="3">
@@ -131,6 +136,7 @@
           <input type="text" style="width: 80px;">
         <button style="margin-left: 1em">Fill</button>
       </form>
+      <span class="tableLabel">Press the red "SUBMIT" button to write any data in the table below to the database:</span>
       <div id="epoxyGridTable" class="grid"></div>
       <form action="javascript:" onsubmit="addRows(this)" style="margin-top: 1em; display: inline-block;">
         <input type="number" min="0" value="8" style="width: 40px;">
@@ -142,6 +148,7 @@
       <h1>Density Data Entry</h1>
       <button onclick="sectionReturn()">Back</button>
       <button class="submitDataButton" onclick="generalSubmitData(densitySettings)">SUBMIT</button><br>
+      <span class="batchInputLabel">Use the inputs below to fill data in the table:</span>
       <form action="javascript:" onsubmit="batchInput(this, 'inputStatus')" style="margin-top: 1em; display: block;">
         <label style="font-weight: bold; width: 120px; display: inline-block;">Status: </label>
           <input type="text" style="width: 80px;" value="5">
@@ -157,6 +164,7 @@
           <input type="text" style="width: 80px;">
         <button style="margin-left: 1em">Fill</button>
       </form>
+      <span class="tableLabel">Press the red "SUBMIT" button to write any data in the table below to the database:</span>
       <div id="densityGridTable" class="grid"></div>
       <form action="javascript:" onsubmit="addRows(this)" style="margin-top: 1em; display: inline-block;">
         <input type="number" min="0" value="8" style="width: 40px;">
@@ -168,6 +176,7 @@
       <h1>LT and NL Data Entry</h1>
       <button onclick="sectionReturn()">Back</button>
       <button class="submitDataButton" onclick="generalSubmitData(pictureTestsSettings)">SUBMIT</button><br>
+      <span class="batchInputLabel">Use the inputs below to fill data in the table:</span>
       <form action="javascript:" onsubmit="batchInput(this, 'inputMissingRow')" style="margin-top: 1em; display: block;">
         <label style="font-weight: bold; width: 120px; display: inline-block;">Missing Row?: </label>
           <input type="text" value="N" style="width: 80px;">
@@ -203,6 +212,7 @@
           <input type="text" style="width: 80px;">
         <button style="margin-left: 1em">Fill</button>
       </form>
+      <span class="tableLabel">Press the red "SUBMIT" button to write any data in the table below to the database:</span>
       <div id="pictureTestsGridTable" class="grid"></div>
       <form action="javascript:" onsubmit="addRows(this)" style="margin-top: 1em; display: inline-block;">
         <input type="number" min="0" value="8" style="width: 40px;">
@@ -214,6 +224,7 @@
       <h1>Shipment Data Entry</h1>
       <button onclick="sectionReturn()">Back</button>
       <button class="submitDataButton" onclick="generalSubmitData(shipmentSettings)">SUBMIT</button><br>
+      <span class="batchInputLabel">Use the inputs below to fill data in the table:</span>
       <form action="javascript:" onsubmit="batchInput(this, 'inputStatus')" style="margin-top: 1em; display: block;">
         <label style="font-weight: bold; width: 120px; display: inline-block;">Status: </label>
           <input type="text" style="width: 80px;" value="7">
@@ -229,6 +240,7 @@
           <input type="text" class= "batchDateUS" style="width: 80px;">
         <button style="margin-left: 1em">Fill</button>
       </form>
+      <span class="tableLabel">Press the red "SUBMIT" button to write any data in the table below to the database:</span>
       <div id="shipmentGridTable" class="grid"></div>
       <form action="javascript:" onsubmit="addRows(this)" style="margin-top: 1em; display: inline-block;">
         <input type="number" min="0" value="24" style="width: 40px;">
