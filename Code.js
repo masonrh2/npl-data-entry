@@ -1,29 +1,11 @@
 /**
  * TO DO LIST
- * me: include some list of all status X blocks to choose from, and just click all of the ones you need
- * me: incluce some functionality for testing (add date and name to NL, checks?) (and file validation? could be really useful)
- * 
- * 
- * mass change of status/shipment date/shipment number (..etc?) (include option to enter list of DBNs) (also include a "find blocks be status" and way to
- * easily select blocks to change) (do some pretty thing with arrows showing status before and after)
  * 
  * include ghost text for what it should look like (e.g. HCS-56 and not 56) or do some basic data validation and show red if it fails
  * this is a problem since we use placeholder for the current database values (if they exist) ... I think the basic validation is sufficient
  * 
- * look into caching and see if it could be use (quick access to a 20-minute old version of the database maybe?)
- * (https://developers.google.com/apps-script/guides/support/best-practices)
- * 
- * could add framework to add and remove tags from blocks (using the comments column)
- * this is probably a much better system than using non-numeric DBNs (but it's too late for that)
- * 
- * catch data validation error (is there a way to check what the valdation rules in a cell are?) (e.g. powder)
- * 
  * option to remove all testing data from a block (sent back to machine shop, e.g.) (could also remove entries from data dumps, but this might not be necessary)
  * (leads to some confusion, though, since we don't have a record of all tests/machining dates.....)
- * 
- * use select blocks by status (and other things?) easy to add checkboxes to datatable, I think (or just CSS grid)
- * 
- * clear row or clear all option?
  * 
  * + 2.5 hrs
  * + 6.5 hrs
@@ -34,15 +16,7 @@
  * + 5 hrs (2/1/2021 10:00 PM)
  * + 0.5 hrs (2/2/2021 12:00 PM)
  * 
- * shipment
- * 
- * experiment or think about unexpected behavior (mashing submit button, things like that)
- * perhaps safest to hide submit button while interacting with the google script
- * (that way, if something goes wrong like an unexpected error, you can't press the submit button)
- * 
  * could make some object where you can do obj.selectDensity which takes care of changing displays
- * 
- * explain possible discrepancies between database grading and app grading (i.e. < vs <=)
  * 
  * current TODO:
  * - test grading section?
@@ -52,14 +26,14 @@
  *     somewhere also veryify dates? fiber load -> w fill -> epoxy -> mach -> tests (ensure UP-TO-DATE TESTS)
  * - perhaps streamline retreival of data for display-only spans
  * - status is NOT checked for status in pic tests, since there is no submission data associtated...
- * - could clean up the error checking (allow ) (make it less of a fucking mess) (make it easier to add new checks/types of checks)
+ * - could clean up the error checking (make it less of a fucking mess) (make it easier to add new checks/types of checks)
  * - think about other ways to check for errors (see above not about ensuring up-to-date tests)
- * 
- * - warning for incomplete data submission in SOME sections (warning...some entries are blank, e.g.) (not for pic tests, e.g.)
+ * - change all "submit" to "fill" for clarity (just because the name is in filler initial does not mean it is in the rows
+ *      and will be submitted to the database)
+ * - add some more basic error checking? e.g. are you sure that empty mold weighs 121 g?
  * 
  * BUGS:
  * - block status does not update after submission (but does on refresh database)
- * - caroline: submitting 8 blocks, and then 8 blocks gives script error?
  * - caroline: deleting DBN does not remove some numbers from the corresponding cells?
  * submitting x to mold series gives an error (see logs) ()
  * 
@@ -72,9 +46,22 @@
  * - allow to add shipment date as bulk
  * - move to status 7
  * 
- * show date suffix for LT
+ * show date suffix for LT (why doesn't this appear? just because input box is too short?)
  * 
- * migrate project to google cloud platform for logging that works
+ * add blocks from list option (comma or space or tab separated?
+ * 
+ * when entering DBNs, press enter to move to next row (listen for enter...either use clever tab indexing (gross) or use HTMLelement.focus()
+ *    to select next row input, and do nothing if in last row)
+ * 
+ * select blocks from status in some sections:
+ * - use datatables for nice scrolling?
+ * - OR use a grid format and display in multiple rows and columns (more compact, no need to scroll?)
+ * - ask for input status and get all blocks with that status
+ * - display DBN, block, and a checkbox (dbn bold, block grey)
+ * - when checkbox is checked, add a row with that dbn
+ * - when a checkbox is unchecked, remove every row with that dbn
+ * 
+ * migrate project to google cloud platform for logging that actually works?
  * 
  * change shipment section:
  * - add blocks to grade (select from status 5 blocks and auto set status to its pregrade if all tests are complete, else warn)
@@ -82,47 +69,65 @@
  * functionality for density checking? seperate window?
  * break all tests sections down?:
  * 
- * Fiber: input fiber loading data
+ * Fiber: input fiber loading data (status 0 -> 1)
  *    (dbn, block*, status, mold number, fiber loader)
  *    [do not choose from a group (too many status 0 blocks!)]
- * Tungsten: input tungsten data
+ * Tungsten: input tungsten data (status 1 -> 2)
  *    (dbn, block*, status, powder, bucket #, empty mass, filled mass, date, initials)
  *    [choose from status 1, sort by DBN?]
- * Epoxy: input epoxy data
+ * Epoxy: input epoxy data (status 2 -> 3)
  *    (dbn, block*, status, batch, resin mass, hardener mass, potting notes, filling time, date, initials)
  *    [choose from status 2, sort by DBN?]
- * Machining: input machining data
+ * Machining: input machining data (status 3 -> 4...sometimes?)
  *    (dbn, block*, status, date, initials)
  *    [choose from status 3? may not be super helpful (>100 blocks...)]
  * 
- * Density: 
+ * Density: (status 3, 4 -> 5?)
  *    (dbn, block*, status, L, BT, BB, BH, ST, SB, SH, volume*, initials, mass, initials, density*, date)
  *    [choose from status 3 and/or 4?]
- * Light Trans:
+ * Light Trans: (status 5)
  *    (dbn, block*, status, fiber count*, missing row, 13 holes, tester)
  *    [choose from status 5, sort by most recently LT tested, then by DBN]
- * Natural Light:
+ * Natural Light: (status 5)
  *    (dbn, block*, status, date, tester)
  *    [choose from status 5, sort by most recently NL tested, then by DBN]
  * 
- * Density Check:
+ * Density Check: (status 5 or 5abc, 8?)
  *    (dbn, block*, status*, L, BT, BB, BH, ST, SB, SH, initals, mass, initials, date, checked)
  *    [choose from status 5, sort by those missing check, then by DBN]
- * Light Trans Check:
+ * Light Trans Check: (status 5 or 5abc, 8?)
  *    (dbn, block*, status*, fiber count*, missing row, 13 holes, tester, date, checked)
  *    [choose from status 5, sort by those missing check, then by DBN]
- * Natural Light Check:
+ * Natural Light Check: (status 5 or 5abc, 8?)
  *    (dbn, block*, status*, date, tester, checked)
  *    [choose from status 5, sort by those missing check, then by DBN]
  * 
- * Block Grading:
+ * Block Grading: (status 5 -> 5abc, 8)
  *    (dbn, block*, pregrade, status, density*, {indicate dim grades}*, fiber count*, {inidicate tower grades}*, missing row,
- *        13 holes, scint ratio)
+ *        13 holes, scint ratio*)
  *    [choose from status 5, sort by test completeness?]
  *    {diplay how many blocks are status 5 (and how many need tests, need checks, finished 5a/b/c, finished 8), 5a/b/c}
- * Shipment:
+ * Shipment: (status 5abc -> 8 OR status 6 -> 7)
  *    (dbn, block*, status, pregrade)
  *    [choose from status 5a, 5b, 5c, sort by block? grade? dbn?]
+ *    {add a "add all status __ blocks" input, to avoid so much clicking?}
+ * 
+ * need to be able to remove rows individually
+ * 
+ * PLAN: "add blocks by status"
+ * - automatically display a CSS grid with all blocks in the appropritate status for the section (in most sections)
+ *    (needs to be done onload and whenever the database is refreshed)
+ * - each grid cell should display the DBN, the block type, and a checkbox
+ * - check the box to add a row with that DBN to this section
+ * - uncheck the box to remove all instance of that DBN in this section
+ * - also highlight the selected cells somehow? (darker grey, e.g.)
+ * - more clever way to do this with objects? densityGrid.update(status=x), e.g.
+ * - make a constructor and ask for HTML table element, default status, ...
+ * - densityGrid.uncheck([...]) on remove all rows or remove row
+ * - add a densityRows object too?
+ * - densityRows.add([...]) on add from list
+ * - densityRows.clear()
+ * - densityRows.update() to refesh data with what's in blocksCollection
  * 
  * 
  * functionality to verify dates and integrity of all tests:
@@ -146,19 +151,11 @@
  * - repeat the above process with the second set of checks
  * - trySubmit should simply run a modified server-side submission function
  * 
- * - the script-side function should first check if ANY of the cells written to have changed (fatal error if dbn has changed,
- *      warning if other value has changed (and display the change when asking for confirmation));
- *      then either try to submit and properly handle data validation and other errors OR try to read data validation
- *      rules and decide if the data should be submitted (more elegant to handle errors from script)
- *      (how to get the script-side errors to javscript nicely? does this work? can we just use failure handler?)
- * 
- * 
  *  - somehow need to store what the checking state is (to avoid infinite loops)
  *  - this was previously handled by adding ignore flags, but this is not very elegant
  *      (and at least could be significantly improved)
  * 
  * ...how to handle script error (incl. unhandled errors and my homemade errors (such as data validation))
- * 
  * 
  * allow enter user to enter a comma-separated list of DBNs?
  * could change tabbing or have nicer dbn entry (seperate box) which makes inputting many DBNS easier
@@ -422,8 +419,8 @@ function setBlockData (data) {
       rows.push(rangesToSet[i][3])
     }
     Logger.log(logMsg)
-    Logger.log(`Modified DBNs: ${JSON.stringify(dbnsModified)}`)
-    if (dbnsModified.length !== 0) { DatabaseScripts.updateRowFormulas(blocks13_64, startRow, endRow, Session.getActiveUser(), dbnsModified) }
+    // Logger.log(`Modified DBNs: ${JSON.stringify(dbnsModified)}`)
+    DatabaseScripts.updateRowFormulas(blocks13_64, startRow, endRow, Session.getActiveUser(), dbnsModified)
     // Logger.log(curRowData)
   } else {
     // failed to set values beacuse we had at least one fatal or unchecked error

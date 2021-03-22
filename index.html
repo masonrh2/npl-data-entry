@@ -35,16 +35,16 @@
     <section id="fiberLoadingSection" class="dataEntrySection hideWhenLoading" style="display: none;">
       <h1>Fiber Loading Data Entry</h1>
       <button onclick="sectionReturn()">Back</button>
-      <button onclick="generalSubmitData(fiberLoadingSettings)">SUBMIT</button><br>
+      <button class="submitDataButton" onclick="generalSubmitData(fiberLoadingSettings)">SUBMIT</button><br>
       <form action="javascript:" onsubmit="batchInput(this, 'inputStatus')" style="margin-top: 1em; display: block;">
         <label style="font-weight: bold; width: 120px; display: inline-block;">Status: </label>
           <input type="text" style="width: 80px;" value="1">
-        <button style="margin-left: 1em">Submit</button>
+        <button style="margin-left: 1em">Fill</button>
       </form>
       <form action="javascript:" onsubmit="batchInput(this, 'inputTester')" style="margin-top: 1em; display: block;">
         <label style="font-weight: bold; width: 120px; display: inline-block;">Fiber Loader: </label>
           <input type="text" style="width: 80px;">
-        <button style="margin-left: 1em">Submit</button>
+        <button style="margin-left: 1em">Fill</button>
       </form>
       <div id="fiberLoadingGridTable" class="grid"></div>
       <form action="javascript:" onsubmit="addRows(this)" style="margin-top: 1em; display: inline-block;">
@@ -56,31 +56,34 @@
     <section id="tungstenSection" class="dataEntrySection hideWhenLoading" style="display: none;">
       <h1>Tungsten Data Entry</h1>
       <button onclick="sectionReturn()">Back</button>
-      <button onclick="generalSubmitData(tungstenSettings)">SUBMIT</button><br>
+      <button class="submitDataButton" onclick="generalSubmitData(tungstenSettings)">SUBMIT</button><br>
+      <div id="tungstenSelectBlocks" class="grid">
+
+      </div>
       <form action="javascript:" onsubmit="batchInput(this, 'inputStatus')" style="margin-top: 1em; display: block;">
         <label style="font-weight: bold; width: 120px; display: inline-block;">Status: </label>
           <input type="text" style="width: 80px;" value="2">
-        <button style="margin-left: 1em">Submit</button>
+        <button style="margin-left: 1em">Fill</button>
       </form>
       <form action="javascript:" onsubmit="batchInput(this, 'inputPowder')" style="margin-top: 1em; display: block;">
         <label style="font-weight: bold; width: 120px; display: inline-block;">Powder: </label>
           <input type="text" style="width: 80px;" value="HCS">
-        <button style="margin-left: 1em">Submit</button>
+        <button style="margin-left: 1em">Fill</button>
       </form>
       <form action="javascript:" onsubmit="batchInput(this, 'inputBucket')" style="margin-top: 1em; display: block;">
         <label style="font-weight: bold; width: 120px; display: inline-block;">Bucket #: </label>
           <input type="text" style="width: 80px;" value="HCS-">
-        <button style="margin-left: 1em">Submit</button>
+        <button style="margin-left: 1em">Fill</button>
       </form>
       <form action="javascript:" onsubmit="batchInput(this, 'inputDate')" style="margin-top: 1em; display: block;">
         <label style="font-weight: bold; width: 120px; display: inline-block;">Date: </label>
           <input type="text" class="batchDateUS" style="width: 80px;">
-        <button style="margin-left: 1em">Submit</button>
+        <button style="margin-left: 1em">Fill</button>
       </form>
       <form action="javascript:" onsubmit="batchInput(this, 'inputFiller')" style="margin-top: 1em; display: block;">
         <label style="font-weight: bold; width: 120px; display: inline-block;">Filler Initials: </label>
           <input type="text" style="width: 80px;">
-        <button style="margin-left: 1em">Submit</button>
+        <button style="margin-left: 1em">Fill</button>
       </form>
       <div id="tungstenGridTable" class="grid"></div>
       <form action="javascript:" onsubmit="addRows(this)" style="margin-top: 1em; display: inline-block;">
@@ -92,41 +95,41 @@
     <section id="epoxySection" class="dataEntrySection hideWhenLoading" style="display: none;">
       <h1>Epoxy Data Entry</h1>
       <button onclick="sectionReturn()">Back</button>
-      <button onclick="generalSubmitData(epoxySettings)">SUBMIT</button><br>
+      <button class="submitDataButton" onclick="generalSubmitData(epoxySettings)">SUBMIT</button><br>
       <form action="javascript:" onsubmit="batchInput(this, 'inputStatus')" style="margin-top: 1em; display: block;">
         <label style="font-weight: bold; width: 120px; display: inline-block;">Status: </label>
           <input type="text" style="width: 80px;" value="3">
-        <button style="margin-left: 1em">Submit</button>
+        <button style="margin-left: 1em">Fill</button>
       </form>
       <form action="javascript:" onsubmit="batchInput(this, 'inputBatch')" style="margin-top: 1em; display: block;">
         <label style="font-weight: bold; width: 120px; display: inline-block;">Epoxy Batch: </label>
           <input type="text" style="width: 80px;">
-        <button style="margin-left: 1em">Submit</button>
+        <button style="margin-left: 1em">Fill</button>
       </form>
       <form action="javascript:" onsubmit="batchInput(this, 'inputResinMass')" style="margin-top: 1em; display: block;">
         <label style="font-weight: bold; width: 120px; display: inline-block;">Resin Mass: </label>
           <input type="text" style="width: 80px;" value="110">
-        <button style="margin-left: 1em">Submit</button>
+        <button style="margin-left: 1em">Fill</button>
       </form>
       <form action="javascript:" onsubmit="batchInput(this, 'inputHardenerMass')" style="margin-top: 1em; display: block;">
         <label style="font-weight: bold; width: 120px; display: inline-block;">Hardener Mass: </label>
           <input type="text" style="width: 80px;" value="25">
-        <button style="margin-left: 1em">Submit</button>
+        <button style="margin-left: 1em">Fill</button>
       </form>
       <form action="javascript:" onsubmit="batchInput(this, 'inputPottingNotes')" style="margin-top: 1em; display: block;">
         <label style="font-weight: bold; width: 120px; display: inline-block;">Potting Notes: </label>
           <input type="text" style="width: 80px;" value="d40g">
-        <button style="margin-left: 1em">Submit</button>
+        <button style="margin-left: 1em">Fill</button>
       </form>
       <form action="javascript:" onsubmit="batchInput(this, 'inputDate')" style="margin-top: 1em; display: block;">
         <label style="font-weight: bold; width: 120px; display: inline-block;">Date: </label>
           <input type="text" class="batchDateUS" style="width: 80px;">
-        <button style="margin-left: 1em">Submit</button>
+        <button style="margin-left: 1em">Fill</button>
       </form>
       <form action="javascript:" onsubmit="batchInput(this, 'inputPreparer')" style="margin-top: 1em; display: block;">
         <label style="font-weight: bold; width: 120px; display: inline-block;">Preparer Initials: </label>
           <input type="text" style="width: 80px;">
-        <button style="margin-left: 1em">Submit</button>
+        <button style="margin-left: 1em">Fill</button>
       </form>
       <div id="epoxyGridTable" class="grid"></div>
       <form action="javascript:" onsubmit="addRows(this)" style="margin-top: 1em; display: inline-block;">
@@ -138,21 +141,21 @@
     <section id="densitySection" class="dataEntrySection hideWhenLoading" style="display: none;">
       <h1>Density Data Entry</h1>
       <button onclick="sectionReturn()">Back</button>
-      <button onclick="generalSubmitData(densitySettings)">SUBMIT</button><br>
+      <button class="submitDataButton" onclick="generalSubmitData(densitySettings)">SUBMIT</button><br>
       <form action="javascript:" onsubmit="batchInput(this, 'inputStatus')" style="margin-top: 1em; display: block;">
         <label style="font-weight: bold; width: 120px; display: inline-block;">Status: </label>
           <input type="text" style="width: 80px;" value="5">
-        <button style="margin-left: 1em">Submit</button>
+        <button style="margin-left: 1em">Fill</button>
       </form>
       <form action="javascript:" onsubmit="batchInput(this, 'inputDate')" style="margin-top: 1em; display: block;">
         <label style="font-weight: bold; width: 120px; display: inline-block;">Date: </label>
           <input type="text" class="batchDate" style="width: 80px;">
-        <button style="margin-left: 1em">Submit</button>
+        <button style="margin-left: 1em">Fill</button>
       </form>
       <form action="javascript:" onsubmit="batchInput(this, 'inputTester')" style="margin-top: 1em; display: block;">
         <label style="font-weight: bold; width: 120px; display: inline-block;">Tester Initials: </label>
           <input type="text" style="width: 80px;">
-        <button style="margin-left: 1em">Submit</button>
+        <button style="margin-left: 1em">Fill</button>
       </form>
       <div id="densityGridTable" class="grid"></div>
       <form action="javascript:" onsubmit="addRows(this)" style="margin-top: 1em; display: inline-block;">
@@ -164,41 +167,41 @@
     <section id="pictureTestsSection" class="dataEntrySection hideWhenLoading" style="display: none;">
       <h1>LT and NL Data Entry</h1>
       <button onclick="sectionReturn()">Back</button>
-      <button onclick="generalSubmitData(pictureTestsSettings)">SUBMIT</button><br>
+      <button class="submitDataButton" onclick="generalSubmitData(pictureTestsSettings)">SUBMIT</button><br>
       <form action="javascript:" onsubmit="batchInput(this, 'inputMissingRow')" style="margin-top: 1em; display: block;">
         <label style="font-weight: bold; width: 120px; display: inline-block;">Missing Row?: </label>
           <input type="text" value="N" style="width: 80px;">
-        <button style="margin-left: 1em">Submit</button>
+        <button style="margin-left: 1em">Fill</button>
       </form>
       <form action="javascript:" onsubmit="batchInput(this, 'input13Holes')" style="margin-top: 1em; display: block;">
         <label style="font-weight: bold; width: 120px; display: inline-block;">13 Holes?: </label>
           <input type="text" value="N" style="width: 80px;">
-        <button style="margin-left: 1em">Submit</button>
+        <button style="margin-left: 1em">Fill</button>
       </form>
       <form action="javascript:" onsubmit="batchInput(this, 'inputLTTester')" style="margin-top: 1em; display: block;">
         <label style="font-weight: bold; width: 120px; display: inline-block;">LT Tester: </label>
           <input type="text" style="width: 80px;">
-        <button style="margin-left: 1em">Submit</button>
+        <button style="margin-left: 1em">Fill</button>
       </form>
       <form action="javascript:" onsubmit="batchInput(this, 'inputLTChecker')" style="margin-top: 1em; display: block;">
         <label style="font-weight: bold; width: 120px; display: inline-block;">LT Checked By: </label>
           <input type="text" style="width: 80px;">
-        <button style="margin-left: 1em">Submit</button>
+        <button style="margin-left: 1em">Fill</button>
       </form>
       <form action="javascript:" onsubmit="batchInput(this, 'inputNLDate')" style="margin-top: 1em; display: block;">
         <label style="font-weight: bold; width: 120px; display: inline-block;">NL Date: </label>
           <input type="text" class="batchDate" style="width: 80px;">
-        <button style="margin-left: 1em">Submit</button>
+        <button style="margin-left: 1em">Fill</button>
       </form>
       <form action="javascript:" onsubmit="batchInput(this, 'inputNLTester')" style="margin-top: 1em; display: block;">
         <label style="font-weight: bold; width: 120px; display: inline-block;">NL Tester: </label>
           <input type="text" style="width: 80px;">
-        <button style="margin-left: 1em">Submit</button>
+        <button style="margin-left: 1em">Fill</button>
       </form>
       <form action="javascript:" onsubmit="batchInput(this, 'inputNLChecker')" style="margin-top: 1em; display: block;">
         <label style="font-weight: bold; width: 120px; display: inline-block;">NL Checked By: </label>
           <input type="text" style="width: 80px;">
-        <button style="margin-left: 1em">Submit</button>
+        <button style="margin-left: 1em">Fill</button>
       </form>
       <div id="pictureTestsGridTable" class="grid"></div>
       <form action="javascript:" onsubmit="addRows(this)" style="margin-top: 1em; display: inline-block;">
@@ -210,21 +213,21 @@
     <section id="shipmentSection" class="dataEntrySection hideWhenLoading" style="display: none;">
       <h1>Shipment Data Entry</h1>
       <button onclick="sectionReturn()">Back</button>
-      <button onclick="generalSubmitData(shipmentSettings)">SUBMIT</button><br>
+      <button class="submitDataButton" onclick="generalSubmitData(shipmentSettings)">SUBMIT</button><br>
       <form action="javascript:" onsubmit="batchInput(this, 'inputStatus')" style="margin-top: 1em; display: block;">
         <label style="font-weight: bold; width: 120px; display: inline-block;">Status: </label>
           <input type="text" style="width: 80px;" value="7">
-        <button style="margin-left: 1em">Submit</button>
+        <button style="margin-left: 1em">Fill</button>
       </form>
       <form action="javascript:" onsubmit="batchInput(this, 'inputShipment')" style="margin-top: 1em; display: block;">
         <label style="font-weight: bold; width: 120px; display: inline-block;">Shipment: </label>
           <input type="text" style="width: 80px;">
-        <button style="margin-left: 1em">Submit</button>
+        <button style="margin-left: 1em">Fill</button>
       </form>
       <form action="javascript:" onsubmit="batchInput(this, 'inputShipmentDate')" style="margin-top: 1em; display: block;">
         <label style="font-weight: bold; width: 120px; display: inline-block;">Shipment Date: </label>
           <input type="text" class= "batchDateUS" style="width: 80px;">
-        <button style="margin-left: 1em">Submit</button>
+        <button style="margin-left: 1em">Fill</button>
       </form>
       <div id="shipmentGridTable" class="grid"></div>
       <form action="javascript:" onsubmit="addRows(this)" style="margin-top: 1em; display: inline-block;">
