@@ -159,10 +159,17 @@
  * 
  * allow enter user to enter a comma-separated list of DBNs?
  * could change tabbing or have nicer dbn entry (seperate box) which makes inputting many DBNS easier
+ * add a warning "are you sure you want to submit to database without filling this column you entered data for?"?
  * 
  * other:
  * - start logging cropped stencil with difference form template for LT
  * - improve LT stencil recognition
+ * 
+ * change machinging date with density section (usually same day)
+ * 
+ * on refresh database, call selectBlocksTableUpdate for all sections
+ * 
+ * change clearTables to clearTable in confirm dialog error clusterfuck
  */
 
 function doGet () {
@@ -217,10 +224,10 @@ function getA1Range (_requestedRange) {
   if (rule != null) {
     const criteria = rule.getCriteriaType()
     const args = rule.getCriteriaValues()
-    Logger.log(criteria)
-    Logger.log(args)
+    console.log(criteria)
+    console.log(args)
   } else {
-    Logger.log('cell ' + requestedRange + ' has no data validation rules')
+    console.log('cell ' + requestedRange + ' has no data validation rules')
   }
   return range.getDisplayValue()
 }
@@ -248,7 +255,7 @@ function getRowData (blocks) {
     const rowData = spreadsheet.getRange('A' + row + ':' + row).getValues()
     data.push(rowData)
   }
-  // Logger.log(data)
+  // console.log(data)
   return data
 }
 
@@ -297,7 +304,7 @@ function setBlockData (data) {
       spreadsheet = blocks13_64
     } else {
       // idk what the sheet is
-      Logger.log('ERROR: unexpected sheet: ' + sheet + ' (expected 0 for sector 1-12 or 1 for sector 13-64)')
+      console.log('ERROR: unexpected sheet: ' + sheet + ' (expected 0 for sector 1-12 or 1 for sector 13-64)')
     }
     // get and modify row
     const rangeName = 'A' + row + ':' + row
@@ -307,7 +314,7 @@ function setBlockData (data) {
     const rowDataToSet = new Array(rowData.length).fill(null)
     if (dbn !== rowData[0]) { // !== beacause HTML casts block.dbn to a string
       // I thought there was another DBN here! stop everything!
-      Logger.log('found unexpected DBN in sheet ' + spreadsheet.getName() + ', row ' + row + ': ' + rowData[0] + ' (expected ' + dbn + '); not submitting')
+      console.log('found unexpected DBN in sheet ' + spreadsheet.getName() + ', row ' + row + ': ' + rowData[0] + ' (expected ' + dbn + '); not submitting')
       return {
         unexpectedDBNError: {
           loc: { sheet: sheet, row: row },
@@ -364,7 +371,7 @@ function setBlockData (data) {
               dataValidationErrors.push(err)
             }
           } else {
-            Logger.log('unexpected data validation type: ' + type)
+            console.log('unexpected data validation type: ' + type)
             dataValidationErrors.push(err)
             // will need to add some function to evaluate any new data validation types, otherwise
             // we will always push errors (no way to check if it will cause a prolem or not)
@@ -376,10 +383,10 @@ function setBlockData (data) {
     rangesToSet.push([range, rowDataToSet, sheet, row, dbn])
     // range.setValues([rowData])
   }
-  // Logger.log(rangesToSet)
+  // console.log(rangesToSet)
   // only submit data to the database if there were no errors for ANY of the blocks in this submission
   if (dataValidationErrors.length + unexpectedValueErrors.length === 0) {
-    // should probably log to Logger which values were changed
+    // should probably log to console which values were changed
     let logMsg = 'SUBMISSION to database (by ' + Session.getActiveUser().getEmail() + '):\n'
     let startRow = Infinity
     let endRow = 0
@@ -418,13 +425,13 @@ function setBlockData (data) {
       sheets.push(rangesToSet[i][2])
       rows.push(rangesToSet[i][3])
     }
-    Logger.log(logMsg)
-    // Logger.log(`Modified DBNs: ${JSON.stringify(dbnsModified)}`)
+    console.log(logMsg)
+    // console.log(`Modified DBNs: ${JSON.stringify(dbnsModified)}`)
     DatabaseScripts.updateRowFormulas(blocks13_64, startRow, endRow, Session.getActiveUser(), dbnsModified)
-    // Logger.log(curRowData)
+    // console.log(curRowData)
   } else {
     // failed to set values beacuse we had at least one fatal or unchecked error
-    Logger.log('found data validation and/or unexpected value errors; not submitting')
+    console.log('found data validation and/or unexpected value errors; not submitting')
   }
 
   return {

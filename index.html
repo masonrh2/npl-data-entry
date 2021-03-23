@@ -53,16 +53,18 @@
         <input type="number" min="0" value="8" style="width: 40px;">
         <button style="margin-left: 1em">Add Rows</button>
       </form>
-      <button onclick="clearTables()"  style="margin-left: 1em">Remove All Rows</button>
+      <button onclick="clearTable(fiberLoadingSettings)"  style="margin-left: 1em">Remove All Rows</button>
     </section>
     <section id="tungstenSection" class="dataEntrySection hideWhenLoading" style="display: none;">
       <h1>Tungsten Data Entry</h1>
       <button onclick="sectionReturn()">Back</button>
       <button class="submitDataButton" onclick="generalSubmitData(tungstenSettings)">SUBMIT</button><br>
+      <span class="selectBlocksLabel">Add or remove blocks from table:</span>
+      <form oninput="selectBlocksTableUpdate(this, 'tungsten')">
+        <input name="selection" type="radio" value="status1"><label>Status 1</label>
+      </form>
+      <div id="tungstenSelectBlocks" class="selectBlocksGrid"></div>
       <span class="batchInputLabel">Use the inputs below to fill data in the table:</span>
-      <div id="tungstenSelectBlocks" class="grid" style="display: none;">
-
-      </div>
       <form action="javascript:" onsubmit="batchInput(this, 'inputStatus')" style="margin-top: 1em; display: block;">
         <label style="font-weight: bold; width: 120px; display: inline-block;">Status: </label>
           <input type="text" style="width: 80px;" value="2">
@@ -94,12 +96,17 @@
         <input type="number" min="0" value="14" style="width: 40px;">
         <button style="margin-left: 1em">Add Rows</button>
       </form>
-      <button onclick="clearTables()"  style="margin-left: 1em">Remove All Rows</button>
+      <button onclick="clearTable(tungstenSettings)"  style="margin-left: 1em">Remove All Rows</button>
     </section>
     <section id="epoxySection" class="dataEntrySection hideWhenLoading" style="display: none;">
       <h1>Epoxy Data Entry</h1>
       <button onclick="sectionReturn()">Back</button>
       <button class="submitDataButton" onclick="generalSubmitData(epoxySettings)">SUBMIT</button><br>
+      <span class="selectBlocksLabel">Add or remove blocks from table:</span>
+      <form oninput="selectBlocksTableUpdate(this, 'epoxy')">
+        <input name="selection" type="radio" value="status2"><label>Status 2</label>
+      </form>
+      <div id="epoxySelectBlocks" class="selectBlocksGrid"></div>
       <span class="batchInputLabel">Use the inputs below to fill data in the table:</span>
       <form action="javascript:" onsubmit="batchInput(this, 'inputStatus')" style="margin-top: 1em; display: block;">
         <label style="font-weight: bold; width: 120px; display: inline-block;">Status: </label>
@@ -142,12 +149,18 @@
         <input type="number" min="0" value="8" style="width: 40px;">
         <button style="margin-left: 1em">Add Rows</button>
       </form>
-      <button onclick="clearTables()"  style="margin-left: 1em">Remove All Rows</button>
+      <button onclick="clearTable(epoxySettings)"  style="margin-left: 1em">Remove All Rows</button>
     </section>
     <section id="densitySection" class="dataEntrySection hideWhenLoading" style="display: none;">
       <h1>Density Data Entry</h1>
       <button onclick="sectionReturn()">Back</button>
       <button class="submitDataButton" onclick="generalSubmitData(densitySettings)">SUBMIT</button><br>
+      <span class="selectBlocksLabel">Add or remove blocks from table:</span>
+      <form oninput="selectBlocksTableUpdate(this, 'density')">
+        <input name="selection" type="radio" value="status3"><label>Status 3</label><br>
+        <input name="selection" type="radio" value="status4"><label>Status 4</label>
+      </form>
+      <div id="densitySelectBlocks" class="selectBlocksGrid"></div>
       <span class="batchInputLabel">Use the inputs below to fill data in the table:</span>
       <form action="javascript:" onsubmit="batchInput(this, 'inputStatus')" style="margin-top: 1em; display: block;">
         <label style="font-weight: bold; width: 120px; display: inline-block;">Status: </label>
@@ -170,12 +183,17 @@
         <input type="number" min="0" value="8" style="width: 40px;">
         <button style="margin-left: 1em">Add Rows</button>
       </form>
-      <button onclick="clearTables()"  style="margin-left: 1em">Remove All Rows</button>
+      <button onclick="clearTable(densitySettings)"  style="margin-left: 1em">Remove All Rows</button>
     </section>
     <section id="pictureTestsSection" class="dataEntrySection hideWhenLoading" style="display: none;">
       <h1>LT and NL Data Entry</h1>
       <button onclick="sectionReturn()">Back</button>
       <button class="submitDataButton" onclick="generalSubmitData(pictureTestsSettings)">SUBMIT</button><br>
+      <span class="selectBlocksLabel">Add or remove blocks from table:</span>
+      <form oninput="selectBlocksTableUpdate(this, 'pictureTests')">
+        <input name="selection" type="radio" value="status5"><label>Status 5</label>
+      </form>
+      <div id="pictureTestsSelectBlocks" class="selectBlocksGrid"></div>
       <span class="batchInputLabel">Use the inputs below to fill data in the table:</span>
       <form action="javascript:" onsubmit="batchInput(this, 'inputMissingRow')" style="margin-top: 1em; display: block;">
         <label style="font-weight: bold; width: 120px; display: inline-block;">Missing Row?: </label>
@@ -218,12 +236,19 @@
         <input type="number" min="0" value="8" style="width: 40px;">
         <button style="margin-left: 1em">Add Rows</button>
       </form>
-      <button onclick="clearTables()"  style="margin-left: 1em">Remove All Rows</button>
+      <button onclick="clearTable(pictureTestsSettings)"  style="margin-left: 1em">Remove All Rows</button>
     </section>
     <section id="shipmentSection" class="dataEntrySection hideWhenLoading" style="display: none;">
       <h1>Shipment Data Entry</h1>
       <button onclick="sectionReturn()">Back</button>
       <button class="submitDataButton" onclick="generalSubmitData(shipmentSettings)">SUBMIT</button><br>
+      <span class="selectBlocksLabel">Add or remove blocks from table:</span>
+      <form oninput="selectBlocksTableUpdate(this, 'shipment')">
+        <input name="selection" type="radio" value="status5"><label>Status 5</label><br>
+        <input name="selection" type="radio" value="statuses5a,5b,5c"><label>Statuses 5a, 5b, 5c</label><br>
+        <input name="selection" type="radio" value="status6"><label>Status 6</label>
+      </form>
+      <div id="shipmentSelectBlocks" class="selectBlocksGrid"></div>
       <span class="batchInputLabel">Use the inputs below to fill data in the table:</span>
       <form action="javascript:" onsubmit="batchInput(this, 'inputStatus')" style="margin-top: 1em; display: block;">
         <label style="font-weight: bold; width: 120px; display: inline-block;">Status: </label>
@@ -246,7 +271,7 @@
         <input type="number" min="0" value="24" style="width: 40px;">
         <button style="margin-left: 1em">Add Rows</button>
       </form>
-      <button onclick="clearTables()"  style="margin-left: 1em">Remove All Rows</button>
+      <button onclick="clearTable(shipmentSettings)"  style="margin-left: 1em">Remove All Rows</button>
     </section>
   </body>
   <script>
@@ -408,75 +433,143 @@
     // CLASS DEFINITIONS
     class Block {
       constructor (array, sheet, row, index) {
+        /** @type {number} */
         this.sheet = sheet
+        /** @type {number} */
         this.row = row
+        /** @type {number} */
         this.index = index
+        /** @type {string} */
         this.dbn = array[columns.dbn]
+        /** @type {number} */
         this.block = parseInt(array[columns.block])
+        /** @type {string} */
         this.status = array[columns.status]
+        /** @type {?number} */
         this.shipment = (!dataPresent(array[columns.shipment]) || parseInt(array[columns.shipment]) === 0) ? null : parseInt(array[columns.shipment])
+        /** @type {?string} */
         this.shipmentDate = (!dataPresent(array[columns.shipmentDate])) ? null : array[columns.shipmentDate]
+        /** @type {?string} */
         this.powder = (!dataPresent(array[columns.powder])) ? null : array[columns.powder]
+        /** @type {?string} */
         this.bucket = (!dataPresent(array[columns.bucket])) ? null : array[columns.bucket]
+        /** @type {?string} */
         this.moldSeries = (!dataPresent(array[columns.moldSeries])) ? null : array[columns.moldSeries]
+        /** @type {?number} */
         this.emptyMoldMass = (!dataPresent(array[columns.emptyMoldMass])) ? null : parseInt(array[columns.emptyMoldMass])
+        /** @type {?number} */
         this.filledMoldMass = (!dataPresent(array[columns.filledMoldMass])) ? null : parseInt(array[columns.filledMoldMass])
+        /** @type {?number} */
         this.tungstenMass = (!dataPresent(array[columns.tungstenMass]) || parseInt(array[columns.tungstenMass]) === 0) ? null : parseInt(array[columns.tungstenMass])
+        /** @type {?string} */
         this.fiberLoader = (!dataPresent(array[columns.fiberLoader])) ? null : array[columns.fiberLoader]
+        /** @type {?string} */
         this.tungstenFillingDate = (!dataPresent(array[columns.tungstenFillingDate])) ? null : array[columns.tungstenFillingDate]
+        /** @type {?string} */
         this.tungstenFiller = (!dataPresent(array[columns.tungstenFiller])) ? null : array[columns.tungstenFiller]
+        /** @type {?number} */
         this.epoxyBatch = (!dataPresent(array[columns.epoxyBatch])) ? null : parseInt(array[columns.epoxyBatch])
+        /** @type {?number} */
         this.resinMass = (!dataPresent(array[columns.resinMass])) ? null : parseInt(array[columns.resinMass])
+        /** @type {?number} */
         this.hardenerMass = (!dataPresent(array[columns.hardenerMass])) ? null : parseInt(array[columns.hardenerMass])
+        /** @type {?string} */
         this.pottingNotes = (!dataPresent(array[columns.pottingNotes])) ? null : array[columns.pottingNotes]
+        /** @type {?number} */
         this.epoxyFillingTime = (!dataPresent(array[columns.epoxyFillingTime])) ? null : parseFloat(array[columns.epoxyFillingTime])
+        /** @type {?string} */
         this.epoxyFillingDate = (!dataPresent(array[columns.epoxyFillingDate])) ? null : array[columns.epoxyFillingDate]
+        /** @type {?string} */
         this.epoxyPreparer = (!dataPresent(array[columns.epoxyPreparer])) ? null : array[columns.epoxyPreparer]
+        /** @type {?number} */
         this.l = (!dataPresent(array[columns.l])) ? null : parseFloat(array[columns.l])
+        /** @type {?number} */
         this.bt = (!dataPresent(array[columns.bt])) ? null : parseFloat(array[columns.bt])
+        /** @type {?number} */
         this.bb = (!dataPresent(array[columns.bb])) ? null : parseFloat(array[columns.bb])
+        /** @type {?number} */
         this.bh = (!dataPresent(array[columns.bh])) ? null : parseFloat(array[columns.bh])
+        /** @type {?number} */
         this.st = (!dataPresent(array[columns.st])) ? null : parseFloat(array[columns.st])
+        /** @type {?number} */
         this.sb = (!dataPresent(array[columns.sb])) ? null : parseFloat(array[columns.sb])
+        /** @type {?number} */
         this.sh = (!dataPresent(array[columns.sh])) ? null : parseFloat(array[columns.sh])
+        /** @type {?number} */
         this.volume = (!dataPresent(array[columns.volume]) || parseInt(array[columns.volume]) === 0) ? null : parseFloat(array[columns.volume])
+        /** @type {?number} */
         this.dimensionTester = (!dataPresent(array[columns.dimensionTester])) ? null : array[columns.dimensionTester]
+        /** @type {?number} */
         this.mass = (!dataPresent(array[columns.mass])) ? null : parseInt(array[columns.mass])
+        /** @type {?string} */
         this.massTester = (!dataPresent(array[columns.massTester])) ? null : array[columns.massTester]
+        /** @type {?number} */
         this.density = (!dataPresent(array[columns.density])) ? null : parseFloat(array[columns.density])
+        /** @type {?number} */
         this.densityDate = (!dataPresent(array[columns.densityDate])) ? null : parseInt(array[columns.densityDate])
+        /** @type {?number} */
         this.fiberPercentage = (!dataPresent(array[columns.fiberPercentage]) || parseInt(array[columns.fiberPercentage]) === 0) ? null : parseFloat(array[columns.fiberPercentage])
+        /** @type {?number} */
         this.tower1 = (!dataPresent(array[columns.tower1])) ? null : parseFloat(array[columns.tower1])
+        /** @type {?number} */
         this.tower2 = (!dataPresent(array[columns.tower2])) ? null : parseFloat(array[columns.tower2])
+        /** @type {?number} */
         this.tower3 = (!dataPresent(array[columns.tower3])) ? null : parseFloat(array[columns.tower3])
+        /** @type {?number} */
         this.tower4 = (!dataPresent(array[columns.tower4])) ? null : parseFloat(array[columns.tower4])
+        /** @type {?string} */
         this.missingRow = (!dataPresent(array[columns.missingRow]) || (array[columns.missingRow] !== 'Y' && array[columns.missingRow] !== 'N')) ? null : array[columns.missingRow]
+        /** @type {?string} */
         this.thirteenHoles = (!dataPresent(array[columns.thirteenHoles]) || (array[columns.thirteenHoles] !== 'Y' && array[columns.thirteenHoles] !== 'N')) ? null : array[columns.thirteenHoles]
+        /** @type {?string} */
         this.lightTransTester = (!dataPresent(array[columns.lightTransTester])) ? null : array[columns.lightTransTester]
+        /** @type {?string} */
         this.lightTransDate = (!dataPresent(array[columns.lightTransDate])) ? null : array[columns.lightTransDate]
+        /** @type {?number} */
         this.lightTransDateActual = (!dataPresent(array[columns.lightTransDate]) || isNaN(parseInt(removeSuffix(array[columns.lightTransDate])))) ? null : parseInt(removeSuffix(array[columns.lightTransDate]))
+        /** @type {?number} */
         this.scintillation = (!dataPresent(array[columns.scintillation])) ? null : parseFloat(array[columns.scintillation])
+        /** @type {?number} */
         this.scintRatio = (!dataPresent(array[columns.scintRatio])) ? null : parseFloat(array[columns.scintRatio])
+        /** @type {?string} */
         this.scintTester = (!dataPresent(array[columns.scintTester])) ? null : array[columns.scintTester]
+        /** @type {?string} */
         this.scintDate = (!dataPresent(array[columns.scintDate])) ? null : array[columns.scintDate]
+        /** @type {?number} */
         this.scintDateActual = (!dataPresent(array[columns.scintDate]) || isNaN(parseInt(removeSuffix(array[columns.scintDate])))) ? null : parseInt(removeSuffix(array[columns.scintDate]))
+        /** @type {?number} */
         this.natLightDate = (!dataPresent(array[columns.natLightDate])) ? null : parseInt(array[columns.natLightDate])
+        /** @type {?string} */
         this.natLightTester = (!dataPresent(array[columns.natLightTester])) ? null : array[columns.natLightTester]
+        /** @type {string} */
         this.retouch = array[columns.retouch]
+        /** @type {?string} */
         this.densityCheckedBy = dataPresent(array[columns.densityCheckedBy]) ? array[columns.densityCheckedBy] : null
+        /** @type {boolean} */
         this.densityChecked = this.densityCheckedBy != null
+        /** @type {?string} */
         this.lightTransCheckedBy = dataPresent(array[columns.lightTransCheckedBy]) ? array[columns.lightTransCheckedBy] : null
+        /** @type {boolean} */
         this.lightTransChecked = this.lightTransCheckedBy != null
+        /** @type {?string} */
         this.natLightCheckedBy = dataPresent(array[columns.natLightCheckedBy]) ? array[columns.natLightCheckedBy] : null
+        /** @type {boolean} */
         this.natLightChecked = this.natLightCheckedBy != null
+        /** @type {string} */
         this.pregrade = array[columns.pregrade]
         // other calculations
         const densityCompleteVars = [this.volume, this.mass, this.massTester, this.l, this.bt, this.bb, this.bh, this.st, this.sb, this.sh]
+        /** @type {boolean} */
         this.densityComplete = densityCompleteVars.every((value) => value != null)
-        this.lightTransComplete = this.fiberPercentage != null && this.missingRow != null && this.thirteenHoles != null && this.lightTransTester != null
+        /** @type {boolean} */
+        this.lightTransComplete = [this.fiberPercentage, this.missingRow, this.thirteenHoles, this.lightTransTester].every((value) => value !== null)
+        /** @type {boolean} */
         this.scintComplete = this.scintillation != null && this.scintRatio != null
+        /** @type {boolean} */
         this.natLightComplete = this.natLightDate != null && this.natLightTester != null
+        /** @type {boolean} */
         this.testsComplete = this.densityComplete && this.lightTransComplete && this.scintComplete && this.natLightComplete
+        /** @type {boolean} */
         this.testsChecked = this.densityChecked && this.lightTransChecked && this.natLightChecked
       }
 
@@ -587,6 +680,11 @@
         return blocks
       }
 
+      /**
+       * Get all blocks with specified status
+       * @param {String} status Status to find
+       * @return {Block[]} Matching blocks in this collection
+       */
       getBlocksByStatus (status) { // status must be a string
         const blocks = []
         this.array.forEach(function (block) {
@@ -594,9 +692,17 @@
             blocks.push(block)
           }
         })
-        console.log(`Status ${status} blocks:`, blocks)
+        return blocks
+        // console.log(`Status ${status} blocks:`, blocks)
       }
     }
+    
+    function sortBlockArray (blocksArray, property, ascending) {
+      const sorted = [...blocksArray]
+      // ...
+      return sorted
+    }
+
     function removeSuffix (string) {
       return string.split(/[.-]/)[0]
     }
@@ -905,7 +1011,7 @@
           $(element).keyup()
         })
         if (blockSpan != null) { blockSpan.text(block.block) }
-        if (statusSpan != null) { updateStatusSpan(statusSpan, block.status, tableNameToStatusConfig.get(tableName)) }
+        if (statusSpan != null) { updateStatusSpan(statusSpan, block.status, tableName) }
         if (statusInput != null) {
           const element = statusInput.get(0)
           element.disabled = false
@@ -923,7 +1029,7 @@
           element.style.backgroundColor = '#eee'
         })
         if (blockSpan != null) { blockSpan.text('-') }
-        if (statusSpan != null) { updateStatusSpan(statusSpan, null, tableNameToStatusConfig.get(tableName)) }
+        if (statusSpan != null) { updateStatusSpan(statusSpan, null, tableName) }
         if (statusInput != null) {
           const element = statusInput.get(0)
           element.value = ''
@@ -967,8 +1073,9 @@
         }
       }
     }
-    function updateStatusSpan (span, curStatus) {
-      const tableName = $(span).parents('div.grid').attr('id')
+    function updateStatusSpan (span, curStatus, tableName) {
+      // const tableName = $(span).parents('div.grid').attr('id')
+      // console.log(`tableName: ${tableName}`)
       const config = tableNameToStatusConfig.get(tableName)
       if (curStatus === null) {
         // reset
@@ -2578,10 +2685,33 @@
       ['shipmentGridTable', shipmentSettings]
     ])
     const allSettings = [fiberLoadingSettings, tungstenSettings, epoxySettings, densitySettings, pictureTestsSettings, shipmentSettings]
+    const blockSelectionSettings = {
+      tungsten: {
+        table: $('#tungstenSelectBlocks'),
+        blockDivs: []
+      },
+      epoxy: {
+        table: $('#epoxySelectBlocks'),
+        blockDivs: []
+      },
+      density: {
+        table: $('#densitySelectBlocks'),
+        blockDivs: []
+      },
+      pictureTests: {
+        table: $('#pictureTestsSelectBlocks'),
+        blockDivs: []
+      },
+      shipment: {
+        table: $('#shipmentSelectBlocks'),
+        blockDivs: []
+      }
+    }
     let currentDate
     let database
     const headers = []
     const sheetNames = ['Blocks DB', 'Blocks1364DB']
+    /** @type {?BlocksCollection} */
     let blocksCollection
     let lastDatabaseLoad
     let reloadDatabaseTimer
@@ -2679,6 +2809,54 @@
         rows.push(rowData)
         $(row).find("input[data-name='dbn']").keyup()
         // console.log(row)
+      }
+    }
+    function addRowWithDbn (tableSettings, dbn) {
+      const rows = tableSettings.rows
+      const table = tableSettings.table
+      const tableConfig = tableSettings.config
+      const numRows = Math.floor(table.children('div.gridData').length / tableConfig.length)
+      const row = []
+      const rowNum = numRows
+      for (const config of tableConfig) {
+        const div = $('<div/>').addClass('gridData').attr('data-row', rowNum).css('width', config.colWidth)
+        for (const dom of config.DOMs) {
+          const element = $('<' + dom.options.type + '/>')
+          for (const pair of dom.options.attributes) {
+            element.attr(pair[0], pair[1])
+          }
+          for (const pair of dom.options.style) {
+            element.css(pair[0], pair[1])
+          }
+          for (const cls of dom.options.classes) {
+            element.addClass(cls)
+          }
+          if (dom.options.innerHTML != null) { element.html(dom.options.innerHTML) }
+          if (dom.update.fn != null) { element.keyup(function () { dom.update.fn(rows[rowNum], this) }) }
+          div.append(element)
+        }
+        row.push(div.get(0))
+      }
+      table.append(row)
+      const rowData = table.find('[data-row="' + numRows + '"]').toArray()
+      rows.push(rowData)
+      $(row).find("input[data-name='dbn']").attr('value', dbn).keyup()
+      // console.log(row)
+    }
+    function removeRowsWithDbn (tableSettings, dbn) {
+      const rows = tableSettings.rows
+      const table = tableSettings.table
+      const tableConfig = tableSettings.config
+      for (let i = 0; i < rows.length; i++) {
+        const row = rows[i]
+        const inputDbn = $(row).find("input[data-name='dbn']").val()
+        if (inputDbn === dbn) {
+          $(row).remove()
+          rows.splice(i, 1)
+          // console.log(`removed row with dbn ${inputDbn}`)
+        } else {
+          // console.log(`didn't remove row with dbn ${inputDbn}`)
+        }
       }
     }
     function addRows (form) {
@@ -3172,6 +3350,17 @@
         settings.rows = []
       }
     }
+    function clearTable (settings) {
+      const name = settings.name
+      for (const row of settings.rows) {
+        $(row).remove()
+      }
+      settings.rows = []
+      // uncheck any checked boxes in block selection...if it exists?
+      $('#' + name + 'SelectBlocks').find("input[type='checkbox']").prop('checked', false)
+      // console.log($('#' + name + 'SelectBlocks'))
+      // console.log($('#' + name + 'SelectBlocks').find("input[type='checkbox']"))
+    }
     function updateTimestamp () {
       // (re)set color/style to the normal
       const timestampDiv = $('#timestamp')
@@ -3184,6 +3373,68 @@
       function setRed () {
         p.css('color', 'red').css('font-weight', 'bold')
         alert('The script is using data which is at least 5 minutes old. Consider refreshing the database.')
+      }
+    }
+    function selectBlocksTableUpdate (formElement, sectionName) {
+      // console.log(formElement)
+      // first clear the table
+      // console.log($(formElement).parents('section.dataEntrySection').children('div.selectBlocksGrid').eq(0))
+      $(formElement).parents('section.dataEntrySection').children('div.selectBlocksGrid').empty()
+      // now add the matching blocks
+      const selected = $(formElement).find('input:checked').val()
+      // console.log(`selected: ${selected}`)
+      if (selected.substr(0, 8) === 'statuses') {
+        const statuses = selected.substr(8).split(',')
+        console.log(`statuses to find: ${JSON.stringify(statuses)}`)
+        for (const status of statuses) {
+          // console.log(`getting blocks in status ${status}`)
+          const blocks = blocksCollection.getBlocksByStatus(status)
+          // console.log(blocks)
+          for (const block of blocks) {
+            addBlockToSelectionTable(block.dbn, block.block, sectionName)
+            // console.log(`dbn: ${block.dbn}, block: ${block.block}`)
+          }
+        }
+      } else if (selected.substr(0, 6) === 'status') {
+        const status = selected.substr(6)
+        // console.log(`getting blocks in status ${status}`)
+        const blocks = blocksCollection.getBlocksByStatus(status)
+        // console.log(blocks)
+        for (const block of blocks) {
+          addBlockToSelectionTable(block.dbn, block.block, sectionName)
+          // console.log(`dbn: ${block.dbn}, block: ${block.block}`)
+        }
+      }
+    }
+    function addBlockToSelectionTable (dbn, block, sectionName) {
+      const blockDivs = blockSelectionSettings[sectionName].blockDivs
+      const table = blockSelectionSettings[sectionName].table
+      const newDiv = $('<div>', { class: 'blockLabel' })
+      newDiv.append($('<span>', { class: 'blockLabelDBN', text: dbn }))
+      newDiv.append($('<span>', { class: 'blockLabelBlockType', text: block }))
+      newDiv.append($('<input>', {
+        class: 'blockLabelCheck',
+        type: 'checkbox',
+        onclick: 'onBlockSelectionCheckClick(this)',
+        'data-section': sectionName
+      }))
+      blockDivs.push(newDiv)
+      table.append(newDiv)
+      // console.log('appending:', newDiv)
+    }
+    function onBlockSelectionCheckClick (inputDOM) {
+      const checked = inputDOM.checked
+      // console.log(inputDOM)
+      const sectionName = inputDOM.dataset.section
+      const tableSettings = tableNameToSettings.get(sectionName + 'GridTable')
+      const dbn = $(inputDOM).siblings('span.blockLabelDBN').text()
+      if (checked) {
+        // is now checked, so add to gridTable
+        addRowWithDbn(tableSettings, dbn)
+      } else {
+        // is no longer checked, so remove from gridTable
+        // console.log('I would have removed that inputDOM')
+        removeRowsWithDbn(tableSettings, dbn)
       }
     }
   </script>

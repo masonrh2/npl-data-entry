@@ -57,4 +57,38 @@
     color: grey;
     display: block;
   }
+  span.selectBlocksLabel {
+    margin-top: 1em;
+    font-style: italic;
+    color: grey;
+    display: block;
+  }
+  .selectBlocksGrid {
+    display: grid;
+    gap: 0px;
+    margin-top: 1em;
+    max-width: 480px;
+    grid-template-columns: repeat(auto-fit, 80px);
+  }
+  .selectBlocksGrid > div.blockLabel {
+    width: 80px;
+    border: 1px solid grey;
+    position: relative;
+  }
+  .selectBlocksGrid > div.blockLabel > span.blockLabelDBN {
+    color: black;
+    font-weight: bold;
+    position: absolute;
+    left: 4px;
+  }
+  .selectBlocksGrid > div.blockLabel > span.blockLabelBlockType {
+    color: grey;
+    font-style: italic;
+    position: absolute;
+    right: 22px;
+  }
+  .selectBlocksGrid > div.blockLabel > input.blockLabelCheck {
+    position: relative;
+    left: 62px;
+  }
 </style>
