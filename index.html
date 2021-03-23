@@ -174,6 +174,16 @@
       </form>
       <form action="javascript:" onsubmit="batchInput(this, 'inputTester')" style="margin-top: 1em; display: block;">
         <label style="font-weight: bold; width: 120px; display: inline-block;">Tester Initials: </label>
+        <input type="text" style="width: 80px;">
+        <button style="margin-left: 1em">Fill</button>
+      </form>
+      <form action="javascript:" onsubmit="batchInput(this, 'inputMachiningDate')" style="margin-top: 1em; display: block;">
+        <label style="font-weight: bold; width: 120px; display: inline-block;">Machining Date: </label>
+          <input type="text" class="batchDateUS" style="width: 80px;">
+        <button style="margin-left: 1em">Fill</button>
+      </form>
+      <form action="javascript:" onsubmit="batchInput(this, 'inputMachinist')" style="margin-top: 1em; display: block;">
+        <label style="font-weight: bold; width: 120px; display: inline-block;">Machinist: </label>
           <input type="text" style="width: 80px;">
         <button style="margin-left: 1em">Fill</button>
       </form>
@@ -262,7 +272,7 @@
       </form>
       <form action="javascript:" onsubmit="batchInput(this, 'inputShipmentDate')" style="margin-top: 1em; display: block;">
         <label style="font-weight: bold; width: 120px; display: inline-block;">Shipment Date: </label>
-          <input type="text" class= "batchDateUS" style="width: 80px;">
+          <input type="text" class="batchDateUS" style="width: 80px;">
         <button style="margin-left: 1em">Fill</button>
       </form>
       <span class="tableLabel">Press the red "SUBMIT" button to write any data in the table below to the database:</span>
@@ -370,6 +380,7 @@
       epoxyFillingDate: 28,
       epoxyPreparer: 29,
       machiningDate: 31,
+      machinist: 32,
       l: 33,
       bt: 34,
       bb: 35,
@@ -2279,6 +2290,46 @@
               type: 'input',
               classes: ['inputDate', 'updateDBvlaue', 'submit'],
               attributes: [['data-name', 'densityDate'], ['type', 'text']],
+              style: [['width', '100%']]
+            },
+            update: {
+              numeric: false,
+              fn: function (divRow, that) {
+                updateThisDBValue(divRow, that, -1)
+              }
+            }
+          }
+        ]
+      },
+      {
+        headerName: 'Machining Date',
+        colWidth: colWidths.date,
+        DOMs: [
+          {
+            options: {
+              type: 'input',
+              classes: ['inputMachiningDate', 'updateDBvlaue', 'submit'],
+              attributes: [['data-name', 'machiningDate'], ['type', 'text']],
+              style: [['width', '100%']]
+            },
+            update: {
+              numeric: false,
+              fn: function (divRow, that) {
+                updateThisDBValue(divRow, that, -1)
+              }
+            }
+          }
+        ]
+      },
+      {
+        headerName: 'Machinist',
+        colWidth: '60px',
+        DOMs: [
+          {
+            options: {
+              type: 'input',
+              classes: ['inputMachinist', 'updateDBvlaue', 'submit'],
+              attributes: [['data-name', 'machinist'], ['type', 'text']],
               style: [['width', '100%']]
             },
             update: {
