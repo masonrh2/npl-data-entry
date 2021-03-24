@@ -19,12 +19,16 @@
     <div id="loadingDatabase" style="display: none;">Loading Database...</div>
     <div id="submittingData" style="display: none;">Submitting Data...</div>
     <div id="sectionSelection" class="hideWhenLoading" style="display: none;">
-      <button onclick="loadFiberLoading()">Fiber Loading</button>
-      <button onclick="loadTungsten()">Tungsten</button>
-      <button onclick="loadEpoxy()">Epoxy</button>
-      <button onclick="loadDensity()">Density</button>
-      <button onclick="loadPictureTests()">LT and NL</button>
-      <button onclick="loadShipment()">Shipment</button>
+      <button onclick="loadSection('fiberLoading')">Fiber Loading</button>
+      <button onclick="loadSection('tungsten')">Tungsten</button>
+      <button onclick="loadSection('epoxy')">Epoxy</button>
+      <button onclick="loadSection('density')">Density</button>
+      <button onclick="loadSection('lightTrans')">Light Transmission</button>
+      <button onclick="loadSection('natLight')">Natural Light</button><br>
+      <button onclick="loadSection('densityCheck')" style="margin-top: 1em;">Density Check</button>
+      <button onclick="loadSection('lightTransCheck')">Light Transmission Check</button>
+      <button onclick="loadSection('natLightCheck')">Natural Light Check</button>
+      <button onclick="loadSection('shipment')">Shipment</button>
       <section style="display: inline-block; margin-top: 1em;">
         <form action="javascript:onLogBlock()" style="display: none;">
           <label>log block: </label><input type="text" id="logBlockInput">
@@ -36,7 +40,7 @@
       <h1>Fiber Loading Data Entry</h1>
       <button onclick="sectionReturn()">Back</button>
       <button class="submitDataButton" onclick="generalSubmitData(fiberLoadingSettings)">SUBMIT</button><br>
-      <span class="batchInputLabel">Use the inputs below to fill data in the table. Any empty field will not be written to the database.</span>
+      <span class="batchInputLabel">Use the inputs below to fill data in the table:</span>
       <form action="javascript:" onsubmit="batchInput(this, 'inputStatus')" style="margin-top: 1em; display: block;">
         <label style="font-weight: bold; width: 120px; display: inline-block;">Status: </label>
           <input type="text" style="width: 80px;" value="1">
@@ -49,7 +53,7 @@
         <button style="margin-left: 1em">Fill</button>
         <button type="clear" style="margin-left: 1em;" onclick="batchClear(this, 'inputTester')">Clear</button>
       </form>
-      <span class="tableLabel">Press the red "SUBMIT" button to write any data in the table below to the database:</span>
+      <span class="tableLabel">Press the red "SUBMIT" button to write any data in the table below to the database. Any empty fields will not be written to the database.</span>
       <div id="fiberLoadingGridTable" class="grid"></div>
       <form action="javascript:" onsubmit="addRows(this)" style="margin-top: 1em; display: inline-block;">
         <input type="number" min="0" value="8" style="width: 40px;">
@@ -66,7 +70,7 @@
         <input name="selection" type="radio" value="status1"><label>Status 1</label>
       </form>
       <div id="tungstenSelectBlocks" class="selectBlocksGrid"></div>
-      <span class="batchInputLabel">Use the inputs below to fill data in the table. Any empty field will not be written to the database.</span>
+      <span class="batchInputLabel">Use the inputs below to fill data in the table:</span>
       <form action="javascript:" onsubmit="batchInput(this, 'inputStatus')" style="margin-top: 1em; display: block;">
         <label style="font-weight: bold; width: 120px; display: inline-block;">Status: </label>
           <input type="text" style="width: 80px;" value="2">
@@ -97,7 +101,7 @@
         <button style="margin-left: 1em">Fill</button>
         <button type="clear" style="margin-left: 1em;" onclick="batchClear(this, 'inputFiller')">Clear</button>
       </form>
-      <span class="tableLabel">Press the red "SUBMIT" button to write any data in the table below to the database:</span>
+      <span class="tableLabel">Press the red "SUBMIT" button to write any data in the table below to the database. Any empty fields will not be written to the database.</span>
       <div id="tungstenGridTable" class="grid"></div>
       <form action="javascript:" onsubmit="addRows(this)" style="margin-top: 1em; display: inline-block;">
         <input type="number" min="0" value="14" style="width: 40px;">
@@ -114,7 +118,7 @@
         <input name="selection" type="radio" value="status2"><label>Status 2</label>
       </form>
       <div id="epoxySelectBlocks" class="selectBlocksGrid"></div>
-      <span class="batchInputLabel">Use the inputs below to fill data in the table. Any empty field will not be written to the database.</span>
+      <span class="batchInputLabel">Use the inputs below to fill data in the table:</span>
       <form action="javascript:" onsubmit="batchInput(this, 'inputStatus')" style="margin-top: 1em; display: block;">
         <label style="font-weight: bold; width: 120px; display: inline-block;">Status: </label>
           <input type="text" style="width: 80px;" value="3">
@@ -157,7 +161,7 @@
         <button style="margin-left: 1em">Fill</button>
         <button type="clear" style="margin-left: 1em;" onclick="batchClear(this, 'inputPreparer')">Clear</button>
       </form>
-      <span class="tableLabel">Press the red "SUBMIT" button to write any data in the table below to the database:</span>
+      <span class="tableLabel">Press the red "SUBMIT" button to write any data in the table below to the database. Any empty fields will not be written to the database.</span>
       <div id="epoxyGridTable" class="grid"></div>
       <form action="javascript:" onsubmit="addRows(this)" style="margin-top: 1em; display: inline-block;">
         <input type="number" min="0" value="8" style="width: 40px;">
@@ -175,7 +179,7 @@
         <input name="selection" type="radio" value="status4"><label>Status 4</label>
       </form>
       <div id="densitySelectBlocks" class="selectBlocksGrid"></div>
-      <span class="batchInputLabel">Use the inputs below to fill data in the table. Any empty field will not be written to the database.</span>
+      <span class="batchInputLabel">Use the inputs below to fill data in the table:</span>
       <form action="javascript:" onsubmit="batchInput(this, 'inputStatus')" style="margin-top: 1em; display: block;">
         <label style="font-weight: bold; width: 120px; display: inline-block;">Status: </label>
           <input type="text" style="width: 80px;" value="5">
@@ -206,7 +210,7 @@
         <button style="margin-left: 1em">Fill</button>
         <button type="clear" style="margin-left: 1em;" onclick="batchClear(this, 'inputMachinist')">Clear</button>
       </form>
-      <span class="tableLabel">Press the red "SUBMIT" button to write any data in the table below to the database:</span>
+      <span class="tableLabel">Press the red "SUBMIT" button to write any data in the table below to the database. Any empty fields will not be written to the database.</span>
       <div id="densityGridTable" class="grid"></div>
       <form action="javascript:" onsubmit="addRows(this)" style="margin-top: 1em; display: inline-block;">
         <input type="number" min="0" value="8" style="width: 40px;">
@@ -214,16 +218,16 @@
       </form>
       <button onclick="clearTable(densitySettings)"  style="margin-left: 1em">Remove All Rows</button>
     </section>
-    <section id="pictureTestsSection" class="dataEntrySection hideWhenLoading" style="display: none;">
-      <h1>LT and NL Data Entry</h1>
+    <section id="lightTransSection" class="dataEntrySection hideWhenLoading" style="display: none;">
+      <h1>Light Transmission</h1>
       <button onclick="sectionReturn()">Back</button>
-      <button class="submitDataButton" onclick="generalSubmitData(pictureTestsSettings)">SUBMIT</button><br>
+      <button class="submitDataButton" onclick="generalSubmitData(lightTransSettings)">SUBMIT</button><br>
       <span class="selectBlocksLabel">Select a status below to find blocks in that status. Select any block to add it to the the table.</span>
-      <form oninput="selectBlocksTableUpdate(this, 'pictureTests')">
+      <form oninput="selectBlocksTableUpdate(this, 'lightTrans')">
         <input name="selection" type="radio" value="status5"><label>Status 5</label>
       </form>
-      <div id="pictureTestsSelectBlocks" class="selectBlocksGrid"></div>
-      <span class="batchInputLabel">Use the inputs below to fill data in the table. Any empty field will not be written to the database.</span>
+      <div id="lightTransSelectBlocks" class="selectBlocksGrid"></div>
+      <span class="batchInputLabel">Use the inputs below to fill data in the table:</span>
       <form action="javascript:" onsubmit="batchInput(this, 'inputMissingRow')" style="margin-top: 1em; display: block;">
         <label style="font-weight: bold; width: 120px; display: inline-block;">Missing Row?: </label>
           <input type="text" value="N" style="width: 80px;">
@@ -242,12 +246,24 @@
         <button style="margin-left: 1em">Fill</button>
         <button type="clear" style="margin-left: 1em;" onclick="batchClear(this, 'inputLTTester')">Clear</button>
       </form>
-      <form action="javascript:" onsubmit="batchInput(this, 'inputLTChecker')" style="margin-top: 1em; display: block;">
-        <label style="font-weight: bold; width: 120px; display: inline-block;">LT Checked By: </label>
-          <input type="text" style="width: 80px;">
-        <button style="margin-left: 1em">Fill</button>
-        <button type="clear" style="margin-left: 1em;" onclick="batchClear(this, 'inputLTChecker')">Clear</button>
+      <span class="tableLabel">Press the red "SUBMIT" button to write any data in the table below to the database. Any empty fields will not be written to the database.</span>
+      <div id="lightTransGridTable" class="grid"></div>
+      <form action="javascript:" onsubmit="addRows(this)" style="margin-top: 1em; display: inline-block;">
+        <input type="number" min="0" value="8" style="width: 40px;">
+        <button style="margin-left: 1em">Add Rows</button>
       </form>
+      <button onclick="clearTable(lightTransSettings)"  style="margin-left: 1em">Remove All Rows</button>
+    </section>
+    <section id="natLightSection" class="dataEntrySection hideWhenLoading" style="display: none;">
+      <h1>Natural Light</h1>
+      <button onclick="sectionReturn()">Back</button>
+      <button class="submitDataButton" onclick="generalSubmitData(natLightSettings)">SUBMIT</button><br>
+      <span class="selectBlocksLabel">Select a status below to find blocks in that status. Select any block to add it to the the table.</span>
+      <form oninput="selectBlocksTableUpdate(this, 'natLight')">
+        <input name="selection" type="radio" value="status5"><label>Status 5</label>
+      </form>
+      <div id="natLightSelectBlocks" class="selectBlocksGrid"></div>
+      <span class="batchInputLabel">Use the inputs below to fill data in the table:</span>
       <form action="javascript:" onsubmit="batchInput(this, 'inputNLDate')" style="margin-top: 1em; display: block;">
         <label style="font-weight: bold; width: 120px; display: inline-block;">NL Date: </label>
           <input type="text" class="batchDate" style="width: 80px;">
@@ -260,19 +276,86 @@
         <button style="margin-left: 1em">Fill</button>
         <button type="clear" style="margin-left: 1em;" onclick="batchClear(this, 'inputNLTester')">Clear</button>
       </form>
-      <form action="javascript:" onsubmit="batchInput(this, 'inputNLChecker')" style="margin-top: 1em; display: block;">
-        <label style="font-weight: bold; width: 120px; display: inline-block;">NL Checked By: </label>
-          <input type="text" style="width: 80px;">
-        <button style="margin-left: 1em">Fill</button>
-        <button type="clear" style="margin-left: 1em;" onclick="batchClear(this, 'inputNLChecker')">Clear</button>
-      </form>
-      <span class="tableLabel">Press the red "SUBMIT" button to write any data in the table below to the database:</span>
-      <div id="pictureTestsGridTable" class="grid"></div>
+      <span class="tableLabel">Press the red "SUBMIT" button to write any data in the table below to the database. Any empty fields will not be written to the database.</span>
+      <div id="natLightGridTable" class="grid"></div>
       <form action="javascript:" onsubmit="addRows(this)" style="margin-top: 1em; display: inline-block;">
         <input type="number" min="0" value="8" style="width: 40px;">
         <button style="margin-left: 1em">Add Rows</button>
       </form>
-      <button onclick="clearTable(pictureTestsSettings)"  style="margin-left: 1em">Remove All Rows</button>
+      <button onclick="clearTable(natLightSettings)"  style="margin-left: 1em">Remove All Rows</button>
+    </section>
+    <section id="densityCheckSection" class="dataEntrySection hideWhenLoading" style="display: none;">
+      <h1>Density Check</h1>
+      <button onclick="sectionReturn()">Back</button>
+      <button class="submitDataButton" onclick="generalSubmitData(densityCheckSettings)">SUBMIT</button><br>
+      <span class="selectBlocksLabel">Select a status below to find blocks in that status. Select any block to add it to the the table.</span>
+      <form oninput="selectBlocksTableUpdate(this, 'densityCheck')">
+        <input name="selection" type="radio" value="status3"><label>Status 3</label>
+        <input name="selection" type="radio" value="status4"><label>Status 4</label>
+      </form>
+      <div id="densityCheckSelectBlocks" class="selectBlocksGrid"></div>
+      <span class="batchInputLabel">Use the inputs below to fill data in the table:</span>
+      <form action="javascript:" onsubmit="batchInput(this, 'inputDensityCheckedBy')" style="margin-top: 1em; display: block;">
+        <label style="font-weight: bold; width: 120px; display: inline-block;">Checked By: </label>
+          <input type="text" style="width: 80px;">
+        <button style="margin-left: 1em">Fill</button>
+        <button type="clear" style="margin-left: 1em;" onclick="batchClear(this, 'inputDensityCheckedBy')">Clear</button>
+      </form>
+      <span class="tableLabel">Press the red "SUBMIT" button to write any data in the table below to the database. Any empty fields will not be written to the database.</span>
+      <div id="densityCheckGridTable" class="grid"></div>
+      <form action="javascript:" onsubmit="addRows(this)" style="margin-top: 1em; display: inline-block;">
+        <input type="number" min="0" value="8" style="width: 40px;">
+        <button style="margin-left: 1em">Add Rows</button>
+      </form>
+      <button onclick="clearTable(densityCheckSettings)"  style="margin-left: 1em">Remove All Rows</button>
+    </section>
+    <section id="lightTransCheckSection" class="dataEntrySection hideWhenLoading" style="display: none;">
+      <h1>Light Transmission Check</h1>
+      <button onclick="sectionReturn()">Back</button>
+      <button class="submitDataButton" onclick="generalSubmitData(lightTransCheckSettings)">SUBMIT</button><br>
+      <span class="selectBlocksLabel">Select a status below to find blocks in that status. Select any block to add it to the the table.</span>
+      <form oninput="selectBlocksTableUpdate(this, 'lightTransCheck')">
+        <input name="selection" type="radio" value="status5"><label>Status 5</label>
+      </form>
+      <div id="lightTransCheckSelectBlocks" class="selectBlocksGrid"></div>
+      <span class="batchInputLabel">Use the inputs below to fill data in the table:</span>
+      <form action="javascript:" onsubmit="batchInput(this, 'inputLTChecker')" style="margin-top: 1em; display: block;">
+        <label style="font-weight: bold; width: 120px; display: inline-block;">Checked By: </label>
+          <input type="text" style="width: 80px;">
+        <button style="margin-left: 1em">Fill</button>
+        <button type="clear" style="margin-left: 1em;" onclick="batchClear(this, 'inputLTChecker')">Clear</button>
+      </form>
+      <span class="tableLabel">Press the red "SUBMIT" button to write any data in the table below to the database. Any empty fields will not be written to the database.</span>
+      <div id="lightTransCheckGridTable" class="grid"></div>
+      <form action="javascript:" onsubmit="addRows(this)" style="margin-top: 1em; display: inline-block;">
+        <input type="number" min="0" value="8" style="width: 40px;">
+        <button style="margin-left: 1em">Add Rows</button>
+      </form>
+      <button onclick="clearTable(densityCheckSettings)"  style="margin-left: 1em">Remove All Rows</button>
+    </section>
+    <section id="natLightCheckSection" class="dataEntrySection hideWhenLoading" style="display: none;">
+      <h1>Natural Light Check</h1>
+      <button onclick="sectionReturn()">Back</button>
+      <button class="submitDataButton" onclick="generalSubmitData(natLightCheckSettings)">SUBMIT</button><br>
+      <span class="selectBlocksLabel">Select a status below to find blocks in that status. Select any block to add it to the the table.</span>
+      <form oninput="selectBlocksTableUpdate(this, 'natLightCheck')">
+        <input name="selection" type="radio" value="status5"><label>Status 5</label>
+      </form>
+      <div id="natLightCheckSelectBlocks" class="selectBlocksGrid"></div>
+      <span class="batchInputLabel">Use the inputs below to fill data in the table:</span>
+      <form action="javascript:" onsubmit="batchInput(this, 'inputNLChecker')" style="margin-top: 1em; display: block;">
+        <label style="font-weight: bold; width: 120px; display: inline-block;">Checked By: </label>
+          <input type="text" style="width: 80px;">
+        <button style="margin-left: 1em">Fill</button>
+        <button type="clear" style="margin-left: 1em;" onclick="batchClear(this, 'inputNLChecker')">Clear</button>
+      </form>
+      <span class="tableLabel">Press the red "SUBMIT" button to write any data in the table below to the database. Any empty fields will not be written to the database.</span>
+      <div id="natLightCheckGridTable" class="grid"></div>
+      <form action="javascript:" onsubmit="addRows(this)" style="margin-top: 1em; display: inline-block;">
+        <input type="number" min="0" value="8" style="width: 40px;">
+        <button style="margin-left: 1em">Add Rows</button>
+      </form>
+      <button onclick="clearTable(densityCheckSettings)"  style="margin-left: 1em">Remove All Rows</button>
     </section>
     <section id="shipmentSection" class="dataEntrySection hideWhenLoading" style="display: none;">
       <h1>Shipment Data Entry</h1>
@@ -285,7 +368,7 @@
         <input name="selection" type="radio" value="status6"><label>Status 6</label>
       </form>
       <div id="shipmentSelectBlocks" class="selectBlocksGrid"></div>
-      <span class="batchInputLabel">Use the inputs below to fill data in the table. Any empty field will not be written to the database.</span>
+      <span class="batchInputLabel">Use the inputs below to fill data in the table:</span>
       <form action="javascript:" onsubmit="batchInput(this, 'inputStatus')" style="margin-top: 1em; display: block;">
         <label style="font-weight: bold; width: 120px; display: inline-block;">Status: </label>
           <input type="text" style="width: 80px;" value="7">
@@ -304,7 +387,7 @@
         <button style="margin-left: 1em">Fill</button>
         <button type="clear" style="margin-left: 1em;" onclick="batchClear(this, 'inputShipmentDate')">Clear</button>
       </form>
-      <span class="tableLabel">Press the red "SUBMIT" button to write any data in the table below to the database:</span>
+      <span class="tableLabel">Press the red "SUBMIT" button to write any data in the table below to the database. Any empty fields will not be written to the database.</span>
       <div id="shipmentGridTable" class="grid"></div>
       <form action="javascript:" onsubmit="addRows(this)" style="margin-top: 1em; display: inline-block;">
         <input type="number" min="0" value="24" style="width: 40px;">
@@ -1041,6 +1124,16 @@
       const statusInput = findStatusInput.length === 1 ? findStatusInput.eq(0) : null
       const findFiberSpan = $(divRow).find("span[data-name='fiberPercentage']")
       const fiberSpan = findFiberSpan.length === 1 ? findFiberSpan.eq(0) : null
+      const findNatLightDateSpan = $(divRow).find("span[data-name='natLightDate']")
+      const natLightDateSpan = findNatLightDateSpan.length === 1 ? findNatLightDateSpan.eq(0) : null
+      const findNatLightTesterSpan = $(divRow).find("span[data-name='natLightTester']")
+      const natLightTesterSpan = findNatLightTesterSpan.length === 1 ? findNatLightTesterSpan.eq(0) : null
+      const findMissingRowSpan = $(divRow).find("span[data-name='missingRow']")
+      const missingRowSpan = findMissingRowSpan.length === 1 ? findMissingRowSpan.eq(0) : null
+      const findThirteenHolesSpan = $(divRow).find("span[data-name='thirteenHoles']")
+      const thirteenHolesSpan = findThirteenHolesSpan.length === 1 ? findThirteenHolesSpan.eq(0) : null
+      const findLightTransTesterSpan = $(divRow).find("span[data-name='lightTransTester']")
+      const lightTransTesterSpan = findLightTransTesterSpan.length === 1 ? findLightTransTesterSpan.eq(0) : null
       // locate table to find table name to use map.....quite convoluted..
       const tableName = $(that).parents('div.grid').attr('id')
       if (block != null) {
@@ -1051,6 +1144,11 @@
           $(element).keyup()
         })
         if (blockSpan != null) { blockSpan.text(block.block) }
+        if (natLightDateSpan != null) { natLightDateSpan.text(block.natLightDate) }
+        if (natLightTesterSpan != null) { natLightTesterSpan.text(block.natLightTester) }
+        if (missingRowSpan != null) { missingRowSpan.text(block.missingRow) }
+        if (thirteenHolesSpan != null) { thirteenHolesSpan.text(block.thirteenHoles) }
+        if (lightTransTesterSpan != null) { lightTransTesterSpan.text(block.lightTransTester) }
         if (statusSpan != null) { updateStatusSpan(statusSpan, block.status, tableName) }
         if (statusInput != null) {
           const element = statusInput.get(0)
@@ -1298,6 +1396,12 @@
       errorFromStatus: [0, 1, 2, 7],
       goodFromStatus: [5]
     }
+    const checkStatusConfig = {
+      errorFromStatus: [0, 1, 2, 7],
+      goodFromStatus: [5, '5a', '5b', '5c'],
+      errorToStatus: [],
+      goodToStatus: [5, '5a', '5b', '5c']
+    }
     const shipmentStatusConfig = {
       errorFromStatus: [0, 1, 2, 3, 4],
       goodFromStatus: [5, 6],
@@ -1309,7 +1413,11 @@
       ['tungstenGridTable', tungstenStatusConfig],
       ['epoxyGridTable', epoxyStatusConfig],
       ['densityGridTable', densityStatusConfig],
-      ['pictureTestsGridTable', testStatusConfig],
+      ['lightTransGridTable', testStatusConfig],
+      ['natLightGridTable', testStatusConfig],
+      ['densityCheckGridTable', checkStatusConfig],
+      ['lightTransCheckGridTable', checkStatusConfig],
+      ['natLightCheckGridTable', checkStatusConfig],
       ['shipmentGridTable', shipmentStatusConfig]
     ])
     const colWidths = {
@@ -2371,7 +2479,7 @@
         ]
       }
     ]
-    const pictureTestsConfig = [
+    const lightTransConfig = [
       {
         headerName: 'DBN',
         colWidth: colWidths.dbn,
@@ -2505,23 +2613,61 @@
             }
           }
         ]
-      },
+      }
+    ]
+    const natLightConfig = [
       {
-        headerName: 'LT Checked By',
-        colWidth: '60px',
+        headerName: 'DBN',
+        colWidth: colWidths.dbn,
         DOMs: [
           {
             options: {
               type: 'input',
-              classes: ['updateDBvlaue', 'submit', 'inputLTChecker'],
-              attributes: [['data-name', 'lightTransCheckedBy'], ['type', 'text']],
+              classes: [],
+              attributes: [['data-name', 'dbn'], ['type', 'text']],
               style: [['width', '100%']]
             },
             update: {
               numeric: false,
               fn: function (divRow, that) {
-                updateThisDBValue(divRow, that, -1)
+                dbnChange(divRow, that)
               }
+            }
+          }
+        ]
+      },
+      {
+        headerName: 'Block',
+        colWidth: colWidths.block,
+        DOMs: [
+          {
+            options: {
+              type: 'span',
+              classes: [],
+              attributes: [['data-name', 'block']],
+              style: [['width', '100%']]
+            },
+            update: {
+              numeric: true,
+              fn: null
+            }
+          }
+        ]
+      },
+      {
+        headerName: 'Status',
+        colWidth: '40px',
+        DOMs: [
+          { // CURRENT STATUS
+            options: {
+              type: 'span',
+              classes: [],
+              attributes: [['data-name', 'status']],
+              style: [['width', '100%']]
+            },
+            update: {
+              numeric: false,
+              fn: null
             }
           }
         ]
@@ -2562,6 +2708,713 @@
               fn: function (divRow, that) {
                 updateThisDBValue(divRow, that, -1)
               }
+            }
+          }
+        ]
+      }
+    ]
+    const densityCheckConfig = [
+      {
+        headerName: 'DBN',
+        colWidth: colWidths.dbn,
+        DOMs: [
+          {
+            options: {
+              type: 'input',
+              classes: [],
+              attributes: [['data-name', 'dbn'], ['type', 'text']],
+              style: [['width', '100%']]
+            },
+            update: {
+              numeric: false,
+              fn: function (divRow, that) {
+                dbnChange(divRow, that)
+                dimensionKeyup(divRow)
+              }
+            }
+          }
+        ]
+      },
+      {
+        headerName: 'Block',
+        colWidth: colWidths.block,
+        DOMs: [
+          {
+            options: {
+              type: 'span',
+              classes: [],
+              attributes: [['data-name', 'block']],
+              style: [['width', '100%']]
+            },
+            update: {
+              numeric: true,
+              fn: null
+            }
+          }
+        ]
+      },
+      {
+        headerName: 'Status',
+        colWidth: '40px',
+        DOMs: [
+          {
+            options: {
+              type: 'input',
+              classes: ['updateDBvlaue', 'submit'],
+              attributes: [['data-name', 'status'], ['type', 'text']],
+              style: [['width', '100%']]
+            },
+            update: {
+              numeric: false,
+              fn: function (divRow, that) {
+                updateThisDBValue(divRow, that, -1)
+              }
+            }
+          }
+        ]
+      },
+      {
+        headerName: 'L (in)',
+        colWidth: colWidths.dim,
+        DOMs: [
+          {
+            options: {
+              type: 'input',
+              classes: ['updateDBvlaue', 'submit'],
+              attributes: [['data-name', 'l'], ['type', 'text']],
+              style: [['width', 'calc(80% - 5px)']]
+            },
+            update: {
+              numeric: true,
+              fn: function (divRow, that) {
+                updateThisDBValue(divRow, that, 4)
+                dimensionKeyup(divRow)
+              }
+            }
+          },
+          {
+            options: {
+              type: 'span',
+              classes: ['grade'],
+              attributes: [],
+              style: [['width', 'calc(20% - 5px)'], ['margin-left', '5px']]
+            },
+            update: {
+              numeric: true,
+              fn: null
+            }
+          }
+        ]
+      },
+      {
+        headerName: 'BT (in)',
+        colWidth: colWidths.dim,
+        DOMs: [
+          {
+            options: {
+              type: 'input',
+              classes: ['updateDBvlaue', 'submit'],
+              attributes: [['data-name', 'bt'], ['type', 'text']],
+              style: [['width', 'calc(80% - 5px)']]
+            },
+            update: {
+              numeric: true,
+              fn: function (divRow, that) {
+                updateThisDBValue(divRow, that, 4)
+                dimensionKeyup(divRow)
+              }
+            }
+          },
+          {
+            options: {
+              type: 'span',
+              classes: ['grade'],
+              attributes: [],
+              style: [['width', 'calc(20% - 5px)'], ['margin-left', '5px']]
+            },
+            update: {
+              numeric: true,
+              fn: null
+            }
+          }
+        ]
+      },
+      {
+        headerName: 'BB (in)',
+        colWidth: colWidths.dim,
+        DOMs: [
+          {
+            options: {
+              type: 'input',
+              classes: ['updateDBvlaue', 'submit'],
+              attributes: [['data-name', 'bb'], ['type', 'text']],
+              style: [['width', 'calc(80% - 5px)']]
+            },
+            update: {
+              numeric: true,
+              fn: function (divRow, that) {
+                updateThisDBValue(divRow, that, 4)
+                dimensionKeyup(divRow)
+              }
+            }
+          },
+          {
+            options: {
+              type: 'span',
+              classes: ['grade'],
+              attributes: [],
+              style: [['width', 'calc(20% - 5px)'], ['margin-left', '5px']]
+            },
+            update: {
+              numeric: true,
+              fn: null
+            }
+          }
+        ]
+      },
+      {
+        headerName: 'BH (in)',
+        colWidth: colWidths.dim,
+        DOMs: [
+          {
+            options: {
+              type: 'input',
+              classes: ['updateDBvlaue', 'submit'],
+              attributes: [['data-name', 'bh'], ['type', 'text']],
+              style: [['width', 'calc(80% - 5px)']]
+            },
+            update: {
+              numeric: true,
+              fn: function (divRow, that) {
+                updateThisDBValue(divRow, that, 4)
+                dimensionKeyup(divRow)
+              }
+            }
+          },
+          {
+            options: {
+              type: 'span',
+              classes: ['grade'],
+              attributes: [],
+              style: [['width', 'calc(20% - 5px)'], ['margin-left', '5px']]
+            },
+            update: {
+              numeric: true,
+              fn: null
+            }
+          }
+        ]
+      },
+      {
+        headerName: 'ST (in)',
+        colWidth: colWidths.dim,
+        DOMs: [
+          {
+            options: {
+              type: 'input',
+              classes: ['updateDBvlaue', 'submit'],
+              attributes: [['data-name', 'st'], ['type', 'text']],
+              style: [['width', 'calc(80% - 5px)']]
+            },
+            update: {
+              numeric: true,
+              fn: function (divRow, that) {
+                updateThisDBValue(divRow, that, 4)
+                dimensionKeyup(divRow)
+              }
+            }
+          },
+          {
+            options: {
+              type: 'span',
+              classes: ['grade'],
+              attributes: [],
+              style: [['width', 'calc(20% - 5px)'], ['margin-left', '5px']]
+            },
+            update: {
+              numeric: true,
+              fn: null
+            }
+          }
+        ]
+      },
+      {
+        headerName: 'SB (in)',
+        colWidth: colWidths.dim,
+        DOMs: [
+          {
+            options: {
+              type: 'input',
+              classes: ['updateDBvlaue', 'submit'],
+              attributes: [['data-name', 'sb'], ['type', 'text']],
+              style: [['width', 'calc(80% - 5px)']]
+            },
+            update: {
+              numeric: true,
+              fn: function (divRow, that) {
+                updateThisDBValue(divRow, that, 4)
+                dimensionKeyup(divRow)
+              }
+            }
+          },
+          {
+            options: {
+              type: 'span',
+              classes: ['grade'],
+              attributes: [],
+              style: [['width', 'calc(20% - 5px)'], ['margin-left', '5px']]
+            },
+            update: {
+              numeric: true,
+              fn: null
+            }
+          }
+        ]
+      },
+      {
+        headerName: 'SH (in)',
+        colWidth: colWidths.dim,
+        DOMs: [
+          {
+            options: {
+              type: 'input',
+              classes: ['updateDBvlaue', 'submit'],
+              attributes: [['data-name', 'sh'], ['type', 'text']],
+              style: [['width', 'calc(80% - 5px)']]
+            },
+            update: {
+              numeric: true,
+              fn: function (divRow, that) {
+                updateThisDBValue(divRow, that, 4)
+                dimensionKeyup(divRow)
+              }
+            }
+          },
+          {
+            options: {
+              type: 'span',
+              classes: ['grade'],
+              attributes: [],
+              style: [['width', 'calc(20% - 5px)'], ['margin-left', '5px']]
+            },
+            update: {
+              numeric: true,
+              fn: null
+            }
+          }
+        ]
+      },
+      {
+        headerName: 'Tester Initials',
+        colWidth: colWidths.initials,
+        DOMs: [
+          {
+            options: {
+              type: 'input',
+              classes: ['inputTester', 'updateDBvlaue', 'submit'],
+              attributes: [['data-name', 'dimensionTester'], ['type', 'text']],
+              style: [['width', '100%']]
+            },
+            update: {
+              numeric: false,
+              fn: function (divRow, that) {
+                updateThisDBValue(divRow, that, -1)
+              }
+            }
+          }
+        ]
+      },
+      {
+        headerName: 'Mass (g)',
+        colWidth: '45px',
+        DOMs: [
+          {
+            options: {
+              type: 'input',
+              classes: ['updateDBvlaue', 'submit'],
+              attributes: [['data-name', 'mass'], ['type', 'text']],
+              style: [['width', '100%']]
+            },
+            update: {
+              numeric: true,
+              fn: function (divRow, that) {
+                updateThisDBValue(divRow, that, -1)
+                dimensionKeyup(divRow)
+              }
+            }
+          }
+        ]
+      },
+      {
+        headerName: 'Tester Initials',
+        colWidth: colWidths.initials,
+        DOMs: [
+          {
+            options: {
+              type: 'input',
+              classes: ['inputTester', 'updateDBvlaue', 'submit'],
+              attributes: [['data-name', 'massTester'], ['type', 'text']],
+              style: [['width', '100%']]
+            },
+            update: {
+              numeric: false,
+              fn: function (divRow, that) {
+                updateThisDBValue(divRow, that, -1)
+              }
+            }
+          }
+        ]
+      },
+      {
+        headerName: 'Density (g/mL)',
+        colWidth: '50px',
+        DOMs: [
+          {
+            options: {
+              type: 'span',
+              classes: [],
+              attributes: [['data-name', 'density']],
+              style: [['width', 'calc(80% - 5px)']]
+            },
+            update: {
+              numeric: true,
+              fn: null
+            }
+          },
+          {
+            options: {
+              type: 'span',
+              classes: ['grade'],
+              attributes: [],
+              style: [['width', 'calc(20% - 5px)'], ['margin-left', '5px']]
+            },
+            update: {
+              numeric: true,
+              fn: null
+            }
+          }
+        ]
+      },
+      {
+        headerName: 'Date',
+        colWidth: colWidths.date,
+        DOMs: [
+          {
+            options: {
+              type: 'input',
+              classes: ['inputDate', 'updateDBvlaue', 'submit'],
+              attributes: [['data-name', 'densityDate'], ['type', 'text']],
+              style: [['width', '100%']]
+            },
+            update: {
+              numeric: false,
+              fn: function (divRow, that) {
+                updateThisDBValue(divRow, that, -1)
+              }
+            }
+          }
+        ]
+      },
+      {
+        headerName: 'Machining Date',
+        colWidth: colWidths.date,
+        DOMs: [
+          {
+            options: {
+              type: 'input',
+              classes: ['inputMachiningDate', 'updateDBvlaue', 'submit'],
+              attributes: [['data-name', 'machiningDate'], ['type', 'text']],
+              style: [['width', '100%']]
+            },
+            update: {
+              numeric: false,
+              fn: function (divRow, that) {
+                updateThisDBValue(divRow, that, -1)
+              }
+            }
+          }
+        ]
+      },
+      {
+        headerName: 'Machinist',
+        colWidth: '60px',
+        DOMs: [
+          {
+            options: {
+              type: 'input',
+              classes: ['inputMachinist', 'updateDBvlaue', 'submit'],
+              attributes: [['data-name', 'machinist'], ['type', 'text']],
+              style: [['width', '100%']]
+            },
+            update: {
+              numeric: false,
+              fn: function (divRow, that) {
+                updateThisDBValue(divRow, that, -1)
+              }
+            }
+          }
+        ]
+      },
+      {
+        headerName: 'Checked By',
+        colWidth: '60px',
+        DOMs: [
+          {
+            options: {
+              type: 'input',
+              classes: ['inputDensityCheckedBy', 'updateDBvlaue', 'submit'],
+              attributes: [['data-name', 'densityCheckedBy'], ['type', 'text']],
+              style: [['width', '100%']]
+            },
+            update: {
+              numeric: false,
+              fn: function (divRow, that) {
+                updateThisDBValue(divRow, that, -1)
+              }
+            }
+          }
+        ]
+      }
+    ]
+    const lightTransCheckConfig = [
+      {
+        headerName: 'DBN',
+        colWidth: colWidths.dbn,
+        DOMs: [
+          {
+            options: {
+              type: 'input',
+              classes: [],
+              attributes: [['data-name', 'dbn'], ['type', 'text']],
+              style: [['width', '100%']]
+            },
+            update: {
+              numeric: false,
+              fn: function (divRow, that) {
+                dbnChange(divRow, that)
+              }
+            }
+          }
+        ]
+      },
+      {
+        headerName: 'Block',
+        colWidth: colWidths.block,
+        DOMs: [
+          {
+            options: {
+              type: 'span',
+              classes: [],
+              attributes: [['data-name', 'block']],
+              style: [['width', '100%']]
+            },
+            update: {
+              numeric: true,
+              fn: null
+            }
+          }
+        ]
+      },
+      {
+        headerName: 'Status',
+        colWidth: '40px',
+        DOMs: [
+          { // CURRENT STATUS
+            options: {
+              type: 'span',
+              classes: [],
+              attributes: [['data-name', 'status']],
+              style: [['width', '100%']]
+            },
+            update: {
+              numeric: false,
+              fn: null
+            }
+          }
+        ]
+      },
+      {
+        headerName: 'Fiber (%)',
+        colWidth: '50px',
+        DOMs: [
+          {
+            options: {
+              type: 'span',
+              classes: [],
+              attributes: [['data-name', 'fiberPercentage'], ['type', 'text']],
+              style: [['width', '100%']]
+            },
+            update: {
+              numeric: false,
+              fn: null
+            }
+          }
+        ]
+      },
+      {
+        headerName: 'Missing Row?',
+        colWidth: '50px',
+        DOMs: [
+          {
+            options: {
+              type: 'span',
+              classes: [],
+              attributes: [['data-name', 'missingRow'], ['type', 'text']],
+              style: [['width', '100%']]
+            },
+            update: {
+              numeric: false,
+              fn: null
+            }
+          }
+        ]
+      },
+      {
+        headerName: '13 Holes?',
+        colWidth: '50px',
+        DOMs: [
+          {
+            options: {
+              type: 'span',
+              classes: [],
+              attributes: [['data-name', 'thirteenHoles'], ['type', 'text']],
+              style: [['width', '100%']]
+            },
+            update: {
+              numeric: false,
+              fn: null
+            }
+          }
+        ]
+      },
+      {
+        headerName: 'LT Tester',
+        colWidth: '60px',
+        DOMs: [
+          {
+            options: {
+              type: 'span',
+              classes: [],
+              attributes: [['data-name', 'lightTransTester'], ['type', 'text']],
+              style: [['width', '100%']]
+            },
+            update: {
+              numeric: false,
+              fn: null
+            }
+          }
+        ]
+      },
+      {
+        headerName: 'LT Checked By',
+        colWidth: '60px',
+        DOMs: [
+          {
+            options: {
+              type: 'input',
+              classes: ['updateDBvlaue', 'submit', 'inputLTChecker'],
+              attributes: [['data-name', 'lightTransCheckedBy'], ['type', 'text']],
+              style: [['width', '100%']]
+            },
+            update: {
+              numeric: false,
+              fn: function (divRow, that) {
+                updateThisDBValue(divRow, that, -1)
+              }
+            }
+          }
+        ]
+      }
+    ]
+    const natLightCheckConfig = [
+      {
+        headerName: 'DBN',
+        colWidth: colWidths.dbn,
+        DOMs: [
+          {
+            options: {
+              type: 'input',
+              classes: [],
+              attributes: [['data-name', 'dbn'], ['type', 'text']],
+              style: [['width', '100%']]
+            },
+            update: {
+              numeric: false,
+              fn: function (divRow, that) {
+                dbnChange(divRow, that)
+              }
+            }
+          }
+        ]
+      },
+      {
+        headerName: 'Block',
+        colWidth: colWidths.block,
+        DOMs: [
+          {
+            options: {
+              type: 'span',
+              classes: [],
+              attributes: [['data-name', 'block']],
+              style: [['width', '100%']]
+            },
+            update: {
+              numeric: true,
+              fn: null
+            }
+          }
+        ]
+      },
+      {
+        headerName: 'Status',
+        colWidth: '40px',
+        DOMs: [
+          { // CURRENT STATUS
+            options: {
+              type: 'span',
+              classes: [],
+              attributes: [['data-name', 'status']],
+              style: [['width', '100%']]
+            },
+            update: {
+              numeric: false,
+              fn: null
+            }
+          }
+        ]
+      },
+      {
+        headerName: 'NL Date',
+        colWidth: colWidths.date,
+        DOMs: [
+          {
+            options: {
+              type: 'span',
+              classes: [],
+              attributes: [['data-name', 'natLightDate'], ['type', 'text']],
+              style: [['width', '100%']]
+            },
+            update: {
+              numeric: false,
+              fn: null
+            }
+          }
+        ]
+      },
+      {
+        headerName: 'NL Tester',
+        colWidth: '60px',
+        DOMs: [
+          {
+            options: {
+              type: 'span',
+              classes: [],
+              attributes: [['data-name', 'natLightTester'], ['type', 'text']],
+              style: [['width', '100%']]
+            },
+            update: {
+              numeric: false,
+              fn: null
             }
           }
         ]
@@ -2718,7 +3571,11 @@
     const tungstenRows = []
     const epoxyRows = []
     const densityRows = []
-    const pictureTestsRows = []
+    const lightTransRows = []
+    const natLightRows = []
+    const densityCheckRows = []
+    const lightTransCheckRows = []
+    const natLightCheckRows = []
     const shipmentRows = []
     const fiberLoadingSettings = {
       config: fiberLoadingConfig,
@@ -2744,11 +3601,35 @@
       rows: densityRows,
       name: 'density'
     }
-    const pictureTestsSettings = {
-      config: pictureTestsConfig,
-      table: $('#pictureTestsGridTable'),
-      rows: pictureTestsRows,
-      name: 'pictureTests'
+    const lightTransSettings = {
+      config: lightTransConfig,
+      table: $('#lightTransGridTable'),
+      rows: lightTransRows,
+      name: 'lightTrans'
+    }
+    const natLightSettings = {
+      config: natLightConfig,
+      table: $('#natLightGridTable'),
+      rows: natLightRows,
+      name: 'natLight'
+    }
+    const densityCheckSettings = {
+      config: densityCheckConfig,
+      table: $('#densityCheckGridTable'),
+      rows: densityCheckRows,
+      name: 'densityCheck'
+    }
+    const lightTransCheckSettings = {
+      config: lightTransCheckConfig,
+      table: $('#lightTransCheckGridTable'),
+      rows: lightTransCheckRows,
+      name: 'lightTransCheck'
+    }
+    const natLightCheckSettings = {
+      config: natLightCheckConfig,
+      table: $('#natLightCheckGridTable'),
+      rows: natLightCheckRows,
+      name: 'natLightCheck'
     }
     const shipmentSettings = {
       config: shipmentConfig,
@@ -2761,10 +3642,25 @@
       ['tungstenGridTable', tungstenSettings],
       ['epoxyGridTable', epoxySettings],
       ['densityGridTable', densitySettings],
-      ['pictureTestsGridTable', pictureTestsSettings],
+      ['lightTransGridTable', lightTransSettings],
+      ['natLightGridTable', natLightSettings],
+      ['densityCheckGridTable', densityCheckSettings],
+      ['lightTransCheckGridTable', lightTransCheckSettings],
+      ['natLightCheckGridTable', natLightCheckSettings],
       ['shipmentGridTable', shipmentSettings]
     ])
-    const allSettings = [fiberLoadingSettings, tungstenSettings, epoxySettings, densitySettings, pictureTestsSettings, shipmentSettings]
+    const allSettings = [
+      fiberLoadingSettings,
+      tungstenSettings,
+      epoxySettings,
+      densitySettings,
+      lightTransSettings,
+      natLightSettings,
+      densityCheckSettings,
+      lightTransCheckSettings,
+      natLightCheckSettings,
+      shipmentSettings
+    ]
     const blockSelectionSettings = {
       tungsten: {
         table: $('#tungstenSelectBlocks'),
@@ -2778,8 +3674,24 @@
         table: $('#densitySelectBlocks'),
         blockDivs: []
       },
-      pictureTests: {
-        table: $('#pictureTestsSelectBlocks'),
+      lightTrans: {
+        table: $('#lightTransSelectBlocks'),
+        blockDivs: []
+      },
+      natLight: {
+        table: $('#natLightSelectBlocks'),
+        blockDivs: []
+      },
+      densityCheck: {
+        table: $('#densityCheckSelectBlocks'),
+        blockDivs: []
+      },
+      lightTransCheck: {
+        table: $('#lightTransCheckSelectBlocks'),
+        blockDivs: []
+      },
+      natLightCheck: {
+        table: $('#natLightCheckSelectBlocks'),
         blockDivs: []
       },
       shipment: {
@@ -2957,35 +3869,10 @@
       const grid = form.parent('section').children('div.grid').eq(0)
       grid.find('div.gridData > input.' + className).filter(':enabled').val('').keyup()
     }
-    function loadFiberLoading() {
+    function loadSection (sectionName) {
       document.getElementById('sectionSelection').style.display = 'none'
-      document.getElementById('fiberLoadingSection').style.display = 'block'
-      selectedSection = 'fiberLoadingSection'
-    }
-    function loadTungsten () {
-      document.getElementById('sectionSelection').style.display = 'none'
-      document.getElementById('tungstenSection').style.display = 'block'
-      selectedSection = 'tungstenSection'
-    }
-    function loadEpoxy () {
-      document.getElementById('sectionSelection').style.display = 'none'
-      document.getElementById('epoxySection').style.display = 'block'
-      selectedSection = 'epoxySection'
-    }
-    function loadDensity () {
-      document.getElementById('sectionSelection').style.display = 'none'
-      document.getElementById('densitySection').style.display = 'block'
-      selectedSection = 'densitySection'
-    }
-    function loadPictureTests () {
-      document.getElementById('sectionSelection').style.display = 'none'
-      document.getElementById('pictureTestsSection').style.display = 'block'
-      selectedSection = 'pictureTestsSection'
-    }
-    function loadShipment () {
-      document.getElementById('sectionSelection').style.display = 'none'
-      document.getElementById('shipmentSection').style.display = 'block'
-      selectedSection = 'shipmentSection'
+      document.getElementById(sectionName + 'Section').style.display = 'block'
+      selectedSection = sectionName + 'Section'
     }
     function sectionReturn () {
       $('.dataEntrySection').css('display', 'none')

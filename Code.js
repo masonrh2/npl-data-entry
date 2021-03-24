@@ -69,22 +69,11 @@
  * functionality for density checking? seperate window?
  * break all tests sections down?:
  * 
- * Fiber: input fiber loading data (status 0 -> 1)
- *    (dbn, block*, status, mold number, fiber loader)
- *    [do not choose from a group (too many status 0 blocks!)]
- * Tungsten: input tungsten data (status 1 -> 2)
- *    (dbn, block*, status, powder, bucket #, empty mass, filled mass, date, initials)
- *    [choose from status 1, sort by DBN?]
  * Epoxy: input epoxy data (status 2 -> 3)
- *    (dbn, block*, status, batch, resin mass, hardener mass, potting notes, filling time, date, initials)
- *    [choose from status 2, sort by DBN?]
- * Machining: input machining data (status 3 -> 4...sometimes?)
- *    (dbn, block*, status, date, initials)
- *    [choose from status 3? may not be super helpful (>100 blocks...)]
+ *    [choose from status 2, sort by DBN? sort by tungsten filling date?]
  * 
  * Density: (status 3, 4 -> 5?)
- *    (dbn, block*, status, L, BT, BB, BH, ST, SB, SH, volume*, initials, mass, initials, density*, date)
- *    [choose from status 3 and/or 4?]
+ *    [choose from status 3 and/or 4? sort by DBN? sort by potting date or machining date?]
  * Light Trans: (status 5)
  *    (dbn, block*, status, fiber count*, missing row, 13 holes, tester)
  *    [choose from status 5, sort by most recently LT tested, then by DBN]
@@ -93,13 +82,10 @@
  *    [choose from status 5, sort by most recently NL tested, then by DBN]
  * 
  * Density Check: (status 5 or 5abc, 8?)
- *    (dbn, block*, status*, L, BT, BB, BH, ST, SB, SH, initals, mass, initials, date, checked)
  *    [choose from status 5, sort by those missing check, then by DBN]
  * Light Trans Check: (status 5 or 5abc, 8?)
- *    (dbn, block*, status*, fiber count*, missing row, 13 holes, tester, date, checked)
  *    [choose from status 5, sort by those missing check, then by DBN]
  * Natural Light Check: (status 5 or 5abc, 8?)
- *    (dbn, block*, status*, date, tester, checked)
  *    [choose from status 5, sort by those missing check, then by DBN]
  * 
  * Block Grading: (status 5 -> 5abc, 8)
@@ -112,23 +98,10 @@
  *    [choose from status 5a, 5b, 5c, sort by block? grade? dbn?]
  *    {add a "add all status __ blocks" input, to avoid so much clicking?}
  * 
- * need to be able to remove rows individually
+ * need to be able to remove rows individually?
  * 
  * PLAN: "add blocks by status"
- * - automatically display a CSS grid with all blocks in the appropritate status for the section (in most sections)
- *    (needs to be done onload and whenever the database is refreshed)
- * - each grid cell should display the DBN, the block type, and a checkbox
- * - check the box to add a row with that DBN to this section
- * - uncheck the box to remove all instance of that DBN in this section
  * - also highlight the selected cells somehow? (darker grey, e.g.)
- * - more clever way to do this with objects? densityGrid.update(status=x), e.g.
- * - make a constructor and ask for HTML table element, default status, ...
- * - densityGrid.uncheck([...]) on remove all rows or remove row
- * - add a densityRows object too?
- * - densityRows.add([...]) on add from list
- * - densityRows.clear()
- * - densityRows.update() to refesh data with what's in blocksCollection
- * 
  * 
  * functionality to verify dates and integrity of all tests:
  * Dates: fiber fill date < tungsten date < epoxy date < (density, light trans, natural light, scint)
@@ -164,8 +137,6 @@
  * other:
  * - start logging cropped stencil with difference form template for LT
  * - improve LT stencil recognition
- * 
- * change machinging date with density section (usually same day)
  * 
  * on refresh database, call selectBlocksTableUpdate for all sections
  * 
