@@ -1167,6 +1167,11 @@
           element.style.backgroundColor = '#eee'
         })
         if (blockSpan != null) { blockSpan.text('-') }
+        if (natLightDateSpan != null) { natLightDateSpan.text('-') }
+        if (natLightTesterSpan != null) { natLightTesterSpan.text('-') }
+        if (missingRowSpan != null) { missingRowSpan.text('-') }
+        if (thirteenHolesSpan != null) { thirteenHolesSpan.text('-') }
+        if (lightTransTesterSpan != null) { lightTransTesterSpan.text('-') }
         if (statusSpan != null) { updateStatusSpan(statusSpan, null, tableName) }
         if (statusInput != null) {
           const element = statusInput.get(0)
@@ -1460,7 +1465,7 @@
               type: 'span',
               classes: [],
               attributes: [['data-name', 'block']],
-              style: [['width', '100%']]
+              style: [['width', '100%'], ['display', 'inline-block'], ['text-align', 'center']]
             },
             update: {
               numeric: true,
@@ -1587,7 +1592,7 @@
               type: 'span',
               classes: [],
               attributes: [['data-name', 'block']],
-              style: [['width', '100%']]
+              style: [['width', '100%'], ['display', 'inline-block'], ['text-align', 'center']]
             },
             update: {
               numeric: true,
@@ -1794,7 +1799,7 @@
               type: 'span',
               classes: [],
               attributes: [['data-name', 'block']],
-              style: [['width', '100%']]
+              style: [['width', '100%'], ['display', 'inline-block'], ['text-align', 'center']]
             },
             update: {
               numeric: true,
@@ -2022,7 +2027,7 @@
               type: 'span',
               classes: [],
               attributes: [['data-name', 'block']],
-              style: [['width', '100%']]
+              style: [['width', '100%'], ['display', 'inline-block'], ['text-align', 'center']]
             },
             update: {
               numeric: true,
@@ -2318,7 +2323,7 @@
               type: 'span',
               classes: [],
               attributes: [['data-name', 'volume']],
-              style: [['width', '100%']]
+              style: [['width', '100%'], ['display', 'inline-block'], ['text-align', 'center']]
             },
             update: {
               numeric: true,
@@ -2527,7 +2532,7 @@
               type: 'span',
               classes: [],
               attributes: [['data-name', 'status']],
-              style: [['width', '100%']]
+              style: [['width', '100%'], ['display', 'inline-block'], ['text-align', 'center']]
             },
             update: {
               numeric: false,
@@ -2545,7 +2550,7 @@
               type: 'span',
               classes: [],
               attributes: [['data-name', 'fiberPercentage'], ['type', 'text']],
-              style: [['width', '100%']]
+              style: [['width', '100%'], ['display', 'inline-block'], ['text-align', 'center']]
             },
             update: {
               numeric: false,
@@ -2645,7 +2650,7 @@
               type: 'span',
               classes: [],
               attributes: [['data-name', 'block']],
-              style: [['width', '100%']]
+              style: [['width', '100%'], ['display', 'inline-block'], ['text-align', 'center']]
             },
             update: {
               numeric: true,
@@ -2663,7 +2668,7 @@
               type: 'span',
               classes: [],
               attributes: [['data-name', 'status']],
-              style: [['width', '100%']]
+              style: [['width', '100%'], ['display', 'inline-block'], ['text-align', 'center']]
             },
             update: {
               numeric: false,
@@ -2744,7 +2749,7 @@
               type: 'span',
               classes: [],
               attributes: [['data-name', 'block']],
-              style: [['width', '100%']]
+              style: [['width', '100%'], ['display', 'inline-block'], ['text-align', 'center']]
             },
             update: {
               numeric: true,
@@ -3206,7 +3211,7 @@
               type: 'span',
               classes: [],
               attributes: [['data-name', 'block']],
-              style: [['width', '100%']]
+              style: [['width', '100%'], ['display', 'inline-block'], ['text-align', 'center']]
             },
             update: {
               numeric: true,
@@ -3224,7 +3229,7 @@
               type: 'span',
               classes: [],
               attributes: [['data-name', 'status']],
-              style: [['width', '100%']]
+              style: [['width', '100%'], ['display', 'inline-block'], ['text-align', 'center']]
             },
             update: {
               numeric: false,
@@ -3242,7 +3247,7 @@
               type: 'span',
               classes: [],
               attributes: [['data-name', 'fiberPercentage'], ['type', 'text']],
-              style: [['width', '100%']]
+              style: [['width', '100%'], ['display', 'inline-block'], ['text-align', 'center']]
             },
             update: {
               numeric: false,
@@ -3260,7 +3265,7 @@
               type: 'span',
               classes: [],
               attributes: [['data-name', 'missingRow'], ['type', 'text']],
-              style: [['width', '100%']]
+              style: [['width', '100%'], ['display', 'inline-block'], ['text-align', 'center']]
             },
             update: {
               numeric: false,
@@ -3278,7 +3283,7 @@
               type: 'span',
               classes: [],
               attributes: [['data-name', 'thirteenHoles'], ['type', 'text']],
-              style: [['width', '100%']]
+              style: [['width', '100%'], ['display', 'inline-block'], ['text-align', 'center']]
             },
             update: {
               numeric: false,
@@ -3296,7 +3301,7 @@
               type: 'span',
               classes: [],
               attributes: [['data-name', 'lightTransTester'], ['type', 'text']],
-              style: [['width', '100%']]
+              style: [['width', '100%'], ['display', 'inline-block'], ['text-align', 'center']]
             },
             update: {
               numeric: false,
@@ -3356,7 +3361,7 @@
               type: 'span',
               classes: [],
               attributes: [['data-name', 'block']],
-              style: [['width', '100%']]
+              style: [['width', '100%'], ['display', 'inline-block'], ['text-align', 'center']]
             },
             update: {
               numeric: true,
@@ -3374,7 +3379,7 @@
               type: 'span',
               classes: [],
               attributes: [['data-name', 'status']],
-              style: [['width', '100%']]
+              style: [['width', '100%'], ['display', 'inline-block'], ['text-align', 'center']]
             },
             update: {
               numeric: false,
@@ -3392,7 +3397,7 @@
               type: 'span',
               classes: [],
               attributes: [['data-name', 'natLightDate'], ['type', 'text']],
-              style: [['width', '100%']]
+              style: [['width', '100%'], ['display', 'inline-block'], ['text-align', 'center']]
             },
             update: {
               numeric: false,
@@ -3410,7 +3415,7 @@
               type: 'span',
               classes: [],
               attributes: [['data-name', 'natLightTester'], ['type', 'text']],
-              style: [['width', '100%']]
+              style: [['width', '100%'], ['display', 'inline-block'], ['text-align', 'center']]
             },
             update: {
               numeric: false,
@@ -3470,7 +3475,7 @@
               type: 'span',
               classes: [],
               attributes: [['data-name', 'block']],
-              style: [['width', '100%']]
+              style: [['width', '100%'], ['display', 'inline-block'], ['text-align', 'center']]
             },
             update: {
               numeric: true,
