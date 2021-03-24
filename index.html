@@ -36,16 +36,18 @@
       <h1>Fiber Loading Data Entry</h1>
       <button onclick="sectionReturn()">Back</button>
       <button class="submitDataButton" onclick="generalSubmitData(fiberLoadingSettings)">SUBMIT</button><br>
-      <span class="batchInputLabel">Use the inputs below to fill data in the table:</span>
+      <span class="batchInputLabel">Use the inputs below to fill data in the table. Any empty field will not be written to the database.</span>
       <form action="javascript:" onsubmit="batchInput(this, 'inputStatus')" style="margin-top: 1em; display: block;">
         <label style="font-weight: bold; width: 120px; display: inline-block;">Status: </label>
           <input type="text" style="width: 80px;" value="1">
         <button style="margin-left: 1em">Fill</button>
+        <button type="clear" style="margin-left: 1em;" onclick="batchClear(this, 'inputStatus')">Clear</button>
       </form>
       <form action="javascript:" onsubmit="batchInput(this, 'inputTester')" style="margin-top: 1em; display: block;">
         <label style="font-weight: bold; width: 120px; display: inline-block;">Fiber Loader: </label>
           <input type="text" style="width: 80px;">
         <button style="margin-left: 1em">Fill</button>
+        <button type="clear" style="margin-left: 1em;" onclick="batchClear(this, 'inputTester')">Clear</button>
       </form>
       <span class="tableLabel">Press the red "SUBMIT" button to write any data in the table below to the database:</span>
       <div id="fiberLoadingGridTable" class="grid"></div>
@@ -59,36 +61,41 @@
       <h1>Tungsten Data Entry</h1>
       <button onclick="sectionReturn()">Back</button>
       <button class="submitDataButton" onclick="generalSubmitData(tungstenSettings)">SUBMIT</button><br>
-      <span class="selectBlocksLabel">Add or remove blocks from table:</span>
+      <span class="selectBlocksLabel">Select a status below to find blocks in that status. Select any block to add it to the the table.</span>
       <form oninput="selectBlocksTableUpdate(this, 'tungsten')">
         <input name="selection" type="radio" value="status1"><label>Status 1</label>
       </form>
       <div id="tungstenSelectBlocks" class="selectBlocksGrid"></div>
-      <span class="batchInputLabel">Use the inputs below to fill data in the table:</span>
+      <span class="batchInputLabel">Use the inputs below to fill data in the table. Any empty field will not be written to the database.</span>
       <form action="javascript:" onsubmit="batchInput(this, 'inputStatus')" style="margin-top: 1em; display: block;">
         <label style="font-weight: bold; width: 120px; display: inline-block;">Status: </label>
           <input type="text" style="width: 80px;" value="2">
         <button style="margin-left: 1em">Fill</button>
+        <button type="clear" style="margin-left: 1em;" onclick="batchClear(this, 'inputStatus')">Clear</button>
       </form>
       <form action="javascript:" onsubmit="batchInput(this, 'inputPowder')" style="margin-top: 1em; display: block;">
         <label style="font-weight: bold; width: 120px; display: inline-block;">Powder: </label>
           <input type="text" style="width: 80px;" value="HCS">
         <button style="margin-left: 1em">Fill</button>
+        <button type="clear" style="margin-left: 1em;" onclick="batchClear(this, 'inputPowder')">Clear</button>
       </form>
       <form action="javascript:" onsubmit="batchInput(this, 'inputBucket')" style="margin-top: 1em; display: block;">
         <label style="font-weight: bold; width: 120px; display: inline-block;">Bucket #: </label>
           <input type="text" style="width: 80px;" value="HCS-">
         <button style="margin-left: 1em">Fill</button>
+        <button type="clear" style="margin-left: 1em;" onclick="batchClear(this, 'inputBucket')">Clear</button>
       </form>
       <form action="javascript:" onsubmit="batchInput(this, 'inputDate')" style="margin-top: 1em; display: block;">
         <label style="font-weight: bold; width: 120px; display: inline-block;">Date: </label>
           <input type="text" class="batchDateUS" style="width: 80px;">
         <button style="margin-left: 1em">Fill</button>
+        <button type="clear" style="margin-left: 1em;" onclick="batchClear(this, 'inputDate')">Clear</button>
       </form>
       <form action="javascript:" onsubmit="batchInput(this, 'inputFiller')" style="margin-top: 1em; display: block;">
         <label style="font-weight: bold; width: 120px; display: inline-block;">Filler Initials: </label>
           <input type="text" style="width: 80px;">
         <button style="margin-left: 1em">Fill</button>
+        <button type="clear" style="margin-left: 1em;" onclick="batchClear(this, 'inputFiller')">Clear</button>
       </form>
       <span class="tableLabel">Press the red "SUBMIT" button to write any data in the table below to the database:</span>
       <div id="tungstenGridTable" class="grid"></div>
@@ -102,46 +109,53 @@
       <h1>Epoxy Data Entry</h1>
       <button onclick="sectionReturn()">Back</button>
       <button class="submitDataButton" onclick="generalSubmitData(epoxySettings)">SUBMIT</button><br>
-      <span class="selectBlocksLabel">Add or remove blocks from table:</span>
+      <span class="selectBlocksLabel">Select a status below to find blocks in that status. Select any block to add it to the the table.</span>
       <form oninput="selectBlocksTableUpdate(this, 'epoxy')">
         <input name="selection" type="radio" value="status2"><label>Status 2</label>
       </form>
       <div id="epoxySelectBlocks" class="selectBlocksGrid"></div>
-      <span class="batchInputLabel">Use the inputs below to fill data in the table:</span>
+      <span class="batchInputLabel">Use the inputs below to fill data in the table. Any empty field will not be written to the database.</span>
       <form action="javascript:" onsubmit="batchInput(this, 'inputStatus')" style="margin-top: 1em; display: block;">
         <label style="font-weight: bold; width: 120px; display: inline-block;">Status: </label>
           <input type="text" style="width: 80px;" value="3">
         <button style="margin-left: 1em">Fill</button>
+        <button type="clear" style="margin-left: 1em;" onclick="batchClear(this, 'inputStatus')">Clear</button>
       </form>
       <form action="javascript:" onsubmit="batchInput(this, 'inputBatch')" style="margin-top: 1em; display: block;">
         <label style="font-weight: bold; width: 120px; display: inline-block;">Epoxy Batch: </label>
           <input type="text" style="width: 80px;">
         <button style="margin-left: 1em">Fill</button>
+        <button type="clear" style="margin-left: 1em;" onclick="batchClear(this, 'inputBatch')">Clear</button>
       </form>
       <form action="javascript:" onsubmit="batchInput(this, 'inputResinMass')" style="margin-top: 1em; display: block;">
         <label style="font-weight: bold; width: 120px; display: inline-block;">Resin Mass: </label>
           <input type="text" style="width: 80px;" value="110">
         <button style="margin-left: 1em">Fill</button>
+        <button type="clear" style="margin-left: 1em;" onclick="batchClear(this, 'inputResinMass')">Clear</button>
       </form>
       <form action="javascript:" onsubmit="batchInput(this, 'inputHardenerMass')" style="margin-top: 1em; display: block;">
         <label style="font-weight: bold; width: 120px; display: inline-block;">Hardener Mass: </label>
           <input type="text" style="width: 80px;" value="25">
         <button style="margin-left: 1em">Fill</button>
+        <button type="clear" style="margin-left: 1em;" onclick="batchClear(this, 'inputHardenerMass')">Clear</button>
       </form>
       <form action="javascript:" onsubmit="batchInput(this, 'inputPottingNotes')" style="margin-top: 1em; display: block;">
         <label style="font-weight: bold; width: 120px; display: inline-block;">Potting Notes: </label>
           <input type="text" style="width: 80px;" value="d40g">
         <button style="margin-left: 1em">Fill</button>
+        <button type="clear" style="margin-left: 1em;" onclick="batchClear(this, 'inputPottingNotes')">Clear</button>
       </form>
       <form action="javascript:" onsubmit="batchInput(this, 'inputDate')" style="margin-top: 1em; display: block;">
         <label style="font-weight: bold; width: 120px; display: inline-block;">Date: </label>
           <input type="text" class="batchDateUS" style="width: 80px;">
         <button style="margin-left: 1em">Fill</button>
+        <button type="clear" style="margin-left: 1em;" onclick="batchClear(this, 'inputDate')">Clear</button>
       </form>
       <form action="javascript:" onsubmit="batchInput(this, 'inputPreparer')" style="margin-top: 1em; display: block;">
         <label style="font-weight: bold; width: 120px; display: inline-block;">Preparer Initials: </label>
           <input type="text" style="width: 80px;">
         <button style="margin-left: 1em">Fill</button>
+        <button type="clear" style="margin-left: 1em;" onclick="batchClear(this, 'inputPreparer')">Clear</button>
       </form>
       <span class="tableLabel">Press the red "SUBMIT" button to write any data in the table below to the database:</span>
       <div id="epoxyGridTable" class="grid"></div>
@@ -155,37 +169,42 @@
       <h1>Density Data Entry</h1>
       <button onclick="sectionReturn()">Back</button>
       <button class="submitDataButton" onclick="generalSubmitData(densitySettings)">SUBMIT</button><br>
-      <span class="selectBlocksLabel">Add or remove blocks from table:</span>
+      <span class="selectBlocksLabel">Select a status below to find blocks in that status. Select any block to add it to the the table.</span>
       <form oninput="selectBlocksTableUpdate(this, 'density')">
         <input name="selection" type="radio" value="status3"><label>Status 3</label><br>
         <input name="selection" type="radio" value="status4"><label>Status 4</label>
       </form>
       <div id="densitySelectBlocks" class="selectBlocksGrid"></div>
-      <span class="batchInputLabel">Use the inputs below to fill data in the table:</span>
+      <span class="batchInputLabel">Use the inputs below to fill data in the table. Any empty field will not be written to the database.</span>
       <form action="javascript:" onsubmit="batchInput(this, 'inputStatus')" style="margin-top: 1em; display: block;">
         <label style="font-weight: bold; width: 120px; display: inline-block;">Status: </label>
           <input type="text" style="width: 80px;" value="5">
         <button style="margin-left: 1em">Fill</button>
+        <button type="clear" style="margin-left: 1em;" onclick="batchClear(this, 'inputStatus')">Clear</button>
       </form>
       <form action="javascript:" onsubmit="batchInput(this, 'inputDate')" style="margin-top: 1em; display: block;">
         <label style="font-weight: bold; width: 120px; display: inline-block;">Date: </label>
           <input type="text" class="batchDate" style="width: 80px;">
         <button style="margin-left: 1em">Fill</button>
+        <button type="clear" style="margin-left: 1em;" onclick="batchClear(this, 'inputDate')">Clear</button>
       </form>
       <form action="javascript:" onsubmit="batchInput(this, 'inputTester')" style="margin-top: 1em; display: block;">
         <label style="font-weight: bold; width: 120px; display: inline-block;">Tester Initials: </label>
         <input type="text" style="width: 80px;">
         <button style="margin-left: 1em">Fill</button>
+        <button type="clear" style="margin-left: 1em;" onclick="batchClear(this, 'inputTester')">Clear</button>
       </form>
       <form action="javascript:" onsubmit="batchInput(this, 'inputMachiningDate')" style="margin-top: 1em; display: block;">
         <label style="font-weight: bold; width: 120px; display: inline-block;">Machining Date: </label>
           <input type="text" class="batchDateUS" style="width: 80px;">
         <button style="margin-left: 1em">Fill</button>
+        <button type="clear" style="margin-left: 1em;" onclick="batchClear(this, 'inputMachiningDate')">Clear</button>
       </form>
       <form action="javascript:" onsubmit="batchInput(this, 'inputMachinist')" style="margin-top: 1em; display: block;">
         <label style="font-weight: bold; width: 120px; display: inline-block;">Machinist: </label>
           <input type="text" style="width: 80px;">
         <button style="margin-left: 1em">Fill</button>
+        <button type="clear" style="margin-left: 1em;" onclick="batchClear(this, 'inputMachinist')">Clear</button>
       </form>
       <span class="tableLabel">Press the red "SUBMIT" button to write any data in the table below to the database:</span>
       <div id="densityGridTable" class="grid"></div>
@@ -199,46 +218,53 @@
       <h1>LT and NL Data Entry</h1>
       <button onclick="sectionReturn()">Back</button>
       <button class="submitDataButton" onclick="generalSubmitData(pictureTestsSettings)">SUBMIT</button><br>
-      <span class="selectBlocksLabel">Add or remove blocks from table:</span>
+      <span class="selectBlocksLabel">Select a status below to find blocks in that status. Select any block to add it to the the table.</span>
       <form oninput="selectBlocksTableUpdate(this, 'pictureTests')">
         <input name="selection" type="radio" value="status5"><label>Status 5</label>
       </form>
       <div id="pictureTestsSelectBlocks" class="selectBlocksGrid"></div>
-      <span class="batchInputLabel">Use the inputs below to fill data in the table:</span>
+      <span class="batchInputLabel">Use the inputs below to fill data in the table. Any empty field will not be written to the database.</span>
       <form action="javascript:" onsubmit="batchInput(this, 'inputMissingRow')" style="margin-top: 1em; display: block;">
         <label style="font-weight: bold; width: 120px; display: inline-block;">Missing Row?: </label>
           <input type="text" value="N" style="width: 80px;">
         <button style="margin-left: 1em">Fill</button>
+        <button type="clear" style="margin-left: 1em;" onclick="batchClear(this, 'inputMissingRow')">Clear</button>
       </form>
       <form action="javascript:" onsubmit="batchInput(this, 'input13Holes')" style="margin-top: 1em; display: block;">
         <label style="font-weight: bold; width: 120px; display: inline-block;">13 Holes?: </label>
           <input type="text" value="N" style="width: 80px;">
         <button style="margin-left: 1em">Fill</button>
+        <button type="clear" style="margin-left: 1em;" onclick="batchClear(this, 'input13Holes')">Clear</button>
       </form>
       <form action="javascript:" onsubmit="batchInput(this, 'inputLTTester')" style="margin-top: 1em; display: block;">
         <label style="font-weight: bold; width: 120px; display: inline-block;">LT Tester: </label>
           <input type="text" style="width: 80px;">
         <button style="margin-left: 1em">Fill</button>
+        <button type="clear" style="margin-left: 1em;" onclick="batchClear(this, 'inputLTTester')">Clear</button>
       </form>
       <form action="javascript:" onsubmit="batchInput(this, 'inputLTChecker')" style="margin-top: 1em; display: block;">
         <label style="font-weight: bold; width: 120px; display: inline-block;">LT Checked By: </label>
           <input type="text" style="width: 80px;">
         <button style="margin-left: 1em">Fill</button>
+        <button type="clear" style="margin-left: 1em;" onclick="batchClear(this, 'inputLTChecker')">Clear</button>
       </form>
       <form action="javascript:" onsubmit="batchInput(this, 'inputNLDate')" style="margin-top: 1em; display: block;">
         <label style="font-weight: bold; width: 120px; display: inline-block;">NL Date: </label>
           <input type="text" class="batchDate" style="width: 80px;">
         <button style="margin-left: 1em">Fill</button>
+        <button type="clear" style="margin-left: 1em;" onclick="batchClear(this, 'inputNLDate')">Clear</button>
       </form>
       <form action="javascript:" onsubmit="batchInput(this, 'inputNLTester')" style="margin-top: 1em; display: block;">
         <label style="font-weight: bold; width: 120px; display: inline-block;">NL Tester: </label>
           <input type="text" style="width: 80px;">
         <button style="margin-left: 1em">Fill</button>
+        <button type="clear" style="margin-left: 1em;" onclick="batchClear(this, 'inputNLTester')">Clear</button>
       </form>
       <form action="javascript:" onsubmit="batchInput(this, 'inputNLChecker')" style="margin-top: 1em; display: block;">
         <label style="font-weight: bold; width: 120px; display: inline-block;">NL Checked By: </label>
           <input type="text" style="width: 80px;">
         <button style="margin-left: 1em">Fill</button>
+        <button type="clear" style="margin-left: 1em;" onclick="batchClear(this, 'inputNLChecker')">Clear</button>
       </form>
       <span class="tableLabel">Press the red "SUBMIT" button to write any data in the table below to the database:</span>
       <div id="pictureTestsGridTable" class="grid"></div>
@@ -252,28 +278,31 @@
       <h1>Shipment Data Entry</h1>
       <button onclick="sectionReturn()">Back</button>
       <button class="submitDataButton" onclick="generalSubmitData(shipmentSettings)">SUBMIT</button><br>
-      <span class="selectBlocksLabel">Add or remove blocks from table:</span>
+      <span class="selectBlocksLabel">Select a status below to find blocks in that status. Select any block to add it to the the table.</span>
       <form oninput="selectBlocksTableUpdate(this, 'shipment')">
         <input name="selection" type="radio" value="status5"><label>Status 5</label><br>
         <input name="selection" type="radio" value="statuses5a,5b,5c"><label>Statuses 5a, 5b, 5c</label><br>
         <input name="selection" type="radio" value="status6"><label>Status 6</label>
       </form>
       <div id="shipmentSelectBlocks" class="selectBlocksGrid"></div>
-      <span class="batchInputLabel">Use the inputs below to fill data in the table:</span>
+      <span class="batchInputLabel">Use the inputs below to fill data in the table. Any empty field will not be written to the database.</span>
       <form action="javascript:" onsubmit="batchInput(this, 'inputStatus')" style="margin-top: 1em; display: block;">
         <label style="font-weight: bold; width: 120px; display: inline-block;">Status: </label>
           <input type="text" style="width: 80px;" value="7">
         <button style="margin-left: 1em">Fill</button>
+        <button type="clear" style="margin-left: 1em;" onclick="batchClear(this, 'inputStatus')">Clear</button>
       </form>
       <form action="javascript:" onsubmit="batchInput(this, 'inputShipment')" style="margin-top: 1em; display: block;">
         <label style="font-weight: bold; width: 120px; display: inline-block;">Shipment: </label>
           <input type="text" style="width: 80px;">
         <button style="margin-left: 1em">Fill</button>
+        <button type="clear" style="margin-left: 1em;" onclick="batchClear(this, 'inputShipment')">Clear</button>
       </form>
       <form action="javascript:" onsubmit="batchInput(this, 'inputShipmentDate')" style="margin-top: 1em; display: block;">
         <label style="font-weight: bold; width: 120px; display: inline-block;">Shipment Date: </label>
           <input type="text" class="batchDateUS" style="width: 80px;">
         <button style="margin-left: 1em">Fill</button>
+        <button type="clear" style="margin-left: 1em;" onclick="batchClear(this, 'inputShipmentDate')">Clear</button>
       </form>
       <span class="tableLabel">Press the red "SUBMIT" button to write any data in the table below to the database:</span>
       <div id="shipmentGridTable" class="grid"></div>
@@ -2921,6 +2950,12 @@
       const grid = $(form).parent('section').children('div.grid').eq(0)
       const inputVal = $(form).children('input').eq(0).val()
       grid.find('div.gridData > input.' + className).filter(':enabled').val(inputVal).keyup()
+    }
+    function batchClear (button, className) {
+      const form = $(button).parent('form').eq(0)
+      form.children('input').eq(0).val('')
+      const grid = form.parent('section').children('div.grid').eq(0)
+      grid.find('div.gridData > input.' + className).filter(':enabled').val('').keyup()
     }
     function loadFiberLoading() {
       document.getElementById('sectionSelection').style.display = 'none'
