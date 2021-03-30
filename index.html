@@ -3963,7 +3963,8 @@
         }
       }
       // console.log('table name was: ' + tableSettings.name)
-      if (values.length === 0) {
+      console.log(values)
+      if (values.length === 0 || values.every((value) => value.every((entry) => entry === null))) {
         alert('no data to submit!')
       } else if (columnNames.length !== values[0].length) {
         // bad!
