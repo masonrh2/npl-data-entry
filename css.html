@@ -12,7 +12,7 @@
   }
   .grid{
     display: grid;
-    gap: 5px;
+    gap: 0px;
     margin-top: 1em;
     width: min-content;
   }
@@ -20,6 +20,7 @@
     padding: 5px;
     font-weight: bold;
     background-color: #ddd;
+    text-align: center;
   }
   .grid > div.gridData {
     padding: 5px;
@@ -39,5 +40,56 @@
   .grid > div.gridData > p.centerP {
     text-align: center;
     margin: auto;
+  }
+  button.submitDataButton {
+    background: darkred;
+    color: white;
+    border: 2px solid black;
+  }
+  span.batchInputLabel {
+    margin-top: 1em;
+    font-style: italic;
+    color: grey;
+    display: block;
+  }
+  span.tableLabel {
+    margin-top: 1em;
+    font-style: italic;
+    color: grey;
+    display: block;
+  }
+  span.selectBlocksLabel {
+    margin-top: 1em;
+    font-style: italic;
+    color: grey;
+    display: block;
+  }
+  .selectBlocksGrid {
+    display: grid;
+    gap: 0px;
+    margin-top: 1em;
+    max-width: 480px;
+    grid-template-columns: repeat(auto-fit, 80px);
+  }
+  .selectBlocksGrid > div.blockLabel {
+    width: 80px;
+    border: 1px solid grey;
+    position: relative;
+  }
+  .selectBlocksGrid > div.blockLabel > span.blockLabelDBN {
+    color: black;
+    font-weight: bold;
+    position: absolute;
+    left: 4px;
+  }
+  .selectBlocksGrid > div.blockLabel > span.blockLabelBlockType {
+    color: grey;
+    font-style: italic;
+    position: absolute;
+    right: 22px;
+  }
+  .selectBlocksGrid > div.blockLabel > input.blockLabelCheck {
+    position: relative;
+    left: 62px;
   }
 </style>
